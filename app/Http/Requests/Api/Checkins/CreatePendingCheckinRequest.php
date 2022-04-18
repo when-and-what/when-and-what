@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Api;
+namespace App\Http\Requests\Api\Checkins;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CheckinRequest extends FormRequest
+class CreatePendingCheckinRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +24,11 @@ class CheckinRequest extends FormRequest
     public function rules()
     {
         return [
-            'location' => 'integer|exists:locations,id',
-            'latitude' => 'numeric|required_without:location',
-            'longitude' => 'numeric|required_without:location',
+            'latitude' => 'numeric|required',
+            'longitude' => 'numeric|required',
             'name' => 'nullable',
             'note' => 'nullable',
-            'date' => 'date_format:Y-m-d H:i:s'
+            'date' => 'date_format:Y-m-d H:i:s',
         ];
     }
 }

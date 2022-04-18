@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Locations\CheckinController;
+use App\Http\Controllers\Api\Locations\PendingCheckinController;
 use App\Http\Controllers\Api\Podcasts\EpisodePlayController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,4 +22,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth:sanctum')->post('podcasts/play', EpisodePlayController::class);
-Route::middleware('auth:sanctum')->post('locations/checkin', CheckinController::class);
+Route::middleware('auth:sanctum')->apiResource('locations/checkin/pending', PendingCheckinController::class);
+Route::middleware('auth:sanctum')->apiResource('locations/checkin', CheckinController::class);

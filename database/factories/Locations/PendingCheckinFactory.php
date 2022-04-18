@@ -19,11 +19,11 @@ class PendingCheckinFactory extends Factory
     {
         return [
             'user_id' => User::factory()->create(),
-            'latitude' => $this->faker()->latitude(),
-            'longitude' => $this->faker()->longitude(),
-            'checkin_at' => $this->faker()->dateTimeBetween(),
-            'name' => $this->faker()->words(2, true),
-            'note' => $this->faker()->sentence(),
+            'latitude' => $this->faker->latitude(),
+            'longitude' => $this->faker->longitude(),
+            'checkin_at' => $this->faker->dateTimeBetween(),
+            'name' => $this->faker->words(2, true),
+            'note' => $this->faker->sentence(),
         ];
     }
 }

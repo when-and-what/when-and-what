@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Locations;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\CheckinRequest;
+use App\Http\Requests\Api\Checkins\CreateCheckinRequest;
 use App\Models\Locations\Checkin;
 use App\Models\Locations\Location;
 use App\Models\Locations\PendingCheckin;
@@ -11,23 +11,16 @@ use Carbon\Carbon;
 
 class CheckinController extends Controller
 {
-    public function __invoke(CheckinRequest $request)
+    public function store(CreateCheckinRequest $request)
     {
-        if($request->location){
-            $location = Location::findOrFail($request->location);
-            // TODO: check policy
-            if($location->user_id != $request->user()->id) {
-                return response('', 403);
-            }
-            $checkin = new Checkin();
-            $checkin->location_id = $request->location;
+        $location = Location::findOrFail($request->location);
+        // TODO: check policy
+        if ($location->user_id != $request->user()->id) {
+            return response('', 403);
         }
-        else {
-            $checkin = new PendingCheckin();
-            $checkin->latitude = $request->latitude;
-            $checkin->longitude = $request->longitude;
-            $checkin->name = $request->name;
-        }
+
+        $checkin = new Checkin();
+        $checkin->location_id = $request->location;
         $checkin->user_id = $request->user()->id;
         $checkin->note = $request->note;
         if ($request->date) {
@@ -37,9 +30,12 @@ class CheckinController extends Controller
         }
         $checkin->save();
 
-        return response([
-            'checkin' => $checkin,
-            'type' => ($checkin instanceof PendingCheckin ? 'pending' : 'checkin'),
-        ], 201);
+        return response($checkin, 201);
+    }
+
+    public function show(Checkin $checkin)
+    {
+        // TODO: policy for view checking
+        return $checkin;
     }
 }
