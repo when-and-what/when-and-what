@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Locations;
 
+use App\Models\Locations\Checkin;
 use App\Models\Locations\Location;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -46,5 +47,31 @@ class CheckinApiTest extends TestCase
             'checkin_at' => now(),
             'note' => $data['note'],
         ]);
+    }
+
+    public function test_get_checkin()
+    {
+        $user = User::factory()->create();
+        $checkin = Checkin::factory()->create(['user_id' => $user->id]);
+        $response = $this->actingAs($user)->getJson('/api/locations/checkin/' . $checkin->id);
+        $response->assertStatus(200);
+
+        $checkin = Checkin::factory()->create();
+        $response = $this->actingAs($user)->getJson('/api/locations/checkin/' . $checkin->id);
+        $response->assertStatus(403);
+    }
+
+    public function test_delete_checkin()
+    {
+        $user = User::factory()->create();
+        $checkin = Checkin::factory()->create(['user_id' => $user->id]);
+        $response = $this->actingAs($user)->deleteJson('/api/locations/checkin/' . $checkin->id);
+        $response->assertStatus(200);
+        $this->assertNotNull($response->json('deleted_at'));
+        $this->assertSoftDeleted('checkins', ['id' => $checkin->id]);
+
+        $checkin = Checkin::factory()->create();
+        $response = $this->actingAs($user)->getJson('/api/locations/checkin/' . $checkin->id);
+        $response->assertStatus(403);
     }
 }

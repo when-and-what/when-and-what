@@ -6,11 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Checkins\CreateCheckinRequest;
 use App\Models\Locations\Checkin;
 use App\Models\Locations\Location;
-use App\Models\Locations\PendingCheckin;
 use Carbon\Carbon;
 
 class CheckinController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Checkin::class, 'checkin');
+    }
+
     public function store(CreateCheckinRequest $request)
     {
         $location = Location::findOrFail($request->location);
@@ -35,7 +39,12 @@ class CheckinController extends Controller
 
     public function show(Checkin $checkin)
     {
-        // TODO: policy for view checking
+        return $checkin;
+    }
+
+    public function destroy(Checkin $checkin)
+    {
+        $checkin->delete();
         return $checkin;
     }
 }

@@ -5,10 +5,11 @@ namespace App\Models\Locations;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Checkin extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     public function location()
     {

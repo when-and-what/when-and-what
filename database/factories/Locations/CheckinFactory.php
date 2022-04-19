@@ -22,9 +22,8 @@ class CheckinFactory extends Factory
         return [
             'location_id' => Location::factory()->create(['user_id' => $user]),
             'user_id' => $user,
-            'checkin_at' => $this->faker()->dateTimeBetween(),
-            'note' => $this->faker()->sentence(),
-            'foursquare_checkin' => null
+            'checkin_at' => $this->faker->dateTimeBetween(),
+            'note' => $this->faker->sentence(),
         ];
     }
 }
