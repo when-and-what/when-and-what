@@ -18,9 +18,8 @@ class CheckinController extends Controller
     public function store(CreateCheckinRequest $request)
     {
         $location = Location::findOrFail($request->location);
-        // TODO: check policy
-        if ($location->user_id != $request->user()->id) {
-            return response('', 403);
+        if ($request->user()->cannot('update', $location)) {
+            abort(403);
         }
 
         $checkin = new Checkin();

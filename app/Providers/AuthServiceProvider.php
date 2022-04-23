@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Locations\Checkin;
+use App\Models\Locations\Location;
 use App\Policies\Locations\CheckinPolicy;
+use App\Policies\Locations\LocationPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -16,6 +18,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Checkin::class => CheckinPolicy::class,
+        Location::class => LocationPolicy::class,
     ];
 
     /**
