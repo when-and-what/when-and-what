@@ -25,7 +25,6 @@ return new class extends Migration
         Schema::create('locations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('category_id')->constrained('location_categories');
             $table->string('name');
             $table->decimal('latitude', 20, 18);
             $table->decimal('longitude', 21, 18);
