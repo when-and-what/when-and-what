@@ -41,7 +41,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navLocationDropdown">
                                 <li>
-                                    <a class="dropdown-item href="{{ route('checkins.index') }}">Checkins</a>
+                                    <a class="dropdown-item" href="{{ route('checkins.index') }}">Checkins</a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('locations.index') }}">Locations</a>
