@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Locations\CheckinController;
+use App\Http\Controllers\Locations\LocationController;
+use App\Http\Controllers\Locations\PendingCheckinController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,3 +23,9 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+Route::middleware(['auth'])->group(function(){
+    Route::get('checkins/pending/{checkin}', [PendingCheckinController::class, 'show']);
+    Route::resource('locations', LocationController::class);
+    Route::resource('checkins', CheckinController::class);
+});

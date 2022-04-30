@@ -11,6 +11,8 @@ class Checkin extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $casts = ['checkin_at' => 'datetime'];
+
     public function location()
     {
         return $this->belongsTo(Location::class);

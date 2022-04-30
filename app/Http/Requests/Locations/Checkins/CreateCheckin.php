@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Api\Checkins;
+namespace App\Http\Requests\Locations\Checkins;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateCheckinRequest extends FormRequest
+class CreateCheckin extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,7 @@ class CreateCheckinRequest extends FormRequest
         return [
             'location' => 'required|integer|exists:locations,id',
             'note' => 'nullable',
-            'date' => 'date_format:Y-m-d H:i:s',
+            'date' => 'date_format:Y-m-d H:i',
         ];
     }
 }

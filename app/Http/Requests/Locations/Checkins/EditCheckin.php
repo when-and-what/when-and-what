@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Api\Checkins;
+namespace App\Http\Requests\Locations\Checkins;
 
+use App\Models\Locations\Checkin;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateCheckinRequest extends FormRequest
+class EditCheckin extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +14,9 @@ class CreateCheckinRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $checkin = Checkin::find($this->route('checkin'));
+
+        return $checkin && $this->user()->can('update', $checkin);
     }
 
     /**
@@ -24,7 +27,6 @@ class CreateCheckinRequest extends FormRequest
     public function rules()
     {
         return [
-            'location' => 'required|integer|exists:locations,id',
             'note' => 'nullable',
             'date' => 'date_format:Y-m-d H:i:s',
         ];
