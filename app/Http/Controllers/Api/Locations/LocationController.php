@@ -10,6 +10,7 @@ class LocationController extends Controller
 {
     /**
      * Display a listing of the resource.
+     *!this is not restricted  by the Location policy
      *
      * @return \Illuminate\Http\Response
      */

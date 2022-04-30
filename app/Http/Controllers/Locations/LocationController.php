@@ -14,12 +14,17 @@ class LocationController extends Controller
     }
     /**
      * Display a listing of the resource.
+     *!this is not restricted  by the Location policy
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return view('locations.list', [
+            'locations' => Location::where('user_id', $request->user()->id)
+                ->orderBy('updated_at', 'DESC')
+                ->paginate(20),
+        ]);
     }
 
     /**

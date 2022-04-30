@@ -15,6 +15,16 @@ class CheckinController extends Controller
         $this->authorizeResource(Checkin::class, 'checkin');
     }
 
+    /**
+     * Return checkins
+     *!this is not restricted  by the Checkin policy
+     *
+     * @return void
+     */
+    public function index()
+    {
+    }
+
     public function store(CreateCheckinRequest $request)
     {
         $location = Location::findOrFail($request->location);

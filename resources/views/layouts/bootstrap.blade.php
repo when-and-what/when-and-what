@@ -28,12 +28,25 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
+                    @php
+                    $routeName = Route::currentRouteName();
+                    @endphp
                     <ul class="navbar-nav me-auto mb-2 mb-md-0">
                         <li class="nav-item">
                             <a class="nav-link" aria-current="page" href="#">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link @if(strpos(Route::currentRouteName(), 'checkins') === 0) active @endif" href="{{ route('checkins.index') }}">Checkins</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle @if(strpos($routeName, 'checkins') === 0 || strpos($routeName, 'locations') === 0) active @endif" href="#" id="navLocationDropdown"role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Locations
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navLocationDropdown">
+                                <li>
+                                    <a class="dropdown-item href="{{ route('checkins.index') }}">Checkins</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('locations.index') }}">Locations</a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
