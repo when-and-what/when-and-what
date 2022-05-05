@@ -12,6 +12,8 @@ class Category extends Model
 
     protected $table = 'location_categories';
 
+    protected $fillable = ['name', 'emoji'];
+
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Locations\CategoriesController;
 use App\Http\Controllers\Locations\CheckinController;
 use App\Http\Controllers\Locations\LocationController;
 use App\Http\Controllers\Locations\PendingCheckinController;
@@ -27,6 +28,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 Route::middleware(['auth'])->group(function(){
     Route::resource('locations/checkins/pending', PendingCheckinController::class);
     Route::resource('locations/checkins', CheckinController::class);
+    Route::resource('locations/categories', CategoriesController::class);
     Route::resource('locations', LocationController::class);
 });
 
