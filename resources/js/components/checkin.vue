@@ -19,12 +19,14 @@ export default {
     },
     props: {
         location,
+        latitude: null,
+        longitude: null,
     },
     emits: ['update:latitude', 'update:longitude'],
     methods: {
         getLocations: function () {
             var self = this;
-            axios.get('/api/locations').then(function (response) {
+            axios.get('/json/locations').then(function (response) {
                 response.data.forEach((location) => {
                     var marker = L.marker([location.latitude, location.longitude], {
                         draggable: false,
@@ -55,12 +57,19 @@ export default {
     },
     mounted: function () {
         var self = this;
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                self.lat = position.coords.latitude;
-                self.lng = position.coords.longitude;
-                self.setupMap();
-            });
+        if (self.latitude && self.longitude) {
+            self.lat = this.latitude;
+            self.lng = this.longitude;
+            self.setupMap();
+        } else if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    self.lat = position.coords.latitude;
+                    self.lng = position.coords.longitude;
+                    self.setupMap();
+                },
+                function (msg) {}
+            );
         }
         if (self.location) {
             self.location_id = self.location.id;

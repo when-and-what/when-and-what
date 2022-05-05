@@ -28,7 +28,7 @@ class CreatePendingCheckinRequest extends FormRequest
             'longitude' => 'numeric|required',
             'name' => 'nullable',
             'note' => 'nullable',
-            'date' => 'date_format:Y-m-d H:i:s',
+            'date' => 'nullable|date_format:Y-m-d H:i:s',
         ];
     }
 }

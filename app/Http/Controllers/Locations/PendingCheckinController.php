@@ -3,18 +3,52 @@
 namespace App\Http\Controllers\Locations;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\Checkins\CreatePendingCheckinRequest;
 use App\Models\Locations\PendingCheckin;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PendingCheckinController extends Controller
 {
-    public function show(Request $request, PendingCheckin $checkin)
+    public function index(Request $request)
     {
-        if ($request->expectsJson()) {
-            return $checkin;
-        }
-        return view('locations.checkins.pending', [
-            'checkin' => $checkin,
+        return view('locations.pending.list', [
+            'checkins' => PendingCheckin::where('user_id', $request->user()->id)
+                ->orderBy('checkin_at', 'ASC')
+                ->paginate(15),
         ]);
+    }
+
+    public function create()
+    {
+        return view('locations.pending.create');
+    }
+
+    public function store(CreatePendingCheckinRequest $request)
+    {
+        $checkin = new PendingCheckin();
+        $checkin->latitude = $request->latitude;
+        $checkin->longitude = $request->longitude;
+        $checkin->name = $request->name;
+        $checkin->user_id = $request->user()->id;
+        $checkin->note = $request->note;
+        if ($request->date) {
+            $checkin->checkin_at = new Carbon($request->date, $request->user()->timezone);
+        } else {
+            $checkin->checkin_at = new Carbon();
+        }
+        $checkin->save();
+        return redirect(route('pending.edit', $checkin));
+    }
+
+    public function edit(PendingCheckin $pending)
+    {
+        return view('locations.pending.edit', [
+            'pending' => $pending,
+        ]);
+    }
+
+    public function update(PendingCheckin $checkin)
+    {
     }
 }
