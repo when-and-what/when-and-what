@@ -22,7 +22,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth:sanctum')->post('podcasts/play', EpisodePlayController::class);
-Route::middleware('auth:sanctum')->apiResource('locations/checkin/pending', PendingCheckinController::class);
-Route::middleware('auth:sanctum')->apiResource('locations/checkin', CheckinController::class);
-Route::middleware('auth:sanctum')->apiResource('locations', LocationController::class);
+Route::middleware('auth:sanctum')->group(function(){
+    Route::post('podcasts/play', EpisodePlayController::class);
+    Route::apiResource('locations/checkins/pending', PendingCheckinController::class);
+    Route::apiResource('locations/checkins', CheckinController::class);
+    Route::apiResource('locations', LocationController::class);
+});
