@@ -21,7 +21,6 @@ class LocationFactory extends Factory
         $user = User::factory()->create();
         return [
             'user_id' => $user,
-            'category_id' => Category::factory()->create(['user_id' => $user]),
             'name' => $this->faker->words(2, true),
             'latitude' => $this->faker->latitude(),
             'longitude' => $this->faker->longitude(),

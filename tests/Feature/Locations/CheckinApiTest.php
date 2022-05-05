@@ -7,6 +7,7 @@ use App\Models\Locations\Location;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class CheckinApiTest extends TestCase
@@ -15,13 +16,13 @@ class CheckinApiTest extends TestCase
 
     public function test_checkin_with_specific_date()
     {
-        $user = User::factory()->create();
+        Sanctum::actingAs($user = User::factory()->create());
         $data = [
             'location' => Location::factory()->create(['user_id' => $user->id])->id,
             'date' => '2022-03-01 17:00:00',
             'note' => $this->faker->sentence(),
         ];
-        $response = $this->actingAs($user)->postJson('/api/locations/checkin', $data);
+        $response = $this->postJson('/api/locations/checkins', $data);
         $response->assertStatus(201);
         $this->assertDatabaseHas('checkins', [
             'user_id' => $user->id,
@@ -33,13 +34,13 @@ class CheckinApiTest extends TestCase
 
     public function test_checkin_without_date()
     {
-        $user = User::factory()->create();
+        Sanctum::actingAs($user = User::factory()->create());
         $data = [
             'location' => Location::factory()->create(['user_id' => $user->id])->id,
             'note' => $this->faker->sentence(),
         ];
         $this->freezeTime();
-        $response = $this->actingAs($user)->postJson('/api/locations/checkin', $data);
+        $response = $this->postJson('/api/locations/checkins', $data);
         $response->assertStatus(201);
         $this->assertDatabaseHas('checkins', [
             'user_id' => $user->id,
@@ -53,11 +54,11 @@ class CheckinApiTest extends TestCase
     {
         $user = User::factory()->create();
         $checkin = Checkin::factory()->create(['user_id' => $user->id]);
-        $response = $this->actingAs($user)->getJson('/api/locations/checkin/' . $checkin->id);
+        $response = $this->actingAs($user)->getJson('/api/locations/checkins/' . $checkin->id);
         $response->assertStatus(200);
 
         $checkin = Checkin::factory()->create();
-        $response = $this->actingAs($user)->getJson('/api/locations/checkin/' . $checkin->id);
+        $response = $this->actingAs($user)->getJson('/api/locations/checkins/' . $checkin->id);
         $response->assertStatus(403);
     }
 
@@ -65,13 +66,13 @@ class CheckinApiTest extends TestCase
     {
         $user = User::factory()->create();
         $checkin = Checkin::factory()->create(['user_id' => $user->id]);
-        $response = $this->actingAs($user)->deleteJson('/api/locations/checkin/' . $checkin->id);
+        $response = $this->actingAs($user)->deleteJson('/api/locations/checkins/' . $checkin->id);
         $response->assertStatus(200);
         $this->assertNotNull($response->json('deleted_at'));
         $this->assertSoftDeleted('checkins', ['id' => $checkin->id]);
 
         $checkin = Checkin::factory()->create();
-        $response = $this->actingAs($user)->getJson('/api/locations/checkin/' . $checkin->id);
+        $response = $this->actingAs($user)->getJson('/api/locations/checkins/' . $checkin->id);
         $response->assertStatus(403);
     }
 }

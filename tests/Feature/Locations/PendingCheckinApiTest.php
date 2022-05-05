@@ -5,6 +5,7 @@ namespace Tests\Feature\Locations;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class PendingCheckinApiTest extends TestCase
@@ -13,13 +14,13 @@ class PendingCheckinApiTest extends TestCase
 
     public function test_pending_checkin_with_specific_time()
     {
-        $user = User::factory()->create();
+        Sanctum::actingAs($user = User::factory()->create());
         $data = [
             'latitude' => $this->faker->latitude(),
             'longitude' => $this->faker->longitude(),
             'date' => '2022-03-01 17:00:00',
         ];
-        $response = $this->actingAs($user)->postJson('/api/locations/checkin/pending', $data);
+        $response = $this->postJson('/api/locations/checkins/pending', $data);
         $response->assertStatus(201);
         $this->assertDatabaseHas('pending_checkins', [
             'user_id' => $user->id,
@@ -31,12 +32,12 @@ class PendingCheckinApiTest extends TestCase
 
     public function test_pending_checkin()
     {
-        $user = User::factory()->create();
+        Sanctum::actingAs($user = User::factory()->create());
         $data = [
             'latitude' => $this->faker->latitude(),
             'longitude' => $this->faker->longitude(),
         ];
-        $response = $this->actingAs($user)->postJson('/api/locations/checkin/pending', $data);
+        $response = $this->postJson('/api/locations/checkins/pending', $data);
         $response->assertStatus(201);
         $this->assertDatabaseHas('pending_checkins', [
             'user_id' => $user->id,
@@ -57,7 +58,7 @@ class PendingCheckinApiTest extends TestCase
             'name' => $this->faker()->words(3, true),
             'note' => $this->faker()->sentence(),
         ];
-        $response = $this->actingAs($user)->postJson('/api/locations/checkin/pending', $data);
+        $response = $this->actingAs($user)->postJson('/api/locations/checkins/pending', $data);
         $response->assertStatus(201);
         $this->assertDatabaseHas('pending_checkins', [
             'user_id' => $user->id,
