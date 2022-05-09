@@ -46,6 +46,9 @@
                                 <li>
                                     <a class="dropdown-item" href="{{ route('locations.index') }}">Locations</a>
                                 </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('categories.index') }}">Categories</a>
+                                </li>
                             </ul>
                         </li>
                     </ul>

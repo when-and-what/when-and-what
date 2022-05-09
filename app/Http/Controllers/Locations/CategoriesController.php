@@ -14,9 +14,14 @@ class CategoriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return view('locations.categories.list', [
+            'categories' => Category::where('user_id', $request->user()->id)
+                ->withCount('locations')
+                ->orderBy('name', 'ASC')
+                ->get(),
+        ]);
     }
 
     /**
