@@ -4,6 +4,11 @@
 
     <div id="location-container">
         @if($checkin)
+            <form action="{{ route('checkins.destroy', $checkin) }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <input type="submit" class="btn btn-danger" value="✖️" />
+            </form>
             <form action="{{ route('checkins.update', $checkin) }}" method="POST">
                 @method('PUT')
         @else

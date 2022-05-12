@@ -29,7 +29,9 @@
         @endif
             <li class="list-group-item w-50">
                 <div class="d-flex w-100 justify-content-between">
-                    <h3>{{ $checkin->location->name }}</h3>
+                    <h3>
+                        <a href="{{ route('checkins.edit', $checkin) }}">{{ $checkin->location->name }}</a>
+                    </h3>
                     <span>{{ $checkin->checkin_at->diffForHumans() }}</span>
                 </div>
                 <p>{{ $checkin->note }}</p>

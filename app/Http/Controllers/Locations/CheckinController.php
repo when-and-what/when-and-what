@@ -120,6 +120,7 @@ class CheckinController extends Controller
      */
     public function destroy(Checkin $checkin)
     {
-        //
+        $checkin->delete();
+        return redirect(route('checkins.index'));
     }
 }
