@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Locations\Checkins\CreateCheckin;
 use App\Http\Requests\Locations\Checkins\EditCheckin;
 use App\Models\Locations\Checkin;
+use App\Models\Locations\PendingCheckin;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -24,7 +25,10 @@ class CheckinController extends Controller
     public function index(Request $request)
     {
         return view('locations.checkins.list', [
-            'checkins' => Checkin::where('user_id', $request->user()->id)->paginate(20),
+            'checkins' => Checkin::whereBelongsTo($request->user())->paginate(20),
+            'pending' => PendingCheckin::whereBelongsTo($request->user())
+                ->orderBy('checkin_at', 'DESC')
+                ->get(),
         ]);
     }
 

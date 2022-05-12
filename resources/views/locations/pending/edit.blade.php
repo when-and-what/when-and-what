@@ -4,6 +4,7 @@
 
     <div id="location-container">
         <form action="{{ route('pending.update', $pending) }}" method="POST">
+            @method('PUT')
             @csrf
         <div class="row">
             <div class="col">
@@ -12,11 +13,11 @@
             <div class="col">
                 <div>
                     <label for="checkin_at">Date</label>
-                    <input type="datetime-local" name="date" class="form-control" id="checkin_at" value="{{ old('date', $pending->checkin_atcojj ? $pending->checkin_at->format('Y-m-d H:i') : '') }}" placeholder="Now" />
+                    <input type="datetime-local" name="date" class="form-control" id="checkin_at" value="{{ $pending->checkin_at->tz(Auth::user()->timezone)->format('Y-m-d H:i') }}" />
                 </div>
                 <div>
                     <label for="note">Note</label>
-                    <textarea name="note" id="note" class="form-control">{{ old('note', optional($pending)->note) }}</textarea>
+                    <textarea name="note" id="note" class="form-control">{{ old('note', $pending->note) }}</textarea>
                 </div>
             </div>
         </div>

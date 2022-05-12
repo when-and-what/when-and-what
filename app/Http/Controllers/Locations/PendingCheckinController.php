@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Locations;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Checkins\CreatePendingCheckinRequest;
+use App\Models\Locations\Checkin;
 use App\Models\Locations\PendingCheckin;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -48,7 +49,23 @@ class PendingCheckinController extends Controller
         ]);
     }
 
-    public function update(PendingCheckin $checkin)
+    public function update(Request $request, PendingCheckin $pending)
     {
+        $valid = $request->validate([
+            'location' => 'required|exists:locations,id',
+            'date' => 'required',
+            'note' => 'nullable',
+        ]);
+
+        $checkin = new Checkin();
+        $checkin->location_id = $valid['location'];
+        $checkin->user_id = $request->user()->id;
+        $checkin->checkin_at = new Carbon($valid['date'], $request->user()->timezone);
+        $checkin->note = $valid['note'];
+        $checkin->save();
+
+        $pending->delete();
+
+        return redirect(route('checkins.edit', $checkin));
     }
 }

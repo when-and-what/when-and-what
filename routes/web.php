@@ -36,5 +36,5 @@ Route::middleware(['auth'])->group(function(){
 Route::prefix('json')->group(function(){
     Route::resource('locations/checkins/pending', App\Http\Controllers\Api\Locations\PendingCheckinController::class, ['as' => 'json.checkins.pending']);
     Route::resource('locations/checkins', App\Http\Controllers\Api\Locations\CheckinController::class, ['as' => 'json.checkins']);
-    Route::resource('locations', App\Http\Controllers\Api\Locations\LocationController::class);
+    Route::resource('locations', App\Http\Controllers\Api\Locations\LocationController::class, ['as' => 'json.locations']);
 });
