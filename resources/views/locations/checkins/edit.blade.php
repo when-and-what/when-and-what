@@ -17,7 +17,7 @@
             @csrf
         <div class="row">
             <div class="col">
-                <checkinmap :location="{{ optional($checkin)->location }}" />
+                <checkinmap :location="{{ $checkin ? $checkin->location : 'null' }}" />
             </div>
             <div class="col">
                 <div>

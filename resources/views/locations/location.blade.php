@@ -12,7 +12,7 @@
             @csrf
         <div class="row">
             <div class="col">
-                <newLocation locations draggable latitude="{{ optional($location)->latitude }}" longitude="{{ optional($location)->longitude }}" />
+                <newLocation locations draggable @if($location) latitude="{{ $location->latitude }}" longitude="{{ $location->longitude }}" @endif />
             </div>
             <div class="col">
                 <div>
