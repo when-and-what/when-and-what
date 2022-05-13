@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Locations\Category;
 use App\Models\Locations\Checkin;
 use App\Models\Locations\Location;
+use App\Policies\Locations\CategoryPolicy;
 use App\Policies\Locations\CheckinPolicy;
 use App\Policies\Locations\LocationPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -17,6 +19,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
+        Category::class => CategoryPolicy::class,
         Checkin::class => CheckinPolicy::class,
         Location::class => LocationPolicy::class,
     ];

@@ -9,9 +9,13 @@ use Illuminate\Validation\Rule;
 
 class CategoriesController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Category::class, 'category');
+    }
     /**
-     * Display a listing of the resource.
-     *
+     * Display all of a user's categories
+     *!this is not restricted by the Category::class policy
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -25,7 +29,7 @@ class CategoriesController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new category.
      *
      * @return \Illuminate\Http\Response
      */
