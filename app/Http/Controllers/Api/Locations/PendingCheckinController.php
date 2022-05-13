@@ -10,14 +10,21 @@ use Illuminate\Http\Request;
 
 class PendingCheckinController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(PendingCheckin::class, 'pending');
+    }
+
     /**
      * Display a listing of the resource.
-     *
+     *! this is not restricted by the Pending:class policy
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return PendingCheckin::whereBelongsTo($request->user())
+            ->orderBy('checkin_at', 'DESC')
+            ->get();
     }
 
     /**
@@ -49,9 +56,9 @@ class PendingCheckinController extends Controller
      * @param  \App\Models\Locations\PendingCheckin  $pendingCheckin
      * @return \Illuminate\Http\Response
      */
-    public function show(PendingCheckin $pendingCheckin)
+    public function show(PendingCheckin $pending)
     {
-        //
+        return $pending;
     }
 
     /**
@@ -61,7 +68,7 @@ class PendingCheckinController extends Controller
      * @param  \App\Models\Locations\PendingCheckin  $pendingCheckin
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PendingCheckin $pendingCheckin)
+    public function update(Request $request, PendingCheckin $pending)
     {
         //
     }
@@ -72,7 +79,7 @@ class PendingCheckinController extends Controller
      * @param  \App\Models\Locations\PendingCheckin  $pendingCheckin
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PendingCheckin $pendingCheckin)
+    public function destroy(PendingCheckin $pending)
     {
         //
     }

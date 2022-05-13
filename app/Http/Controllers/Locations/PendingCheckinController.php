@@ -11,6 +11,11 @@ use Illuminate\Http\Request;
 
 class PendingCheckinController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(PendingCheckin::class, 'pending');
+    }
+
     public function index(Request $request)
     {
         return view('locations.pending.list', [
