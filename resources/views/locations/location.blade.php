@@ -19,6 +19,14 @@
                     <label for="location-name">Name</label>
                     <input type="text" name="name" id="location-name" value="{{ old('name', optional($location)->name) }}" class="form-control" />
                 </div>
+                <div>
+                    <label for="category">Category</label>
+                    <select name="category[]" id="category" class="form-control" multiple>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}" @if(in_array($category->id, $locationCategories)) selected="selected" @endif>{{ $category->emoji . ' '. $category->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
         </div>
         <div class="row">

@@ -9,7 +9,9 @@
         <ul class="list-group list-group-horizontal d-flex w-100">
         @endif
             <li class="list-group-item w-50">
-                <h3>{{ $location->name }}</h3>
+                <h3>
+                    <a href="{{ route('locations.edit', $location) }}">{{ $location->name }}</a>
+                </h3>
             </li>
         @if($count > 0 && $count % 2)
             </ul>

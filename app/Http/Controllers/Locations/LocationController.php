@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Locations;
 
 use App\Http\Controllers\Controller;
+use App\Models\Locations\Category;
 use App\Models\Locations\Location;
 use Illuminate\Http\Request;
 
@@ -32,10 +33,14 @@ class LocationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         return view('locations.location', [
+            'categories' => Category::whereBelongsTo($request->user())
+                ->orderBy('name', 'ASC')
+                ->get(),
             'location' => null,
+            'locationCategories' => [],
         ]);
     }
 
@@ -51,11 +56,15 @@ class LocationController extends Controller
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'name' => 'required',
+            'category' => 'nullable',
         ]);
         $location = new Location();
         $location->user_id = $request->user()->id;
         $location->fill($validated);
         $location->save();
+
+        $location->category()->sync($validated['category']);
+
         return redirect(route('locations.edit', $location));
     }
 
@@ -76,10 +85,14 @@ class LocationController extends Controller
      * @param  \App\Models\Locations\Location  $location
      * @return \Illuminate\Http\Response
      */
-    public function edit(Location $location)
+    public function edit(Request $request, Location $location)
     {
         return view('locations.location', [
+            'categories' => Category::whereBelongsTo($request->user())
+                ->orderBy('name', 'ASC')
+                ->get(),
             'location' => $location,
+            'locationCategories' => $location->category->modelKeys(),
         ]);
     }
 
@@ -96,9 +109,14 @@ class LocationController extends Controller
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'name' => 'required',
+            'category' => 'nullable',
         ]);
+
         $location->fill($validated);
         $location->save();
+
+        $location->category()->sync($validated['category']);
+
         return redirect(route('locations.edit', $location));
     }
 
