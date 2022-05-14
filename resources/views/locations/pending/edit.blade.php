@@ -1,6 +1,14 @@
 @extends('layouts.bootstrap')
 @section('content')
-    <h1>{{ $pending->name }}</h1>
+    <h1 class="d-flex justify-content-between">
+        {{ $pending->name }}
+
+        <form action="{{ route('pending.destroy', $pending) }}" method="POST">
+            @csrf
+            @method('DELETE')
+            <input type="submit" class="btn btn-danger" value="✖️" />
+        </form>
+    </h1>
 
     <div id="location-container">
         <form action="{{ route('pending.update', $pending) }}" method="POST">
