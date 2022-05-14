@@ -14,9 +14,7 @@ class EditCheckin extends FormRequest
      */
     public function authorize()
     {
-        $checkin = Checkin::find($this->route('checkin'));
-
-        return $checkin && $this->user()->can('update', $checkin);
+        return true;
     }
 
     /**
@@ -28,7 +26,7 @@ class EditCheckin extends FormRequest
     {
         return [
             'note' => 'nullable',
-            'date' => 'date_format:Y-m-d H:i:s',
+            'date' => 'date_format:Y-m-d\TH:i',
         ];
     }
 }

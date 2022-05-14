@@ -15,6 +15,15 @@
             <form action="{{ route('checkins.store') }}" method="POST">
         @endif
             @csrf
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
         <div class="row">
             <div class="col">
                 <checkinmap :location="{{ $checkin ? $checkin->location : 'null' }}" />
@@ -22,7 +31,7 @@
             <div class="col">
                 <div>
                     <label for="checkin_at">Date</label>
-                    <input type="datetime-local" name="date" class="form-control" id="checkin_at" value="{{ old('date', $checkin ? $checkin->checkin_at->format('Y-m-d H:i') : '') }}" placeholder="Now" />
+                    <input type="datetime-local" name="date" class="form-control" id="checkin_at" value="{{ old('date', $checkin ? $checkin->checkin_at->tz(Auth::user()->timezone)->format('Y-m-d H:i') : '') }}" placeholder="Now" />
                 </div>
                 <div>
                     <label for="note">Note</label>

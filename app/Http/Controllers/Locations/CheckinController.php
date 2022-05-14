@@ -58,9 +58,8 @@ class CheckinController extends Controller
         $checkin->user_id = $request->user()->id;
         $checkin->location_id = $validated['location'];
         if (isset($validated['date'])) {
-            $checkin->checkin_at = Carbon::parse(
-                $request['checkin_at'],
-                $request->user()->timezone
+            $checkin->checkin_at = Carbon::parse($request['date'], $request->user()->timezone)->tz(
+                'GMT'
             );
         } else {
             $checkin->checkin_at = now();
@@ -106,7 +105,9 @@ class CheckinController extends Controller
     {
         $validated = $request->safe();
 
-        $checkin->checkin_at = Carbon::parse($request['checkin_at'], $request->user()->timezone);
+        $checkin->checkin_at = Carbon::parse($validated['date'], $request->user()->timezone)->tz(
+            'GMT'
+        );
         $checkin->note = $validated['note'];
         $checkin->save();
         return redirect(route('checkins.edit', $checkin));
