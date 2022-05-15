@@ -23,7 +23,7 @@
     <body>
         <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#"><img src="{{ url('logo.png') }}" height="50" /></a>
+                <a class="navbar-brand" href="/dashboard"><img src="{{ url('logo.png') }}" height="50" /></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -33,7 +33,7 @@
                     @endphp
                     <ul class="navbar-nav me-auto mb-2 mb-md-0">
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="#">Home</a>
+                            <a class="nav-link" aria-current="page" href="/dashboard">Home</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle @if(strpos($routeName, 'checkins') === 0 || strpos($routeName, 'locations') === 0) active @endif" href="#" id="navLocationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -50,6 +50,9 @@
                                     <a class="dropdown-item" href="{{ route('categories.index') }}">Categories</a>
                                 </li>
                             </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/user/profile" class="nav-link">Profile</a>
                         </li>
                     </ul>
                 </div>
