@@ -41,7 +41,9 @@ class PendingCheckinController extends Controller
         $checkin->user_id = $request->user()->id;
         $checkin->note = $request->note;
         if ($request->date) {
-            $checkin->checkin_at = new Carbon($request->date, $request->user()->timezone);
+            $checkin->checkin_at = Carbon::parse($valid['date'], $request->user()->timezone)->tz(
+                'GMT'
+            );
         } else {
             $checkin->checkin_at = new Carbon();
         }
@@ -80,7 +82,7 @@ class PendingCheckinController extends Controller
         if (isset($valid['newlocation']) && $valid['newlocation']) {
             $location = $createNewLocation(
                 ...[
-                    'categories' => $valid['category'],
+                    'categories' => isset($valid['category']) ? $valid['category'] : null,
                     'latitude' => $valid['latitude'],
                     'longitude' => $valid['longitude'],
                     'name' => $valid['name'],
@@ -93,7 +95,7 @@ class PendingCheckinController extends Controller
         }
 
         $checkin->user_id = $request->user()->id;
-        $checkin->checkin_at = new Carbon($valid['date'], $request->user()->timezone);
+        $checkin->checkin_at = Carbon::parse($valid['date'], $request->user()->timezone)->tz('GMT');
         $checkin->note = $valid['note'];
         $checkin->save();
 
