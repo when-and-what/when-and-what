@@ -62,7 +62,7 @@ class LocationController extends Controller
 
         $location = $createNewLocation(
             ...[
-                'categories' => $validated['category'],
+                'categories' => isset($validated['category']) ? $validated['category'] : null,
                 'latitude' => $validated['latitude'],
                 'longitude' => $validated['longitude'],
                 'name' => $validated['name'],
