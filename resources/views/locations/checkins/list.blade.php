@@ -23,22 +23,21 @@
         <h1>Checkins</h1>
         <a href="{{ route('checkins.create') }}" class="btn btn-primary">Check-in</a>
     </div>
-    @foreach($checkins as $checkin)
-        @if($loop->index % 2 == 0)
+    @foreach($checkins as $day => $checkinList)
+        <h3>{{ $checkinList->first()->checkin_at->toFormattedDateString() }}</h3>
         <ul class="list-group list-group-horizontal d-flex w-100">
-        @endif
+        @foreach($checkinList as $checkin)
             <li class="list-group-item w-50">
                 <div class="d-flex w-100 justify-content-between">
                     <h3>
                         <a href="{{ route('checkins.edit', $checkin) }}">{{ $checkin->location->name }}</a>
                     </h3>
-                    <span>{{ $checkin->checkin_at->diffForHumans() }}</span>
+                    <span>{{ $checkin->checkin_at->tz(Auth::user()->timezone)->format('g:i a') }}</span>
                 </div>
                 <p>{{ $checkin->note }}</p>
             </li>
-        @if($loop->index > 0 && $loop->index % 2)
-            </ul>
-        @endif
+        @endforeach
+        </ul>
     @endforeach
-    {{ $checkins->links() }}
+    {!! $checkinLinks !!}
 @endsection

@@ -24,10 +24,16 @@ class CheckinController extends Controller
      */
     public function index(Request $request)
     {
+        $checkins = Checkin::whereBelongsTo($request->user())
+            ->orderBy('checkin_at', 'DESC')
+            ->paginate(30);
         return view('locations.checkins.list', [
-            'checkins' => Checkin::whereBelongsTo($request->user())
-                ->orderBy('checkin_at', 'DESC')
-                ->paginate(20),
+            'checkins' => $checkins->groupBy(function ($checkin) use ($request) {
+                return $checkin->checkin_at
+                    ->tz($request->user()->timezone)
+                    ->toFormattedDateString();
+            }),
+            'checkinLinks' => $checkins->links(),
             'pending' => PendingCheckin::whereBelongsTo($request->user())
                 ->orderBy('checkin_at', 'DESC')
                 ->get(),
