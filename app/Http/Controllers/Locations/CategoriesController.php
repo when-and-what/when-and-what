@@ -13,6 +13,7 @@ class CategoriesController extends Controller
     {
         $this->authorizeResource(Category::class, 'category');
     }
+
     /**
      * Display all of a user's categories
      *!this is not restricted by the Category::class policy

@@ -18,6 +18,7 @@ const newLocation = createApp({
     data() {
         return {
             mapboxToken: process.env.MIX_MAPBOX_TOKEN,
+            newLocation: 0,
         };
     },
 }).mount('#location-container');

@@ -4,6 +4,8 @@
     <div>
         <label for="location">Location</label>
         <input type="text" class="form-control" v-model="location_name" />
+        <input type="hidden" name="latitude" v-model="lat" />
+        <input type="hidden" name="longitude" v-model="lng" />
     </div>
 </template>
 <script>
@@ -18,6 +20,7 @@ export default {
         };
     },
     props: {
+        dragable: false,
         location,
         latitude: null,
         longitude: null,
@@ -38,7 +41,7 @@ export default {
                 });
             });
         },
-        setupMap() {
+        setupMap(marker) {
             var self = this;
             self.map = L.map('mapid').setView([self.lat, self.lng], 15);
             L.tileLayer(
@@ -52,6 +55,12 @@ export default {
                     accessToken: self.$parent.mapboxToken,
                 }
             ).addTo(self.map);
+            if (marker) {
+                var newMarker = L.marker([self.lat, self.lng], {
+                    draggable: true,
+                    opacity: 0.6,
+                }).addTo(self.map);
+            }
             self.getLocations();
         },
     },
@@ -60,13 +69,14 @@ export default {
         if (self.latitude && self.longitude) {
             self.lat = this.latitude;
             self.lng = this.longitude;
-            self.setupMap();
+            self.setupMap(true);
         } else if (navigator.geolocation) {
+            console.log('get user location');
             navigator.geolocation.getCurrentPosition(
                 function (position) {
                     self.lat = position.coords.latitude;
                     self.lng = position.coords.longitude;
-                    self.setupMap();
+                    self.setupMap(false);
                 },
                 function (msg) {}
             );

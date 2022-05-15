@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Locations;
 
+use App\Actions\CreateNewLocation;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Checkins\CreatePendingCheckinRequest;
+use App\Models\Locations\Category;
 use App\Models\Locations\Checkin;
 use App\Models\Locations\PendingCheckin;
 use Carbon\Carbon;
@@ -47,23 +49,49 @@ class PendingCheckinController extends Controller
         return redirect(route('pending.edit', $checkin));
     }
 
-    public function edit(PendingCheckin $pending)
+    public function edit(Request $request, PendingCheckin $pending)
     {
         return view('locations.pending.edit', [
+            'categories' => Category::whereBelongsTo($request->user())
+                ->orderBy('name', 'ASC')
+                ->get(),
             'pending' => $pending,
         ]);
     }
 
-    public function update(Request $request, PendingCheckin $pending)
-    {
+    public function update(
+        Request $request,
+        PendingCheckin $pending,
+        CreateNewLocation $createNewLocation
+    ) {
         $valid = $request->validate([
-            'location' => 'required|exists:locations,id',
+            'location' => 'nullable|required_without:newlocation|exists:locations,id',
             'date' => 'required',
             'note' => 'nullable',
+            'newlocation' => 'boolean',
+            'name' => 'required_with:newlocation',
+            'category' => 'nullable',
+            'latitude' => 'required_with:newlocation|numeric',
+            'longitude' => 'required_with:newlocation|numeric',
         ]);
 
         $checkin = new Checkin();
-        $checkin->location_id = $valid['location'];
+
+        if (isset($valid['newlocation']) && $valid['newlocation']) {
+            $location = $createNewLocation(
+                ...[
+                    'categories' => $valid['category'],
+                    'latitude' => $valid['latitude'],
+                    'longitude' => $valid['longitude'],
+                    'name' => $valid['name'],
+                    'user' => $request->user(),
+                ]
+            );
+            $checkin->location_id = $location->id;
+        } else {
+            $checkin->location_id = $valid['location'];
+        }
+
         $checkin->user_id = $request->user()->id;
         $checkin->checkin_at = new Carbon($valid['date'], $request->user()->timezone);
         $checkin->note = $valid['note'];
@@ -71,6 +99,9 @@ class PendingCheckinController extends Controller
 
         $pending->delete();
 
+        if (isset($location)) {
+            return redirect(route('locations.edit', $location));
+        }
         return redirect(route('checkins.edit', $checkin));
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Locations;
 
+use App\Actions\CreateNewLocation;
 use App\Http\Controllers\Controller;
 use App\Models\Locations\Category;
 use App\Models\Locations\Location;
@@ -50,7 +51,7 @@ class LocationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, CreateNewLocation $createNewLocation)
     {
         $validated = $request->validate([
             'latitude' => 'required|numeric',
@@ -58,12 +59,16 @@ class LocationController extends Controller
             'name' => 'required',
             'category' => 'nullable',
         ]);
-        $location = new Location();
-        $location->user_id = $request->user()->id;
-        $location->fill($validated);
-        $location->save();
 
-        $location->category()->sync($validated['category']);
+        $location = $createNewLocation(
+            ...[
+                'categories' => $validated['category'],
+                'latitude' => $validated['latitude'],
+                'longitude' => $validated['longitude'],
+                'name' => $validated['name'],
+                'user' => $request->user(),
+            ]
+        );
 
         return redirect(route('locations.edit', $location));
     }
