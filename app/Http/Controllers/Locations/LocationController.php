@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Locations;
 use App\Actions\CreateNewLocation;
 use App\Http\Controllers\Controller;
 use App\Models\Locations\Category;
+use App\Models\Locations\Checkin;
 use App\Models\Locations\Location;
 use Illuminate\Http\Request;
 
@@ -36,7 +37,7 @@ class LocationController extends Controller
      */
     public function create(Request $request)
     {
-        return view('locations.location', [
+        return view('locations.edit', [
             'categories' => Category::whereBelongsTo($request->user())
                 ->orderBy('name', 'ASC')
                 ->get(),
@@ -79,9 +80,15 @@ class LocationController extends Controller
      * @param  \App\Models\Locations\Location  $location
      * @return \Illuminate\Http\Response
      */
-    public function show(Location $location)
+    public function show(Request $request, Location $location)
     {
-        return $location;
+        return view('locations/location', [
+            'checkins' => Checkin::whereBelongsTo($request->user())
+                ->whereBelongsTo($location)
+                ->orderBy('checkin_at', 'desc')
+                ->get(),
+            'location' => $location,
+        ]);
     }
 
     /**
@@ -92,7 +99,7 @@ class LocationController extends Controller
      */
     public function edit(Request $request, Location $location)
     {
-        return view('locations.location', [
+        return view('locations.edit', [
             'categories' => Category::whereBelongsTo($request->user())
                 ->orderBy('name', 'ASC')
                 ->get(),
