@@ -1,13 +1,16 @@
 @extends('layouts.bootstrap')
 @section('content')
-    <h1>
-        @if($location->category)
-            @foreach ($location->category as $category)
-                {{ $category->emoji }}
-            @endforeach
-        @endif
-        <a href="{{ route('locations.edit', $location) }}">{{ $location->name }}</a>
-    </h1>
+    <div class="d-flex w-100 justify-content-between pb-3">
+        <h1>
+            @if($location->category)
+                @foreach ($location->category as $category)
+                    {{ $category->emoji }}
+                @endforeach
+            @endif
+            <a href="{{ route('locations.edit', $location) }}">{{ $location->name }}</a>
+        </h1>
+        <h1><a href="{{ route('locations.create').'?latitude='.$location->latitude.'&longitude='.$location->longitude }}" class="btn" title="Duplicate">🔂️</a></h1>
+    </div>
     <h2>Checkins</h2>
     <ul class="list-group">
         @foreach($checkins as $checkin)

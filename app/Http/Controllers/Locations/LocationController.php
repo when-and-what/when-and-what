@@ -38,12 +38,18 @@ class LocationController extends Controller
      */
     public function create(Request $request)
     {
-        return view('locations.edit', [
+        if (is_numeric($request->latitude) && is_numeric($request->longitude)) {
+            $latitude = $request->latitude;
+            $longitude = $request->longitude;
+        } else {
+            $latitude = $longitude = null;
+        }
+        return view('locations.create', [
             'categories' => Category::whereBelongsTo($request->user())
                 ->orderBy('name', 'ASC')
                 ->get(),
-            'location' => null,
-            'locationCategories' => [],
+            'latitude' => $latitude,
+            'longitude' => $longitude,
         ]);
     }
 
