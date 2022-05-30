@@ -24,7 +24,8 @@ class LocationController extends Controller
     public function index(Request $request)
     {
         return view('locations.list', [
-            'locations' => Location::where('user_id', $request->user()->id)
+            'locations' => Location::whereBelongsTo($request->user())
+                ->with('category')
                 ->orderBy('updated_at', 'DESC')
                 ->paginate(20),
         ]);

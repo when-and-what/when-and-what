@@ -10,7 +10,12 @@
         @endif
             <li class="list-group-item w-50">
                 <h3>
-                    <a href="{{ route('locations.edit', $location) }}">{{ $location->name }}</a>
+                    @if($location->category)
+                        @foreach ($location->category as $category)
+                            {{ $category->emoji }}
+                        @endforeach
+                    @endif
+                    <a href="{{ route('locations.show', $location) }}">{{ $location->name }}</a>
                 </h3>
             </li>
         @if($count > 0 && $count % 2)
