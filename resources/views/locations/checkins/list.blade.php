@@ -30,6 +30,11 @@
             <li class="list-group-item w-50">
                 <div class="d-flex w-100 justify-content-between">
                     <h3>
+                        @foreach($checkin->location->category as $category)
+                            @if($category->emoji)
+                                <span title="{{ $category->name }}">{{ $category->emoji }}</span>
+                            @endif
+                        @endforeach
                         <a href="{{ route('locations.show', $checkin->location) }}">{{ $checkin->location->name }}</a>
                     </h3>
                     <a href="{{ route('checkins.edit', $checkin) }}">{{ $checkin->checkin_at->tz(Auth::user()->timezone)->format('g:i a') }}</a>

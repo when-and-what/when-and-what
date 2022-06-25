@@ -26,6 +26,7 @@ class CheckinController extends Controller
     public function index(Request $request)
     {
         $checkins = Checkin::whereBelongsTo($request->user())
+            ->with(['location', 'location.category'])
             ->orderBy('checkin_at', 'DESC')
             ->paginate(30);
         return view('locations.checkins.list', [
