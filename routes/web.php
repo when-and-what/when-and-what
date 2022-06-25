@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DayController;
 use App\Http\Controllers\Locations\CategoriesController;
 use App\Http\Controllers\Locations\CheckinController;
 use App\Http\Controllers\Locations\LocationController;
@@ -21,11 +22,10 @@ Route::get('/', function () {
     return redirect('/dashboard');
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::middleware(['auth:sanctum, verified'])->group(function(){
+    Route::get('/dashboard', [DayController::class, 'index'])->name('dashboard');
+    Route::get('/day/{year}/{month}/{day}', [DayController::class, 'day'])->name('day')->whereNumber(['year', 'month', 'day']);
 
-Route::middleware(['auth'])->group(function(){
     Route::resource('locations/checkins/pending', PendingCheckinController::class);
     Route::get('locations/checkins/create/{location?}', [CheckinController::class, 'create'])->name('checkins.create');
     Route::resource('locations/checkins', CheckinController::class)->except('create');
