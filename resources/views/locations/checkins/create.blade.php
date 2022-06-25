@@ -16,7 +16,7 @@
             @endif
         <div class="row">
             <div class="col">
-                <checkinmap :location="{{ $location }}" />
+                <checkinmap :location="{{ $location ?? 'null' }}" />
             </div>
             <div class="col">
                 <div>
