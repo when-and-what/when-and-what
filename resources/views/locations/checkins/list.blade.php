@@ -24,7 +24,7 @@
         <a href="{{ route('checkins.create') }}" class="btn btn-primary">Check-in</a>
     </div>
     @foreach($checkins as $day => $checkinList)
-        <h3>{{ $checkinList->first()->checkin_at->toFormattedDateString() }}</h3>
+        <h3>{{ $day }}</h3>
         <ul class="list-group list-group-horizontal d-flex w-100">
         @foreach($checkinList as $checkin)
             <li class="list-group-item w-50">
