@@ -9,7 +9,10 @@
             @endif
             <a href="{{ route('locations.edit', $location) }}">{{ $location->name }}</a>
         </h1>
-        <h1><a href="{{ route('locations.create').'?latitude='.$location->latitude.'&longitude='.$location->longitude }}" class="btn" title="Duplicate">🔂️</a></h1>
+        <h1>
+            <a href="{{ route('checkins.create', $location) }}" class="btn" title="New Checkin">➕️</a>
+            <a href="{{ route('locations.create').'?latitude='.$location->latitude.'&longitude='.$location->longitude }}" class="btn" title="Duplicate">🔂️</a>
+        </h1>
     </div>
     <h2>Checkins</h2>
     <ul class="list-group">

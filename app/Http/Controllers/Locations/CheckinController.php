@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Locations\Checkins\CreateCheckin;
 use App\Http\Requests\Locations\Checkins\EditCheckin;
 use App\Models\Locations\Checkin;
+use App\Models\Locations\Location;
 use App\Models\Locations\PendingCheckin;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -45,10 +46,10 @@ class CheckinController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Location $location = null)
     {
-        return view('locations.checkins.edit', [
-            'checkin' => null,
+        return view('locations.checkins.create', [
+            'location' => $location,
         ]);
     }
 

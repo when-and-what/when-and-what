@@ -3,13 +3,7 @@
     <h1>Checkin</h1>
 
     <div id="location-container">
-        <form action="{{ route('checkins.destroy', $checkin) }}" method="POST">
-            @csrf
-            @method('DELETE')
-            <input type="submit" class="btn btn-danger" value="✖️" />
-        </form>
-        <form action="{{ route('checkins.update', $checkin) }}" method="POST">
-            @method('PUT')
+        <form action="{{ route('checkins.store') }}" method="POST">
             @csrf
             @if ($errors->any())
                 <div class="alert alert-danger">
@@ -22,22 +16,22 @@
             @endif
         <div class="row">
             <div class="col">
-                <checkinmap :location="{{ $checkin->location }}" />
+                <checkinmap :location="{{ $location }}" />
             </div>
             <div class="col">
                 <div>
                     <label for="checkin_at">Date</label>
-                    <input type="datetime-local" name="date" class="form-control" id="checkin_at" value="{{ old('date', $checkin->checkin_at->tz(Auth::user()->timezone)->format('Y-m-d H:i')) }}" placeholder="Now" />
+                    <input type="datetime-local" name="date" class="form-control" id="checkin_at" value="{{ old('date') }}" placeholder="Now" />
                 </div>
                 <div>
                     <label for="note">Note</label>
-                    <textarea name="note" id="note" class="form-control">{{ old('note', $checkin->note) }}</textarea>
+                    <textarea name="note" id="note" class="form-control">{{ old('note') }}</textarea>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="row text-center">
-                <input type="submit" class="btn btn-primary" value="Update" />
+                <input type="submit" class="btn btn-primary" value="Checkin!" />
             </div>
         </div>
         </form>

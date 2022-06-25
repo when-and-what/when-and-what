@@ -27,7 +27,8 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 Route::middleware(['auth'])->group(function(){
     Route::resource('locations/checkins/pending', PendingCheckinController::class);
-    Route::resource('locations/checkins', CheckinController::class);
+    Route::get('locations/checkins/create/{location?}', [CheckinController::class, 'create'])->name('checkins.create');
+    Route::resource('locations/checkins', CheckinController::class)->except('create');
     Route::resource('locations/categories', CategoriesController::class);
     Route::resource('locations', LocationController::class);
 });

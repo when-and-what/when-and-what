@@ -66,7 +66,13 @@ export default {
     },
     mounted: function () {
         var self = this;
-        if (self.latitude && self.longitude) {
+        if (self.location) {
+            self.location_id = self.location.id;
+            self.location_name = self.location.name;
+            self.lat = self.location.latitude;
+            self.lng = self.location.longitude;
+            self.setupMap(true);
+        } else if (self.latitude && self.longitude) {
             self.lat = this.latitude;
             self.lng = this.longitude;
             self.setupMap(true);
@@ -80,10 +86,6 @@ export default {
                 },
                 function (msg) {}
             );
-        }
-        if (self.location) {
-            self.location_id = self.location.id;
-            self.location_name = self.location.name;
         }
     },
 };
