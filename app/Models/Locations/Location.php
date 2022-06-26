@@ -21,4 +21,23 @@ class Location extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Restrict query to locations inside of a map boundery
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param float $north latitude
+     * @param float $south latitude
+     * @param float $east  longitude
+     * @param float $west  longitude
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeMap($query, float $north, float $south, float $east, float $west)
+    {
+        return $query
+            ->where('latitude', '<', $north)
+            ->where('latitude', '>', $south)
+            ->where('longitude', '<', $east)
+            ->where('longitude', '>', $west);
+    }
 }

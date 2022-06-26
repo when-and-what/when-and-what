@@ -16,7 +16,21 @@ class LocationController extends Controller
      */
     public function index(Request $request)
     {
-        return Location::all();
+        $locations = Location::whereBelongsTo($request->user());
+        if (
+            is_numeric($request->input('north')) &&
+            is_numeric($request->input('south')) &&
+            is_numeric($request->input('east')) &&
+            is_numeric($request->input('west'))
+        ) {
+            $locations = $locations->map(
+                $request->input('north'),
+                $request->input('south'),
+                $request->input('east'),
+                $request->input('west')
+            );
+        }
+        return $locations->paginate(30);
     }
 
     /**
