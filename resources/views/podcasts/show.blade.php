@@ -10,7 +10,7 @@
             <div class="row row-cols-md-2 row-cols-lg-3">
                 @foreach($episodes as $episode)
                     <div class="col">
-                        <h3>{{ $episode->name }}</h3>
+                        <h3><a href="{{ route('episodes.show', $episode) }}">{{ $episode->name }}</a></h3>
                         @if( !$episode->imported)
                             <p>❔️</p>
                         @endif

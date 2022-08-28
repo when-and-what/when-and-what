@@ -2,6 +2,7 @@
 
 namespace App\Models\Podcasts;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,5 +26,10 @@ class EpisodeRating extends Model
     public function episode()
     {
         return $this->belongsTo(Episode::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

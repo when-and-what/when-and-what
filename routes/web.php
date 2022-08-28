@@ -6,6 +6,7 @@ use App\Http\Controllers\Locations\CheckinController;
 use App\Http\Controllers\Locations\LocationController;
 use App\Http\Controllers\Locations\PendingCheckinController;
 use App\Http\Controllers\Podcasts\EpisodeController;
+use App\Http\Controllers\Podcasts\EpisodeRatingController;
 use App\Http\Controllers\Podcasts\PlaysController;
 use App\Http\Controllers\Podcasts\PodcastController;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +42,8 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::resource('podcasts.episodes', EpisodeController::class)->shallow();
     Route::get('episode/plays', [PlaysController::class, 'index'])->name('episodes.plays.index');
     Route::resource('episodes.plays', PlaysController::class)->shallow()->except(['index', 'show']);
+    Route::post('episodes/{episode}/rating', [EpisodeRatingController::class, 'rating'])->name('episodes.rating.update');
+    Route::delete('episodes/{episode}/rating', [EpisodeRatingController::class, 'rating'])->name('episodes.rating.destroy');
     // Route::resource('podcasts', PodcastController::class)->except('show');
     // Route::resource('podcasts.episodes', EpisodeController::class)->shallow();
     // Route::post('episodes/{episode}/rating', [EpisodeController::class, 'rating'])->name('episodes.rating');

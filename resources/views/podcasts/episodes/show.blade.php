@@ -3,6 +3,7 @@
 @section('content')
 <div class="text-center">
     <h1><a href="{{ route('episodes.edit', $episode) }}">{{ $episode->name }}</a></h1>
+    <h2><a href="{{ route('podcasts.show', $episode->podcast) }}">{{ $episode->podcast->name }}</a></h2>
 </div>
 <div class="row">
     <div class="col">
@@ -17,7 +18,7 @@
     </div>
     <div class="col">
         <h2>Rating</h2>
-        <form action="{{ route('episodes.rating', $episode) }}" method="post">
+        <form action="{{ route('episodes.rating.update', $episode) }}" method="post">
             @csrf
             <div class="form-group">
                 <label for="rating">Rating</label>

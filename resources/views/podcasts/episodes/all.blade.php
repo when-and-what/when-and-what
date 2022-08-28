@@ -6,7 +6,7 @@
         @foreach($episodes as $episode)
             <div class="col">
                 <div class="card">
-                    <div class="card-header">{{ $episode->name }}</div>
+                    <div class="card-header"><a href="{{ route('episodes.show', $episode) }}">{{ $episode->name }}</a></div>
                 </div>
             </div>
         @endforeach

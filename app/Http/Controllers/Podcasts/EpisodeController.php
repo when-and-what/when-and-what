@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Podcasts;
 
 use App\Http\Controllers\Controller;
 use App\Models\Podcasts\Episode;
+use App\Models\Podcasts\EpisodePlay;
+use App\Models\Podcasts\EpisodeRating;
 use App\Models\Podcasts\Podcast;
 use App\Models\Podcasts\PodcastEpisodeRating;
 use App\Models\Podcasts\PodcastPlay;
@@ -54,12 +56,16 @@ class EpisodeController extends Controller
      * @param  \App\Models\Podcasts\Episode  $episode
      * @return \Illuminate\Http\Response
      */
-    public function show(Episode $episode)
+    public function show(Request $request, Episode $episode)
     {
         return view('podcasts.episodes.show', [
             'episode' => $episode,
-            'rating' => PodcastEpisodeRating::userEpisode(Auth::id(), $episode->id)->first(),
-            'plays' => PodcastPlay::userEpisode(Auth::id(), $episode->id)->get(),
+            'rating' => EpisodeRating::whereBelongsTo($request->user())
+                ->whereBelongsTo($episode)
+                ->first(),
+            'plays' => EpisodePlay::whereBelongsTo($request->user())
+                ->whereBelongsTo($episode)
+                ->get(),
         ]);
     }
 
