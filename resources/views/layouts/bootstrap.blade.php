@@ -51,6 +51,19 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle @if(strpos($routeName, 'podcasts') === 0 || strpos($routeName, 'episodes') === 0) active @endif" href="#" id="navPodcastDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Podcasts
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navPodcastDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('podcasts.index') }}">Podcasts</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('episodes.plays.index') }}">Recent Plays</a>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="nav-item">
                             <a href="/user/profile" class="nav-link">Profile</a>
                         </li>

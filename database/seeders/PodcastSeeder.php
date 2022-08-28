@@ -6,6 +6,7 @@ use App\Models\Podcasts\Episode;
 use App\Models\Podcasts\EpisodePlay;
 use App\Models\Podcasts\EpisodeRating;
 use App\Models\Podcasts\Podcast;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -18,9 +19,10 @@ class PodcastSeeder extends Seeder
      */
     public function run()
     {
+        $user = User::where('email', 'natec23@gmail.com')->first();
         $podcasts = Podcast::factory()
             ->count(3)
-            ->create();
+            ->create(['created_by' => $user->id]);
         foreach ($podcasts as $podcast) {
             $episodes = Episode::factory()
                 ->count(random_int(1, 9))

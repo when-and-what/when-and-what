@@ -27,6 +27,7 @@ class EpisodeFactory extends Factory
             'imported' => $this->faker->boolean(),
             'season' => $this->faker->randomDigit(),
             'episode' => $this->faker->randomDigit(),
+            'created_by' => User::factory(),
         ];
     }
 }
