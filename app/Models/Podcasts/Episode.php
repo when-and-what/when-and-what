@@ -51,4 +51,9 @@ class Episode extends Model
     {
         return $this->hasOne(EpisodeRating::class);
     }
+
+    public function scopeName($query, string $name)
+    {
+        $query->where('name', $name);
+    }
 }
