@@ -7,10 +7,7 @@ use App\Models\Podcasts\Episode;
 use App\Models\Podcasts\EpisodePlay;
 use App\Models\Podcasts\EpisodeRating;
 use App\Models\Podcasts\Podcast;
-use App\Models\Podcasts\PodcastEpisodeRating;
-use App\Models\Podcasts\PodcastPlay;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class EpisodeController extends Controller
 {
@@ -19,11 +16,14 @@ class EpisodeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Podcast $podcast)
+    public function index(Request $request, Podcast $podcast)
     {
         return view('podcasts.episodes.all', [
             'episodes' => Episode::whereBelongsTo($podcast)
                 ->orderBy($podcast->feed ? 'published_at' : 'created_at', 'DESC')
+                ->with('plays', function ($query) use ($request) {
+                    $query->whereBelongsTo($request->user());
+                })
                 ->paginate(20),
             'podcast' => $podcast,
         ]);
@@ -67,23 +67,6 @@ class EpisodeController extends Controller
                 ->whereBelongsTo($episode)
                 ->get(),
         ]);
-    }
-
-    public function rating(Request $request, Episode $episode)
-    {
-        $valid = $request->validate([
-            'rating' => 'integer|min:1|max:5',
-            'notes' => 'nullable',
-        ]);
-        $rating = PodcastEpisodeRating::firstOrNew([
-            'episode_id' => $episode->id,
-            'user_id' => Auth::id(),
-        ]);
-        $rating->rating = $valid['rating'];
-        $rating->notes = $valid['notes'] ?? '';
-        $rating->save();
-
-        return redirect(route('episodes.show', $episode));
     }
 
     /**

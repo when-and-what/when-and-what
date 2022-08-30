@@ -11,8 +11,7 @@
         @foreach($plays as $play)
             <p>
                 {{ $play->played_at->tz('America/Chicago')->toDayDateTimeString() }}
-                {{-- <a href="{{ route('plays.edit', $play) }}"><span class="badge bg-primary">{{ seconds_to_human($play->seconds) }}</span></a> --}}
-                <a href="{{ route('plays.edit', $play) }}"><span class="badge bg-primary">{{ $play->seconds }}</span></a>
+                <a href="{{ route('plays.edit', $play) }}"><x-seconds seconds="{{ $play->seconds }}" /></a>
             </p>
         @endforeach
     </div>
