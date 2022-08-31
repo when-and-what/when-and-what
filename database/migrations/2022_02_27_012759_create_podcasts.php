@@ -37,6 +37,7 @@ return new class extends Migration
             $table->integer('season')->nullable()->default(null);
             $table->integer('episode')->nullable()->default(null);
             $table->boolean('imported')->default(false);
+            $table->foreignId('created_by')->nullable()->default(null)->constrained('users');
             $table->softDeletes();
             $table->timestamps();
         });
