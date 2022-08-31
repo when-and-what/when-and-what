@@ -55,7 +55,8 @@ class ManagePodcastsTest extends TestCase
         $response->assertSeeText('Feed');
 
         $pod = [
-            'name' => $this->faker->words(3, true),
+            'name' => $podcast->name,
+            'nickname' => $this->faker->words(2, true),
             'website' => $this->faker->url(),
         ];
         $response = $this->actingAs($this->user)->put(route('podcasts.update', $podcast), $pod);
@@ -64,6 +65,7 @@ class ManagePodcastsTest extends TestCase
         $this->assertDatabaseHas('podcasts', [
             'id' => $podcast->id,
             'name' => $pod['name'],
+            'nickname' => $pod['nickname'],
             'website' => $pod['website'],
         ]);
     }
