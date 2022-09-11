@@ -25,10 +25,15 @@ class EpisodePlayController extends Controller
             ]
         );
 
-        $episode = Episode::firstOrCreate([
-            'podcast_id' => $podcast->id,
-            'name' => $response['episode'],
-        ]);
+        $episode = Episode::firstOrCreate(
+            [
+                'podcast_id' => $podcast->id,
+                'name' => $response['episode'],
+            ],
+            [
+                'created_by' => $request->user()->id,
+            ]
+        );
 
         $play = new EpisodePlay();
         $play->episode_id = $episode->id;
