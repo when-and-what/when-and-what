@@ -15,10 +15,10 @@
                 </div>
             @endif
         <div class="row">
-            <div class="col">
+            <div class="col-md">
                 <checkinmap :location="{{ $location ?? 'null' }}" />
             </div>
-            <div class="col">
+            <div class="col-md">
                 <div>
                     <label for="checkin_at">Date</label>
                     <input type="datetime-local" name="date" class="form-control" id="checkin_at" value="{{ old('date') }}" placeholder="Now" />
