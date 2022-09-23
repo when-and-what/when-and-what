@@ -78,7 +78,7 @@ class LocationController extends Controller
             ]
         );
 
-        return redirect(route('locations.edit', $location));
+        return redirect(route('locations.show', $location));
     }
 
     /**
