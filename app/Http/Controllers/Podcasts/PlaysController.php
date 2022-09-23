@@ -57,7 +57,7 @@ class PlaysController extends Controller
      * @param  \App\Models\Podcasts\PodcastPlay  $podcastPlay
      * @return \Illuminate\Http\Response
      */
-    public function edit(PodcastPlay $play)
+    public function edit(EpisodePlay $play)
     {
         return view('podcasts.play', [
             'episode' => $play->episode,
@@ -72,7 +72,7 @@ class PlaysController extends Controller
      * @param  \App\Models\Podcasts\PodcastPlay  $podcastPlay
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PodcastPlay $play)
+    public function update(Request $request, EpisodePlay $play)
     {
         $validated = $request->validate([
             'seconds' => 'required|numeric|integer',
@@ -88,7 +88,7 @@ class PlaysController extends Controller
      * @param  \App\Models\Podcasts\PodcastPlay  $podcastPlay
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PodcastPlay $play)
+    public function destroy(EpisodePlay $play)
     {
         $episode = $play->episode;
         $play->delete();
