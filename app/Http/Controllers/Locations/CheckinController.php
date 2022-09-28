@@ -76,7 +76,7 @@ class CheckinController extends Controller
         }
         $checkin->note = $validated['note'];
         $checkin->save();
-        return redirect(route('checkins.edit', $checkin));
+        return redirect(route('locations.show', $checkin->location));
     }
 
     /**
