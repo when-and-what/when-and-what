@@ -1,0 +1,13 @@
+{
+    "name": "When & What",
+    "short_name": "W&W",
+    "start_url": ".",
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "logo192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        }
+    ]
+}
