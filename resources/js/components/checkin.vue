@@ -40,7 +40,7 @@ export default {
             self.layer.clearLayers();
             var bounds = self.map.getBounds();
             var url =
-                '/json/locations?north=' +
+                '/api/locations?north=' +
                 bounds._northEast.lat +
                 '&east=' +
                 bounds._northEast.lng +
