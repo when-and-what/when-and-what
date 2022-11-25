@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
 use App\Models\Locations\Checkin;
 use App\Models\User;
 use Carbon\Carbon;
@@ -16,22 +17,24 @@ class DayController extends Controller
 
     public function day(Request $request, int $year, int $month, int $day)
     {
-        $date = now($request->user()->timezone);
-        $date->setDate($year, $month, $day);
+        $date = Carbon::create($year, $month, $day, 0, 0, 0, $request->user()->timezone);
 
         return $this->_displayDay($request->user(), $date);
     }
 
     private function _displayDay(User $user, Carbon $today)
     {
-        $start = now($today->timezone);
-        $start->setDateTime($today->year, $today->month, $today->day, 0, 0, 0);
-        $start->setTimezone('UTC');
+        $start = $today
+            ->copy()
+            ->startOfDay()
+            ->setTimezone('UTC');
+        $end = $today
+            ->copy()
+            ->endOfDay()
+            ->setTimezone('UTC');
 
-        $end = now($today->timezone);
-        $end->setDateTime($today->year, $today->month, $today->day, 23, 59, 59);
-        $end->setTimezone('UTC');
         return view('dashboard', [
+            'accounts' => Account::UserAccount($user)->get(),
             'checkins' => Checkin::whereBelongsTo($user)
                 ->after($start)
                 ->before($end)
@@ -39,8 +42,9 @@ class DayController extends Controller
                 ->orderBy('checkin_at', 'ASC')
                 ->get(),
             'today' => $today,
-            'tomorrow' => Carbon::make($today->copy()->tomorrow()),
-            'yesterday' => Carbon::make($today->copy()->yesterday()),
+            'tomorrow' => $today->copy()->addDay(),
+            'yesterday' => $today->copy()->subDay(),
+            'user' => $user,
         ]);
     }
 }

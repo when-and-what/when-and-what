@@ -23,6 +23,24 @@
         </li>
     @endforeach
 </ul>
+<div id="dashboard-container">
+    <div class="row pb-3">
+        <item v-for="item in items" :item="item" />
+    </div>
+    <div class="row">
+        <div class="col-md-5">
+            <ul class="list-group">
+                <event v-for="event in events" :event="event" />
+            </ul>
+        </div>
+        <div class="col-md-7">
+            <div id="dashboard-map" style="height:500px;width100%;">
+
+            </div>
+        </div>
+    </div>
+</div>
+<script> var day = "{{ $today->toDateString()}}";</script>
 <div class="d-flex justify-content-between">
     <div>
         <h2><a href="{{ route('checkins.index') }}">Checkins</a></h2>
