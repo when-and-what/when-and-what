@@ -30,7 +30,7 @@
     <div class="row">
         <div class="col-md-5">
             <ul class="list-group">
-                <event v-for="event in events" :event="event" />
+                <event v-for="event in sortedEvents" :event="event" />
             </ul>
         </div>
         <div class="col-md-7">

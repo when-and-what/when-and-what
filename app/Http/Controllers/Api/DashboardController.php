@@ -37,13 +37,13 @@ class DashboardController extends Controller
             ->with('location')
             ->get();
 
-        $dashboard = new DashboardResponse();
+        $dashboard = new DashboardResponse('checkin');
         foreach ($checkins as $checkin) {
-            $dashboard->addEvent([
-                'id' => 'checkin-' . $checkin->id,
-                'startTime' => $checkin->checkin_at,
-                'title' => $checkin->location->name,
-            ]);
+            $dashboard->addEvent(
+                id: $checkin->id,
+                date: $checkin->checkin_at,
+                title: $checkin->location->name
+            );
             $dashboard->addPin([
                 'id' => 'checkin-' . $checkin->id,
                 'latitude' => $checkin->location->latitude,

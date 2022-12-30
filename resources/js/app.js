@@ -26,11 +26,26 @@ const newLocation = createApp({
         };
     },
 }).mount('#location-container');
-
+function sortEvents(a, b) {
+    var datea = new Date(a.date);
+    var dateb = new Date(b.date);
+    if (datea < dateb) {
+        return -1;
+    }
+    if (datea > dateb) {
+        return 1;
+    }
+    return 0;
+}
 const dashboard = createApp({
     components: {
         event,
         item,
+    },
+    computed: {
+        sortedEvents: function () {
+            return this.events.sort(sortEvents);
+        },
     },
     data() {
         return {
@@ -39,7 +54,6 @@ const dashboard = createApp({
             events: [],
             items: [],
             map: null,
-            // mapBounds: [],
             mapLayer: null,
             mapLine: null,
             mapboxToken: process.env.MIX_MAPBOX_TOKEN,

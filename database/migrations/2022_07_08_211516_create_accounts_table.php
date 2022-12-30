@@ -28,6 +28,7 @@ return new class extends Migration
             $table->foreignId('account_id')->constrained();
             $table->foreignId('user_id')->constrained();
             $table->string('account_user_id')->nullable();
+            $table->string('username')->nullable();
             $table->text('token');
             $table->text('refresh_token');
             $table->timestamps();

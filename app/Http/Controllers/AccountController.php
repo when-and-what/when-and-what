@@ -36,9 +36,6 @@ class AccountController extends Controller
         return Socialite::driver($account->slug)
             ->scopes(explode(',', $account->scope))
             ->redirect();
-        // $service = new $account->service($account);
-        // return $service->test();
-        // return $account;
     }
 
     /**
@@ -58,7 +55,7 @@ class AccountController extends Controller
         $au->token = $user->token;
         $au->refresh_token = $user->refreshToken;
         $au->save();
-        return $au;
+        return redirect(route('accounts.index'));
     }
 
     /**
