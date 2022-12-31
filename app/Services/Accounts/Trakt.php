@@ -17,10 +17,17 @@ class Trakt extends UserAccount
         return Socialite::driver('trakt');
     }
 
+    /**
+     * Get history to populate dashboard
+     *
+     * @param Carbon $startDate
+     * @param Carbon $endDate
+     * @return DashboardResponse
+     */
     public function dashboard(Carbon $startDate, Carbon $endDate)
     {
         $dashboard = new DashboardResponse('trakt');
-        $movies = $this->movies($startDate, $endDate);
+        $movies = $this->getHistory($startDate, $endDate, 'movies');
         foreach ($movies as $movie) {
             $dashboard->addEvent(
                 id: $movie['id'],
@@ -28,7 +35,7 @@ class Trakt extends UserAccount
                 title: $movie['movie']['title']
             );
         }
-        $episodes = $this->episodes($startDate, $endDate);
+        $episodes = $this->getHistory($startDate, $endDate, 'episodes');
         foreach ($episodes as $episode) {
             $dashboard->addEvent(
                 id: $episode['id'],
@@ -39,22 +46,27 @@ class Trakt extends UserAccount
         return $dashboard;
     }
 
-    public function movies(Carbon $startDate, Carbon $endDate)
+    /**
+     * Get user's watch history
+     *
+     * @param Carbon $startDate
+     * @param Carbon $endDate
+     * @param string $type  movies | shows | seasons | episodes
+     * @return mixed json
+     */
+    public function getHistory(Carbon $startDate, Carbon $endDate, string $type)
     {
-        $url = 'https://api.trakt.tv/users/' . $this->username() . '/history/movies';
+        $url = 'https://api.trakt.tv/users/' . $this->username() . '/history/' . $type;
         $url .= '?start_at=' . $startDate->toIso8601ZuluString();
         $url .= '&end_at=' . $endDate->toIso8601ZuluString();
         return $this->_get($url);
     }
 
-    public function episodes(Carbon $startDate, Carbon $endDate)
-    {
-        $url = 'https://api.trakt.tv/users/' . $this->username() . '/history/episodes';
-        $url .= '?start_at=' . $startDate->toIso8601ZuluString();
-        $url .= '&end_at=' . $endDate->toIso8601ZuluString();
-        return $this->_get($url);
-    }
-
+    /**
+     * Looks up the authenticated user's username if it's not saved in the model
+     *
+     * @return string
+     */
     public function username(): string
     {
         if (!$this->accountUser->username) {
@@ -71,6 +83,12 @@ class Trakt extends UserAccount
         $this->accountUser->save();
     }
 
+    /**
+     * Perform get request to track API
+     *
+     * @param string $url
+     * @return mixed
+     */
     private function _get(string $url)
     {
         return Http::acceptJson()
