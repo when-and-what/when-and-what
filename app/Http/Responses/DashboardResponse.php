@@ -72,17 +72,13 @@ class DashboardResponse implements Jsonable
         ]);
     }
 
-    public function addPin(array $pin)
+    public function addPin($id, $latitude, $longitude, string $title = '')
     {
-        if (!isset($pin['id']) || !isset($pin['latitude']) || !isset($pin['longitude'])) {
-            throw new \Exception('Missing id, latitude, or longitude from dashboard pin');
-        }
-
         $this->pins->add([
-            'id' => $pin['id'],
-            'latitude' => $pin['latitude'],
-            'longitude' => $pin['longitude'],
-            'title' => isset($pin['title']) ? $pin['title'] : '',
+            'id' => $this->id($id),
+            'latitude' => $latitude,
+            'longitude' => $longitude,
+            'title' => $title,
         ]);
     }
 

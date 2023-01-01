@@ -13,14 +13,14 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function day(Request $request, Account $account, $date)
+    public function day(Request $request, Account $account, string $date)
     {
         $user = $request->user();
         try {
             $startDate = new Carbon($date . ' 00:00:00', new DateTimeZone($user->timezone));
             $endDate = $startDate->copy()->endOfDay();
         } catch (Exception) {
-            return ['events' => [], 'items' => []];
+            return new DashboardResponse($account->slug);
         }
 
         $service = new $account->service($account, $user);
@@ -44,11 +44,12 @@ class DashboardController extends Controller
                 date: $checkin->checkin_at,
                 title: $checkin->location->name
             );
-            $dashboard->addPin([
-                'id' => 'checkin-' . $checkin->id,
-                'latitude' => $checkin->location->latitude,
-                'longitude' => $checkin->location->longitude,
-            ]);
+            $dashboard->addPin(
+                id: $checkin->id,
+                latitude: $checkin->location->latitude,
+                longitude: $checkin->location->longitude,
+                title: $checkin->location->name
+            );
         }
         return $dashboard;
     }
