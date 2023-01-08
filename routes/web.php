@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\DayController;
 use App\Http\Controllers\Locations\CategoriesController;
 use App\Http\Controllers\Locations\CheckinController;
@@ -44,4 +45,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::resource('episodes.plays', PlaysController::class)->shallow()->except(['index', 'show']);
     Route::post('episodes/{episode}/rating', [EpisodeRatingController::class, 'update'])->name('episodes.rating.update');
     Route::delete('episodes/{episode}/rating', [EpisodeRatingController::class, 'destroy'])->name('episodes.rating.destroy');
+
+    // Accounts
+    Route::resource('accounts', AccountController::class);
 });

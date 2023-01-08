@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\AccountController;
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\Locations\CheckinController;
 use App\Http\Controllers\Api\Locations\LocationController;
 use App\Http\Controllers\Api\Locations\PendingCheckinController;
@@ -23,8 +25,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth:sanctum')->group(function(){
+    Route::get('dashboard/checkins/{date}', [DashboardController::class, 'checkins']);
+    Route::get('/dashboard/{account}/{date}', [DashboardController::class, 'day']);
     Route::post('podcasts/play', EpisodePlayController::class);
     Route::apiResource('locations/checkins/pending', PendingCheckinController::class);
     Route::apiResource('locations/checkins', CheckinController::class);
     Route::apiResource('locations', LocationController::class);
+
+    Route::get('accounts/user', [AccountController::class, 'userAccounts']);
 });
