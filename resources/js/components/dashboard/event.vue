@@ -1,6 +1,8 @@
 <template>
     <li :id="event.id" class="list-group-item d-flex">
-        <div class="ms-2 me-auto">{{ event.title }} <br />{{ event.subTitle }}</div>
+        <div class="ms-2 me-auto">
+            {{ event.icon }} {{ event.title }} <br />{{ event.subTitle }}
+        </div>
         <span>{{ displayTime(event.date) }}</span>
     </li>
 </template>

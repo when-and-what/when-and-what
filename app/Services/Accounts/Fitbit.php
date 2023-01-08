@@ -66,7 +66,6 @@ class Fitbit extends UserAccount
         // steps, sleep, heart rate,
     }
 
-    // TODO: this will return all activies after start date. how should we handle past dates?
     public function activities(Carbon $startDate, int $limit)
     {
         $url =
@@ -104,17 +103,60 @@ class Fitbit extends UserAccount
         return null;
     }
 
+    public function getSleep(Carbon $startDate, Carbon $endDate)
+    {
+        $url =
+            'https://api.fitbit.com/1.2/user/-/sleep/date/' .
+            $startDate->toDateString() .
+            '/' .
+            $endDate->toDateString() .
+            '.json';
+
+        $response = Http::acceptJson()
+            ->withToken($this->accountUser->token)
+            ->get($url);
+        return $response->json();
+    }
+
     public function dashboard(Carbon $startDate, Carbon $endDate)
     {
         $response = new DashboardResponse('fitbit', '#00b0b9');
         $summary = $this->summary($startDate);
-        // return $summary;
+        $sleep = $this->getSleep($startDate, $startDate->copy()->addDay());
+        if (isset($sleep['sleep']) && count($sleep['sleep']) > 0) {
+            foreach ($sleep['sleep'] as $log) {
+                $duration = floor($log['minutesAsleep'] / 60) . ':' . $log['minutesAsleep'] % 60;
+                // TODO: Replace timezone with fitibit profile's timezone
+                $startSleep = new Carbon($log['startTime'], 'America/Chicago');
+                if ($startDate->isSameDay($startSleep)) {
+                    $response->addEvent(
+                        id: $log['logId'],
+                        date: $log['startTime'],
+                        title: 'Sleep',
+                        details: ['icon' => $log['isMainSleep'] ? '🛏' : '😴']
+                    );
+                }
+                // TODO: Replace timezone with fitibit profile's timezone
+                $endSleep = new Carbon($log['endTime'], 'America/Chicago');
+                if ($startDate->isSameDay($endSleep)) {
+                    $response->addEvent(
+                        id: $log['logId'],
+                        date: $log['endTime'],
+                        title: 'Wake Up',
+                        details: [
+                            'subTitle' => $log['isMainSleep'] ? $duration : 'Nap :' . $duration,
+                            'icon' => $log['isMainSleep'] ? '⏰' : '😴',
+                        ]
+                    );
+                }
+                if ($log['isMainSleep'] && $startDate->isSameDay($endSleep)) {
+                    $response->addItem(name: 'Sleep', value: $log['efficiency'], icon: '🛌');
+                }
+            }
+        }
+
         if (isset($summary['activities']) && count($summary['activities']) > 0) {
             $activites = $this->activities($startDate, count($summary['activities']));
-            // return [
-            //     'count' => count($summary['activities']),
-            //     'activities' => $summary['activites'],
-            // ];
             foreach ($activites['activities'] as $activity) {
                 $tcx = $this->getTcx($activity);
                 if ($tcx) {
@@ -124,12 +166,16 @@ class Fitbit extends UserAccount
                     id: $activity['logId'],
                     date: $activity['startTime'],
                     title: $activity['activityName'],
-                    details: ['subtitle' => $activity['distance'] . ' ' . $activity['distanceUnit']]
+                    details: [
+                        'subtitle' => isset($activity['distance'])
+                            ? $activity['distance'] . ' ' . $activity['distanceUnit']
+                            : '',
+                    ]
                 );
             }
         }
         $response->addItem(name: 'Steps', icon: '👟', value: $summary['summary']['steps']);
-        $response->addItem(name: 'Floors', value: $summary['summary']['floors']);
+        $response->addItem(name: 'Floors', value: $summary['summary']['floors'], icon: '🛗');
         $response->addItem(
             name: 'Heartrate',
             icon: '💓',
