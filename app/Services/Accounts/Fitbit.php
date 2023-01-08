@@ -121,7 +121,7 @@ class Fitbit extends UserAccount
                 if ($startDate->isSameDay($startSleep)) {
                     $response->addEvent(
                         id: $log['logId'],
-                        date: $log['startTime'],
+                        date: $startSleep,
                         title: 'Sleep',
                         details: ['icon' => $log['isMainSleep'] ? '🛏' : '😴']
                     );
@@ -131,7 +131,7 @@ class Fitbit extends UserAccount
                 if ($startDate->isSameDay($endSleep)) {
                     $response->addEvent(
                         id: $log['logId'],
-                        date: $log['endTime'],
+                        date: $endSleep,
                         title: 'Wake Up',
                         details: [
                             'subTitle' => $log['isMainSleep'] ? $duration : 'Nap :' . $duration,
@@ -161,7 +161,7 @@ class Fitbit extends UserAccount
                 }
                 $response->addEvent(
                     id: $activity['logId'],
-                    date: $activity['startTime'],
+                    date: new Carbon($activity['startTime']),
                     title: $activity['activityName'],
                     details: [
                         'subtitle' => isset($activity['distance'])

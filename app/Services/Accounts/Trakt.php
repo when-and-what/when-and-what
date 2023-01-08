@@ -31,7 +31,7 @@ class Trakt extends UserAccount
         foreach ($movies as $movie) {
             $dashboard->addEvent(
                 id: $movie['id'],
-                date: $movie['watched_at'],
+                date: new Carbon($movie['watched_at']),
                 title: $movie['movie']['title'],
                 details: ['icon' => '🎥']
             );
@@ -40,7 +40,7 @@ class Trakt extends UserAccount
         foreach ($episodes as $episode) {
             $dashboard->addEvent(
                 id: $episode['id'],
-                date: $episode['watched_at'],
+                date: new Carbon($episode['watched_at']),
                 title: $episode['show']['title'] . ' : ' . $episode['episode']['title'],
                 details: ['icon' => '📺']
             );

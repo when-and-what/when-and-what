@@ -42,11 +42,11 @@ class DashboardResponse implements Jsonable
         ])->toJson();
     }
 
-    public function addEvent($id, $date, string $title, array $details = [])
+    public function addEvent($id, Carbon $date, string $title, array $details = [])
     {
         $this->events->add([
             'id' => $this->id($id),
-            'date' => $date,
+            'date' => $date->toISOString(),
             'title' => $title,
             'icon' => isset($details['icon']) ? $details['icon'] : '',
             'subTitle' => isset($details['subTitle']) ? $details['subTitle'] : '',
