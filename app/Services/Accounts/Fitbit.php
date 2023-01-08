@@ -3,9 +3,6 @@
 namespace App\Services\Accounts;
 
 use App\Http\Responses\DashboardResponse;
-use App\Models\Account;
-use App\Models\AccountUser;
-use App\Models\User;
 use App\Services\UserAccount;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
@@ -13,10 +10,6 @@ use Laravel\Socialite\Facades\Socialite;
 
 class Fitbit extends UserAccount
 {
-    public function saveAccount(User $user)
-    {
-    }
-
     public function socialite(): \Laravel\Socialite\Contracts\Provider
     {
         return Socialite::driver('fitbit');
@@ -62,18 +55,13 @@ class Fitbit extends UserAccount
                 ->get($url);
         }
         return $response->json();
-
-        // steps, sleep, heart rate,
     }
 
     public function activities(Carbon $startDate, int $limit)
     {
-        $url =
-            'https://api.fitbit.com/1/user/-/activities/list.json?afterDate=' .
-            $startDate->toDateString() .
-            '&limit=' .
-            $limit .
-            '&sort=desc&offset=0';
+        $url = 'https://api.fitbit.com/1/user/-/activities/list.json?afterDate=';
+        $url .= $startDate->toDateString() . '&limit=' . $limit;
+        $url .= '&sort=desc&offset=0';
 
         $response = Http::acceptJson()
             ->withToken($this->accountUser->token)
@@ -81,6 +69,13 @@ class Fitbit extends UserAccount
         return $response->json();
     }
 
+    /**
+     * Gets latitude and longitude from a tcx file
+     * some auto-detected and manual events will not have lat & lng
+     *
+     * @param array $activity from fitbit API
+     * @return array|null
+     */
     public function getTcx(array $activity): ?array
     {
         if (isset($activity['tcxLink']) && $activity['tcxLink']) {
@@ -105,12 +100,9 @@ class Fitbit extends UserAccount
 
     private function getSleep(Carbon $startDate, Carbon $endDate)
     {
-        $url =
-            'https://api.fitbit.com/1.2/user/-/sleep/date/' .
-            $startDate->toDateString() .
-            '/' .
-            $endDate->toDateString() .
-            '.json';
+        $url = 'https://api.fitbit.com/1.2/user/-/sleep/date/';
+        $url .= $startDate->toDateString() . '/' . $endDate->toDateString();
+        $url . '.json';
 
         $response = Http::acceptJson()
             ->withToken($this->accountUser->token)
