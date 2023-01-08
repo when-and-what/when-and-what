@@ -102,7 +102,7 @@ class Fitbit extends UserAccount
     {
         $url = 'https://api.fitbit.com/1.2/user/-/sleep/date/';
         $url .= $startDate->toDateString() . '/' . $endDate->toDateString();
-        $url . '.json';
+        $url .= '.json';
 
         $response = Http::acceptJson()
             ->withToken($this->accountUser->token)
