@@ -103,7 +103,7 @@ class Fitbit extends UserAccount
         return null;
     }
 
-    public function getSleep(Carbon $startDate, Carbon $endDate)
+    private function getSleep(Carbon $startDate, Carbon $endDate)
     {
         $url =
             'https://api.fitbit.com/1.2/user/-/sleep/date/' .
@@ -118,16 +118,14 @@ class Fitbit extends UserAccount
         return $response->json();
     }
 
-    public function dashboard(Carbon $startDate, Carbon $endDate)
+    private function dashboardSleep(Carbon $startDate, DashboardResponse &$response)
     {
-        $response = new DashboardResponse('fitbit', '#00b0b9');
-        $summary = $this->summary($startDate);
         $sleep = $this->getSleep($startDate, $startDate->copy()->addDay());
         if (isset($sleep['sleep']) && count($sleep['sleep']) > 0) {
             foreach ($sleep['sleep'] as $log) {
                 $duration = floor($log['minutesAsleep'] / 60) . ':' . $log['minutesAsleep'] % 60;
-                // TODO: Replace timezone with fitibit profile's timezone
-                $startSleep = new Carbon($log['startTime'], 'America/Chicago');
+                // * using W&W timezone, not fitbit profile
+                $startSleep = new Carbon($log['startTime'], $this->accountUser->user->timezone);
                 if ($startDate->isSameDay($startSleep)) {
                     $response->addEvent(
                         id: $log['logId'],
@@ -136,8 +134,8 @@ class Fitbit extends UserAccount
                         details: ['icon' => $log['isMainSleep'] ? '🛏' : '😴']
                     );
                 }
-                // TODO: Replace timezone with fitibit profile's timezone
-                $endSleep = new Carbon($log['endTime'], 'America/Chicago');
+                // * using W&W timezone, not fitbit profile
+                $endSleep = new Carbon($log['endTime'], $this->accountUser->user->timezone);
                 if ($startDate->isSameDay($endSleep)) {
                     $response->addEvent(
                         id: $log['logId'],
@@ -154,6 +152,13 @@ class Fitbit extends UserAccount
                 }
             }
         }
+    }
+
+    public function dashboard(Carbon $startDate, Carbon $endDate)
+    {
+        $response = new DashboardResponse('fitbit', '#00b0b9');
+        $summary = $this->summary($startDate);
+        $this->dashboardSleep($startDate, $response);
 
         if (isset($summary['activities']) && count($summary['activities']) > 0) {
             $activites = $this->activities($startDate, count($summary['activities']));
