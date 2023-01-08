@@ -61,7 +61,7 @@ class Fitbit extends UserAccount
     {
         $url = 'https://api.fitbit.com/1/user/-/activities/list.json?afterDate=';
         $url .= $startDate->toDateString() . '&limit=' . $limit;
-        $url .= '&sort=desc&offset=0';
+        $url .= '&sort=asc&offset=0';
 
         $response = Http::acceptJson()
             ->withToken($this->accountUser->token)
