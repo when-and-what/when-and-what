@@ -42,7 +42,8 @@ class DashboardController extends Controller
             $dashboard->addEvent(
                 id: $checkin->id,
                 date: $checkin->checkin_at,
-                title: $checkin->location->name
+                title: $checkin->location->name,
+                details: ['icon' => '📍']
             );
             $dashboard->addPin(
                 id: $checkin->id,

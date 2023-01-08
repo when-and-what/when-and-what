@@ -32,7 +32,8 @@ class Trakt extends UserAccount
             $dashboard->addEvent(
                 id: $movie['id'],
                 date: $movie['watched_at'],
-                title: $movie['movie']['title']
+                title: $movie['movie']['title'],
+                details: ['icon' => '🎥']
             );
         }
         $episodes = $this->getHistory($startDate, $endDate, 'episodes');
@@ -40,7 +41,8 @@ class Trakt extends UserAccount
             $dashboard->addEvent(
                 id: $episode['id'],
                 date: $episode['watched_at'],
-                title: $episode['show']['title'] . ' : ' . $episode['episode']['title']
+                title: $episode['show']['title'] . ' : ' . $episode['episode']['title'],
+                details: ['icon' => '📺']
             );
         }
         return $dashboard;
