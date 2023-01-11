@@ -18,7 +18,7 @@ class TrackerPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -30,7 +30,7 @@ class TrackerPolicy
      */
     public function view(User $user, Tracker $tracker)
     {
-        //
+        return $user->id === $tracker->user_id;
     }
 
     /**
@@ -41,7 +41,7 @@ class TrackerPolicy
      */
     public function create(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -53,7 +53,7 @@ class TrackerPolicy
      */
     public function update(User $user, Tracker $tracker)
     {
-        //
+        return $user->id === $tracker->user_id;
     }
 
     /**
@@ -65,7 +65,7 @@ class TrackerPolicy
      */
     public function delete(User $user, Tracker $tracker)
     {
-        //
+        return $user->id === $tracker->user_id;
     }
 
     /**
@@ -77,7 +77,7 @@ class TrackerPolicy
      */
     public function restore(User $user, Tracker $tracker)
     {
-        //
+        return $user->id === $tracker->user_id;
     }
 
     /**
@@ -89,6 +89,6 @@ class TrackerPolicy
      */
     public function forceDelete(User $user, Tracker $tracker)
     {
-        //
+        return $user->id === $tracker->user_id;
     }
 }
