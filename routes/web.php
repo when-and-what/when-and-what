@@ -6,6 +6,7 @@ use App\Http\Controllers\Locations\CategoriesController;
 use App\Http\Controllers\Locations\CheckinController;
 use App\Http\Controllers\Locations\LocationController;
 use App\Http\Controllers\Locations\PendingCheckinController;
+use App\Http\Controllers\NoteController;
 use App\Http\Controllers\Podcasts\EpisodeController;
 use App\Http\Controllers\Podcasts\EpisodeRatingController;
 use App\Http\Controllers\Podcasts\PlaysController;
@@ -51,4 +52,6 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::resource('accounts', AccountController::class);
 
     Route::resource('trackers', TrackerController::class);
+
+    Route::resource('notes', NoteController::class);
 });

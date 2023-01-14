@@ -26,6 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware('auth:sanctum')->group(function(){
     Route::get('dashboard/checkins/{date}', [DashboardController::class, 'checkins']);
+    Route::get('dashboard/notes/{date}', [DashboardController::class, 'notes']);
     Route::get('/dashboard/{account}/{date}', [DashboardController::class, 'day']);
     Route::post('podcasts/play', EpisodePlayController::class);
     Route::apiResource('locations/checkins/pending', PendingCheckinController::class);

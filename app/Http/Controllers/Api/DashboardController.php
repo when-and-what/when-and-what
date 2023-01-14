@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Responses\DashboardResponse;
 use App\Models\Account;
 use App\Models\Locations\Checkin;
+use App\Models\Note;
 use Carbon\Carbon;
 use DateTimeZone;
 use Exception;
@@ -53,5 +54,26 @@ class DashboardController extends Controller
             );
         }
         return $dashboard;
+    }
+
+    public function notes(Request $request, $date)
+    {
+        $start = new Carbon($date . ' 00:00:00', $request->user()->timezone);
+        $end = $start->copy()->addDay(1);
+        $notes = Note::whereBelongsTo($request->user())
+            ->where('published_at', '>=', $start)
+            ->where('published_at', '<', $end)
+            ->where('dashboard_visible', true)
+            ->get();
+        $response = new DashboardResponse('notes');
+        foreach ($notes as $note) {
+            $response->addEvent(
+                id: $note->id,
+                date: $note->published_at,
+                title: $note->title,
+                details: ['icon' => $note->icon, 'sub_title' => $note->sub_title]
+            );
+        }
+        return $response;
     }
 }

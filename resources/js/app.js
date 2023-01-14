@@ -104,6 +104,7 @@ const dashboard = createApp({
                 self.accountRequest(account);
             });
         });
+        axios.get('/api/dashboard/notes/' + self.date).then(this.accountResponse);
         axios.get('/api/dashboard/checkins/' + self.date).then(function (response) {
             response.data.events.forEach((event) => {
                 self.events.push(event);
