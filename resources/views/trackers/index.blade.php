@@ -10,7 +10,7 @@
 <div class="row">
     @foreach($trackers as $tracker)
         <div class="col-md-4 col-lg-3">
-            {{ $tracker->name }}
+            <a href="{{ route('trackers.edit', $tracker) }}">{{ $tracker->name }}</a>
         </div>
     @endforeach
 </div>
