@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,41 @@ class NoteFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'user_id' => User::factory(),
+            'icon' => $this->faker->emoji(),
+            'title' => $this->faker->sentence(),
+            'sub_title' => $this->faker->sentence(),
+            'note' => '',
+            'published_at' => $this->faker->dateTime(),
+            'dashboard_visible' => $this->faker->boolean(),
         ];
+    }
+
+    /**
+     * visible on the dashboard
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function visible()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'dashboard_visible' => true,
+            ];
+        });
+    }
+
+    /**
+     * hidden from the dashboard
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function hidden()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'dashboard_visible' => false,
+            ];
+        });
     }
 }

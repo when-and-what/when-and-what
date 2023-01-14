@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 
 class NoteController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Note::class, 'note');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,6 +22,7 @@ class NoteController extends Controller
     public function index(Request $request)
     {
         return view('notes.index', [
+            // must filter by user id, access not managed by policy class
             'notes' => Note::whereBelongsTo($request->user())
                 ->orderBy('published_at', 'desc')
                 ->get(),
