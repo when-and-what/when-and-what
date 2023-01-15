@@ -23,7 +23,7 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('trackable', function (Blueprint $table) {
+        Schema::create('trackables', function (Blueprint $table) {
             $table->foreignId('tracker_id')->constrained();
             $table->unsignedBigInteger('trackable_id');
             $table->string('trackable_type');
@@ -39,7 +39,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('trackable');
+        Schema::dropIfExists('trackables');
         Schema::dropIfExists('trackers');
     }
 };
