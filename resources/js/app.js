@@ -57,6 +57,13 @@ const dashboard = createApp({
             mapLayer: null,
             mapLine: null,
             mapboxToken: process.env.MIX_MAPBOX_TOKEN,
+            note: {
+                title: '',
+                sub_title: '',
+                icon: '',
+                published_at: '',
+                dashboard_visible: true,
+            },
         };
     },
     methods: {
@@ -78,6 +85,16 @@ const dashboard = createApp({
             this.mapLine = L.polyline(cords, { color: color, weight: 2 }).addTo(self.map);
             self.bounds.push(self.mapLine.getBounds());
             this.map.fitBounds(self.bounds);
+        },
+        saveNote() {
+            var self = this;
+            axios.post('/api/notes/dashboard', this.note).then(function (response) {
+                self.accountResponse(response);
+                self.note.title = '';
+                self.note.sub_title = '';
+                self.note.icon = '';
+                self.note.published_at = new Date().toISOString();
+            });
         },
         setupmap() {
             var self = this;

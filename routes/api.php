@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\Locations\CheckinController;
 use App\Http\Controllers\Api\Locations\LocationController;
 use App\Http\Controllers\Api\Locations\PendingCheckinController;
+use App\Http\Controllers\Api\NoteController;
 use App\Http\Controllers\Api\Podcasts\EpisodePlayController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -34,4 +35,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('locations', LocationController::class);
 
     Route::get('accounts/user', [AccountController::class, 'userAccounts']);
+
+    Route::post('notes/dashboard', [NoteController::class, 'storeDashboard'])->name('notes.dashboard');
+    Route::resource('notes', NoteController::class);
 });
