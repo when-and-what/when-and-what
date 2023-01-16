@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Notes\StoreDashboardRequest;
 use App\Http\Responses\DashboardResponse;
 use App\Models\Note;
+use App\Traits\TaggableController;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class NoteController extends Controller
 {
+    use TaggableController;
     /**
      * Display a listing of the resource.
      *
@@ -40,17 +42,23 @@ class NoteController extends Controller
         if ($request->published_at) {
             $note->published_at = new Carbon($request->date, $request->user()->timezone);
         } else {
-            $note->published_at = new Carbon();
+            $note->published_at = now($request->user()->timezone);
         }
         $note->fill($request->safe()->all());
         $note->save();
+
+        $this->saveTags([$note->title, $note->sub_title], $note, $request->user());
 
         $dashboard = new DashboardResponse('notes');
         $dashboard->addEvent(
             id: $note->id,
             date: $note->published_at,
             title: $note->title,
-            details: ['icon' => $note->icon, 'sub_title' => $note->sub_title]
+            details: [
+                'icon' => $note->icon,
+                'subTitle' => $note->sub_title,
+                'titleLink' => route('notes.show', $note),
+            ]
         );
         return $dashboard;
     }
