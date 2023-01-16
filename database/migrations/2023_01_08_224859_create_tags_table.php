@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('trackers', function (Blueprint $table) {
+        Schema::create('tags', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->string('name', 100);
@@ -23,12 +23,12 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('trackables', function (Blueprint $table) {
-            $table->foreignId('tracker_id')->constrained();
-            $table->unsignedBigInteger('trackable_id');
-            $table->string('trackable_type');
+        Schema::create('taggables', function (Blueprint $table) {
+            $table->foreignId('tag_id')->constrained();
+            $table->unsignedBigInteger('taggable_id');
+            $table->string('taggable_type');
 
-            $table->unique(['tracker_id', 'trackable_id', 'trackable_type']);
+            $table->unique(['tag_id', 'taggable_id', 'taggable_type']);
         });
     }
 
@@ -39,7 +39,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('trackables');
-        Schema::dropIfExists('trackers');
+        Schema::dropIfExists('taggables');
+        Schema::dropIfExists('tags');
     }
 };

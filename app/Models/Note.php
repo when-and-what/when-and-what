@@ -24,8 +24,8 @@ class Note extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function trackers()
+    public function tags()
     {
-        return $this->morphToMany(Tracker::class, 'trackable');
+        return $this->morphToMany(Tag::class, 'taggables');
     }
 }

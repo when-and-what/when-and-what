@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Trackers;
+namespace App\Http\Requests\Tags;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class EditTrackerRequest extends FormRequest
+class CreateTagRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,6 +25,12 @@ class EditTrackerRequest extends FormRequest
     public function rules()
     {
         return [
+            'name' => [
+                'required',
+                Rule::unique('tags')->where(
+                    fn($query) => $query->where('user_id', $this->user()->id)
+                ),
+            ],
             'display_name' => 'required',
             'icon' => 'string',
         ];
