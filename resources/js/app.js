@@ -93,7 +93,7 @@ const dashboard = createApp({
                 self.note.title = '';
                 self.note.sub_title = '';
                 self.note.icon = '';
-                self.note.published_at = new Date().toISOString();
+                self.note.published_at = '';
             });
         },
         setupmap() {

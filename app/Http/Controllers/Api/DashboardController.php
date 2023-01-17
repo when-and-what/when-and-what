@@ -59,6 +59,7 @@ class DashboardController extends Controller
     public function notes(Request $request, $date)
     {
         $start = new Carbon($date . ' 00:00:00', $request->user()->timezone);
+        $start->setTimezone('UTC');
         $end = $start->copy()->addDay(1);
         $notes = Note::whereBelongsTo($request->user())
             ->where('published_at', '>=', $start)

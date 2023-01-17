@@ -40,9 +40,11 @@ class NoteController extends Controller
         $note = new Note();
         $note->user_id = $request->user()->id;
         if ($request->published_at) {
-            $note->published_at = new Carbon($request->date, $request->user()->timezone);
+            $date = new Carbon($request->published_at, $request->user()->timezone);
+            $date->setTimezone('UTC');
+            $note->published_at = $date;
         } else {
-            $note->published_at = now($request->user()->timezone);
+            $note->published_at = now();
         }
         $note->fill($request->safe()->all());
         $note->save();

@@ -11,7 +11,7 @@ trait TaggableController
     /**
      * Parse the given text(s) for any tags and associate them with the given model
      *
-     * @param string|string[] $text
+     * @param string|string[] $texts
      * @param Model $model
      * @param User $user
      * @return Tag[]
