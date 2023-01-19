@@ -57,13 +57,8 @@ const dashboard = createApp({
             mapLayer: null,
             mapLine: null,
             mapboxToken: process.env.MIX_MAPBOX_TOKEN,
-            note: {
-                title: '',
-                sub_title: '',
-                icon: '',
-                published_at: '',
-                dashboard_visible: true,
-            },
+            note: {},
+            today: day == new Date().toISOString().split('T')[0],
         };
     },
     methods: {
@@ -86,14 +81,20 @@ const dashboard = createApp({
             self.bounds.push(self.mapLine.getBounds());
             this.map.fitBounds(self.bounds);
         },
+        resetNote() {
+            this.note = {
+                title: '',
+                sub_title: '',
+                icon: '',
+                published_at: this.today ? '' : day + 'T12:00',
+                dashboard_visible: true,
+            };
+        },
         saveNote() {
             var self = this;
             axios.post('/api/notes/dashboard', this.note).then(function (response) {
                 self.accountResponse(response);
-                self.note.title = '';
-                self.note.sub_title = '';
-                self.note.icon = '';
-                self.note.published_at = '';
+                self.resetNote();
             });
         },
         setupmap() {
@@ -115,6 +116,7 @@ const dashboard = createApp({
     },
     mounted() {
         this.setupmap();
+        this.resetNote();
         self = this;
         axios.get('/api/accounts/user').then(function (response) {
             response.data.forEach((account) => {
