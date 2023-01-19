@@ -59,7 +59,7 @@ class NoteController extends Controller
             details: [
                 'icon' => $note->icon,
                 'subTitle' => $note->sub_title,
-                'titleLink' => route('notes.show', $note),
+                'dateLink' => route('notes.show', $note),
             ]
         );
         return $dashboard;

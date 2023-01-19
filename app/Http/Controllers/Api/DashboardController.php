@@ -72,7 +72,11 @@ class DashboardController extends Controller
                 id: $note->id,
                 date: $note->published_at,
                 title: $note->title,
-                details: ['icon' => $note->icon, 'subTitle' => $note->sub_title]
+                details: [
+                    'icon' => $note->icon,
+                    'subTitle' => $note->sub_title,
+                    'dateLink' => route('notes.show', $note),
+                ]
             );
         }
         return $response;
