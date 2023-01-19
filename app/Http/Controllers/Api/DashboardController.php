@@ -75,7 +75,7 @@ class DashboardController extends Controller
                 details: [
                     'icon' => $note->icon,
                     'subTitle' => $note->sub_title,
-                    'dateLink' => route('notes.show', $note),
+                    'dateLink' => route('notes.edit', $note),
                 ]
             );
         }
