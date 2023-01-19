@@ -6,10 +6,12 @@ use App\Http\Controllers\Locations\CategoriesController;
 use App\Http\Controllers\Locations\CheckinController;
 use App\Http\Controllers\Locations\LocationController;
 use App\Http\Controllers\Locations\PendingCheckinController;
+use App\Http\Controllers\NoteController;
 use App\Http\Controllers\Podcasts\EpisodeController;
 use App\Http\Controllers\Podcasts\EpisodeRatingController;
 use App\Http\Controllers\Podcasts\PlaysController;
 use App\Http\Controllers\Podcasts\PodcastController;
+use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -48,4 +50,8 @@ Route::middleware('auth:sanctum')->group(function(){
 
     // Accounts
     Route::resource('accounts', AccountController::class);
+
+    Route::resource('tags', TagController::class);
+
+    Route::resource('notes', NoteController::class);
 });
