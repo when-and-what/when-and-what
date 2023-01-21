@@ -2,7 +2,8 @@
     <li :id="event.id" class="list-group-item d-flex">
         <div class="ms-2 me-auto">
             <div v-html="tagLinks(event.icon + ' ' + event.title)"></div>
-            <div v-html="tagLinks(event.subTitle)"></div>
+            <a :href="event.subTitleLink" v-if="event.subTitleLink">{{ event.subTitle }}</a>
+            <span v-else v-html="tagLinks(event.subTitle)"></span>
         </div>
         <a :href="event.dateLink" v-if="event.dateLink"
             ><span>{{ displayTime(event.date) }}</span></a

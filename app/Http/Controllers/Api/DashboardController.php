@@ -7,6 +7,7 @@ use App\Http\Responses\DashboardResponse;
 use App\Models\Account;
 use App\Models\Locations\Checkin;
 use App\Models\Note;
+use App\Models\Podcasts\EpisodePlay;
 use Carbon\Carbon;
 use DateTimeZone;
 use Exception;
@@ -76,6 +77,34 @@ class DashboardController extends Controller
                     'icon' => $note->icon,
                     'subTitle' => $note->sub_title,
                     'dateLink' => route('notes.edit', $note),
+                ]
+            );
+        }
+        return $response;
+    }
+
+    public function podcasts(Request $request, $date)
+    {
+        $start = new Carbon($date . ' 00:00:00', $request->user()->timezone);
+        $start->setTimezone('UTC');
+        $end = $start->copy()->addDay(1);
+
+        $plays = EpisodePlay::with('episode')
+            ->whereBelongsTo($request->user())
+            ->where('played_at', '>=', $start)
+            ->where('played_at', '<', $end)
+            ->get();
+        $response = new DashboardResponse('podcasts');
+        foreach ($plays as $play) {
+            $response->addEvent(
+                id: $play->id,
+                date: $play->played_at,
+                title: $play->episode->name,
+                details: [
+                    'icon' => '🎙',
+                    'subTitle' => $play->episode->podcast->name,
+                    'subTitleLink' => route('podcasts.show', $play->episode->podcast),
+                    'dateLink' => route('episodes.show', $play),
                 ]
             );
         }

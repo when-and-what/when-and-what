@@ -51,6 +51,7 @@ class DashboardResponse implements Jsonable
             'icon' => isset($details['icon']) ? $details['icon'] : '',
             'subTitle' => isset($details['subTitle']) ? $details['subTitle'] : '',
             'titleLink' => isset($details['titleLink']) ? $details['titleLink'] : '',
+            'subTitleLink' => isset($details['subTitleLink']) ? $details['subTitleLink'] : '',
             'dateLink' => isset($details['dateLink']) ? $details['dateLink'] : '',
         ]);
     }
