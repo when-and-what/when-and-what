@@ -115,7 +115,8 @@ class Fitbit extends UserAccount
         $sleep = $this->getSleep($startDate, $startDate->copy()->addDay());
         if (isset($sleep['sleep']) && count($sleep['sleep']) > 0) {
             foreach ($sleep['sleep'] as $log) {
-                $duration = floor($log['minutesAsleep'] / 60) . ':' . $log['minutesAsleep'] % 60;
+                $duration =
+                    floor($log['minutesAsleep'] / 60) . 'h : ' . $log['minutesAsleep'] % 60 . 'm';
                 // * using W&W timezone, not fitbit profile
                 $startSleep = new Carbon($log['startTime'], $this->accountUser->user->timezone);
                 if ($startDate->isSameDay($startSleep)) {
