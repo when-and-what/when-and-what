@@ -1,8 +1,8 @@
 <template>
     <li :id="event.id" class="list-group-item d-flex">
         <div class="ms-2 me-auto">
-            <tag :text="event.icon + ' ' + event.title"></tag>
-            <tag :text="event.subTitle"></tag>
+            <div v-html="tagLinks(event.icon + ' ' + event.title)"></div>
+            <div v-html="tagLinks(event.subTitle)"></div>
         </div>
         <a :href="event.dateLink" v-if="event.dateLink"
             ><span>{{ displayTime(event.date) }}</span></a
@@ -11,13 +11,14 @@
     </li>
 </template>
 <script>
-import tag from './../tag.vue';
 export default {
-    components: { tag },
     methods: {
         displayTime(datetime) {
             var d = new Date(datetime);
             return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+        },
+        tagLinks(text) {
+            return text.replace(/#(\w+)/g, '<a href="/tags/$1">#$1</a>');
         },
     },
     props: ['event'],
