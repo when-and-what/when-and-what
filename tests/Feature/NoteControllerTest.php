@@ -18,7 +18,7 @@ class NoteControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->user = User::factory()->create();
+        $this->user = User::factory()->create(['timezone' => 'America/New_York']);
         $this->user2 = User::factory()->create();
     }
 
@@ -70,10 +70,23 @@ class NoteControllerTest extends TestCase
         $response = $this->actingAs($this->user)->post(route('notes.store'), [
             'title' => 'my title',
         ]);
+        $response->assertSessionDoesntHaveErrors();
         $response->assertRedirect(route('notes.index'));
         $this->assertDatabaseHas('notes', [
             'user_id' => $this->user->id,
             'title' => 'my title',
+        ]);
+
+        $response = $this->actingAs($this->user)->post(route('notes.store'), [
+            'title' => 'new note',
+            'published_at' => '2023-02-01T08:20',
+        ]);
+        $response->assertSessionDoesntHaveErrors();
+        $response->assertRedirect(route('notes.index'));
+        $this->assertDatabaseHas('notes', [
+            'user_id' => $this->user->id,
+            'title' => 'new note',
+            'published_at' => '2023-02-01 13:20:00',
         ]);
     }
 
@@ -86,15 +99,21 @@ class NoteControllerTest extends TestCase
 
         $response = $this->actingAs($this->user)->get(route('notes.edit', $note));
         $response->assertStatus(200);
+        $response->assertViewHas('note', $note);
 
         $response = $this->actingAs($this->user2)->put(route('notes.update', $note), []);
         $response->assertStatus(403);
 
         $response = $this->actingAs($this->user)->put(route('notes.update', $note), [
             'title' => 'new title',
+        ]);
+        $response->assertSessionHasErrors('published_at');
+
+        $response = $this->actingAs($this->user)->put(route('notes.update', $note), [
+            'title' => 'new title',
             'sub_title' => $note->sub_title,
             'icon' => $note->icon,
-            'published_at' => $note->published_at->format('Y-m-d\TH:i'),
+            'published_at' => '2023-01-01T12:00',
         ]);
         $response->assertRedirect(route('notes.index'));
         $this->assertDatabaseHas('notes', [
@@ -102,6 +121,7 @@ class NoteControllerTest extends TestCase
             'user_id' => $this->user->id,
             'title' => 'new title',
             'sub_title' => $note->sub_title,
+            'published_at' => '2023-01-01 17:00:00',
         ]);
     }
 

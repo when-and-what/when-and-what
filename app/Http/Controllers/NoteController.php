@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\NoteRequest;
+use App\Http\Requests\Notes\CreateNoteRequest;
+use App\Http\Requests\Notes\EditNoteRequest;
 use App\Models\Note;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -47,12 +48,15 @@ class NoteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(NoteRequest $request)
+    public function store(CreateNoteRequest $request)
     {
         $note = new Note();
         $note->user_id = $request->user()->id;
         if ($request->published_at) {
-            $note->published_at = new Carbon($request->date, 'UTC');
+            $note->published_at = Carbon::parse(
+                $request->published_at,
+                $request->user()->timezone
+            )->tz('GMT');
         } else {
             $note->published_at = new Carbon();
         }
@@ -95,13 +99,11 @@ class NoteController extends Controller
      * @param  \App\Models\Note  $note
      * @return \Illuminate\Http\Response
      */
-    public function update(NoteRequest $request, Note $note)
+    public function update(EditNoteRequest $request, Note $note)
     {
-        if ($request->published_at) {
-            $note->published_at = new Carbon($request->date, 'UTC');
-        } else {
-            $note->published_at = new Carbon();
-        }
+        $note->published_at = Carbon::parse($request->published_at, $request->user()->timezone)->tz(
+            'GMT'
+        );
         $note->fill($request->safe()->all());
         $note->save();
 
