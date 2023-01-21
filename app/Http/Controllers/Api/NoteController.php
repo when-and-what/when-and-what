@@ -40,9 +40,10 @@ class NoteController extends Controller
         $note = new Note();
         $note->user_id = $request->user()->id;
         if ($request->published_at) {
-            $date = new Carbon($request->published_at, $request->user()->timezone);
-            $date->setTimezone('UTC');
-            $note->published_at = $date;
+            $note->published_at = Carbon::parse(
+                $request->published_at,
+                $request->user()->timezone
+            )->tz('GMT');
         } else {
             $note->published_at = now();
         }
@@ -62,7 +63,7 @@ class NoteController extends Controller
                 'dateLink' => route('notes.edit', $note),
             ]
         );
-        return $dashboard;
+        return response($dashboard, 201);
     }
 
     /**
