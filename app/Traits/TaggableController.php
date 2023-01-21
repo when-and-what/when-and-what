@@ -43,7 +43,6 @@ trait TaggableController
             }
         }
 
-        ray($tags->pluck('id'));
         $model->tags()->sync($tags->pluck('id'));
         return $tags;
     }
