@@ -135,13 +135,13 @@ class Fitbit extends UserAccount
                         date: $endSleep,
                         title: 'Wake Up',
                         details: [
-                            'subTitle' => $log['isMainSleep'] ? $duration : 'Nap :' . $duration,
+                            'subTitle' => $log['isMainSleep'] ? '' : 'Nap :' . $duration,
                             'icon' => $log['isMainSleep'] ? '⏰' : '😴',
                         ]
                     );
                 }
                 if ($log['isMainSleep'] && $startDate->isSameDay($endSleep)) {
-                    $response->addItem(name: 'Sleep', value: $log['efficiency'], icon: '🛌');
+                    $response->addItem(name: 'Sleep', value: $duration, icon: '🛌');
                 }
             }
         }
