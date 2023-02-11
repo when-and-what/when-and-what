@@ -42,9 +42,8 @@
             </fieldset>
         </div>
         <div class="col-md-7">
-            <div id="dashboard-map" style="height:500px;width100%;">
-
-            </div>
+            <div id="dashboard-map" style="height:500px;width100%;"></div>
+            <p class="text-center mt-3"><a href="{{ route('checkins.create') }}" class="btn btn-primary">📍New Checkin</a>
         </div>
     </div>
 </div>
