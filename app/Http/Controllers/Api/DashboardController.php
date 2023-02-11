@@ -45,7 +45,11 @@ class DashboardController extends Controller
                 id: $checkin->id,
                 date: $checkin->checkin_at,
                 title: $checkin->location->name,
-                details: ['icon' => '📍']
+                details: [
+                    'icon' => '📍',
+                    'titleLink' => route('locations.show', $checkin->location),
+                    'dateLink' => route('checkins.edit', $checkin),
+                ]
             );
             $dashboard->addPin(
                 id: $checkin->id,

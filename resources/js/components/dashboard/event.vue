@@ -1,7 +1,13 @@
 <template>
     <li :id="event.id" class="list-group-item d-flex">
         <div class="ms-2 me-auto">
-            <div v-html="tagLinks(event.icon + ' ' + event.title)"></div>
+            <a
+                v-if="event.titleLink"
+                :href="event.titleLink"
+                v-html="tagLinks(event.icon + ' ' + event.title)"
+                class="text-decoration-none"
+            ></a>
+            <div v-else v-html="tagLinks(event.icon + ' ' + event.title)"></div>
             <a :href="event.subTitleLink" v-if="event.subTitleLink">{{ event.subTitle }}</a>
             <span v-else v-html="tagLinks(event.subTitle)"></span>
         </div>
