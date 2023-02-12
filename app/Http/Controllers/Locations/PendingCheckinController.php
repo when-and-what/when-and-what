@@ -41,8 +41,8 @@ class PendingCheckinController extends Controller
         $checkin->user_id = $request->user()->id;
         $checkin->note = $request->note;
         if ($request->date) {
-            $checkin->checkin_at = Carbon::parse($valid['date'], $request->user()->timezone)->tz(
-                'GMT'
+            $checkin->checkin_at = Carbon::parse($request->date, $request->user()->timezone)->tz(
+                'gmt'
             );
         } else {
             $checkin->checkin_at = new Carbon();

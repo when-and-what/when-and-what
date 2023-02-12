@@ -14,36 +14,48 @@
             <ul class="list-group">
                 <event v-for="event in sortedEvents" :event="event" />
             </ul>
-            <fieldset class="pt-3">
-                <legend>Add Note</legend>
-                <div class="form-group">
-                    <label for="title">Title</label>
-                    <input type="text" class="form-control" id="title" name="title" aria-describedby="title" v-model="note.title" />
-                </div>
-                <div class="form-group">
-                    <label for="sub_title">Sub Title</label>
-                    <input type="text" class="form-control" id="sub_title" name="sub_title" aria-describedby="sub_title" v-model="note.sub_title" />
-                </div>
-                <div class="row">
-                    <div class="col-lg-3 col-md-4">
+            <div class="accordion accordion-flush" id="add-note-accordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="add-note-heading">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#add-note-content" aria-expanded="false" aria-controls="add-note-content">
+                        Add Note
+                      </button>
+                    </h2>
+                    <div id="add-note-content" class="accordion-collapse collapse" aria-labelledby="add-note-heading" data-bs-parent="#add-note-accordion">
                         <div class="form-group">
-                            <label for="icon">Icon</label>
-                            <input type="text" class="form-control" id="icon" name="icon" aria-describedby="icon" v-model="note.icon" />
+                            <label for="title">Title</label>
+                            <input type="text" class="form-control" id="title" name="title" aria-describedby="title" v-model="note.title" />
                         </div>
-                    </div>
-                    <div class="col-lg-9 col-md-8">
                         <div class="form-group">
-                            <label for="published_at">Date</label>
-                            <input type="datetime-local" class="form-control" id="published_at" name="published_at" aria-describedby="published_at" v-model="note.published_at" />
+                            <label for="sub_title">Sub Title</label>
+                            <input type="text" class="form-control" id="sub_title" name="sub_title" aria-describedby="sub_title" v-model="note.sub_title" />
                         </div>
+                        <div class="row">
+                            <div class="col-lg-3 col-md-4">
+                                <div class="form-group">
+                                    <label for="icon">Icon</label>
+                                    <input type="text" class="form-control" id="icon" name="icon" aria-describedby="icon" v-model="note.icon" />
+                                </div>
+                            </div>
+                            <div class="col-lg-9 col-md-8">
+                                <div class="form-group">
+                                    <label for="published_at">Date</label>
+                                    <input type="datetime-local" class="form-control" id="published_at" name="published_at" aria-describedby="published_at" v-model="note.published_at" />
+                                </div>
+                            </div>
+                        </div>
+                        <p><button class="btn btn-primary" @click="saveNote">Add</button></p>
                     </div>
                 </div>
-                <p><button class="btn btn-primary" @click="saveNote">Add</button></p>
-            </fieldset>
+            </div>
         </div>
         <div class="col-md-7">
             <div id="dashboard-map" style="height:500px;width100%;"></div>
-            <p class="text-center mt-3"><a href="{{ route('checkins.create') }}" class="btn btn-primary">📍New Checkin</a>
+            <div class="mt-3 d-flex justify-content-between">
+                <a href="{{ route('pending.create') }}" class="btn btn-primary">📍Save Location</a>
+
+                <a href="{{ route('checkins.create') }}" class="btn btn-primary">➕ New Checkin</a>
+            </div>
         </div>
     </div>
 </div>
