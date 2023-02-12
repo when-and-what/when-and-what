@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\NoteRequest;
 use App\Models\Note;
+use App\Traits\TaggableController;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class NoteController extends Controller
 {
+    use TaggableController;
+
     public function __construct()
     {
         $this->authorizeResource(Note::class, 'note');
@@ -59,6 +62,8 @@ class NoteController extends Controller
         $note->fill($request->safe()->all());
         $note->save();
 
+        $this->saveTags($note->sub_title, $note, $request->user());
+
         return redirect(route('notes.index'));
     }
 
@@ -104,6 +109,8 @@ class NoteController extends Controller
         }
         $note->fill($request->safe()->all());
         $note->save();
+
+        $this->saveTags($note->sub_title, $note, $request->user());
 
         return redirect(route('notes.index'));
     }
