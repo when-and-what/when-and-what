@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Responses\DashboardResponse;
 use App\Models\Account;
 use App\Models\Locations\Checkin;
+use App\Models\Locations\PendingCheckin;
 use App\Models\Note;
 use App\Models\Podcasts\EpisodePlay;
 use Carbon\Carbon;
@@ -56,6 +57,36 @@ class DashboardController extends Controller
                 latitude: $checkin->location->latitude,
                 longitude: $checkin->location->longitude,
                 title: $checkin->location->name
+            );
+        }
+        return $dashboard;
+    }
+
+    public function pendingCheckins(Request $request, $date)
+    {
+        $start = new Carbon($date . ' 00:00:00', $request->user()->timezone);
+        $end = $start->copy()->addDay(1);
+        $checkins = PendingCheckin::whereBelongsTo($request->user())
+            ->where('checkin_at', '>=', $start)
+            ->where('checkin_at', '<', $end)
+            ->get();
+
+        $dashboard = new DashboardResponse('pending');
+        foreach ($checkins as $checkin) {
+            $dashboard->addEvent(
+                id: $checkin->id,
+                date: $checkin->checkin_at,
+                title: $checkin->name ?: 'Pending Checkin',
+                details: [
+                    'icon' => '📍',
+                    'dateLink' => route('pending.edit', $checkin),
+                ]
+            );
+            $dashboard->addPin(
+                id: $checkin->id,
+                latitude: $checkin->latitude,
+                longitude: $checkin->longitude,
+                title: $checkin->name ?: 'Pending Checkin'
             );
         }
         return $dashboard;

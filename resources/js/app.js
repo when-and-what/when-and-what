@@ -68,6 +68,9 @@ const dashboard = createApp({
             response.data.lines.forEach((line) => {
                 this.addLine(response.data.color, line.cords);
             });
+            response.data.pins.forEach((pin) => {
+                this.addPin(pin);
+            });
         },
         accountRequest(account) {
             axios
@@ -80,6 +83,25 @@ const dashboard = createApp({
             this.mapLine = L.polyline(cords, { color: color, weight: 2 }).addTo(self.map);
             self.bounds.push(self.mapLine.getBounds());
             this.map.fitBounds(self.bounds);
+        },
+        addPin(pin) {
+            var latlng = L.latLng([pin.latitude, pin.longitude]);
+            self.bounds.push([pin.latitude, pin.longitude]);
+            L.marker(latlng, {
+                title: pin.title,
+            })
+                .on({
+                    mouseover: function () {
+                        document.getElementById(pin.id).classList.add('border');
+                        document.getElementById(pin.id).classList.add('border-primary');
+                    },
+                    mouseout: function () {
+                        document.getElementById(pin.id).classList.remove('border');
+                        document.getElementById(pin.id).classList.remove('border-primary');
+                    },
+                })
+                .addTo(self.map);
+            self.map.fitBounds(self.bounds);
         },
         resetNote() {
             this.note = {
@@ -125,30 +147,7 @@ const dashboard = createApp({
         });
         axios.get('/api/dashboard/notes/' + self.date).then(this.accountResponse);
         axios.get('/api/dashboard/podcasts/' + self.date).then(this.accountResponse);
-        axios.get('/api/dashboard/checkins/' + self.date).then(function (response) {
-            response.data.events.forEach((event) => {
-                self.events.push(event);
-            });
-            response.data.pins.forEach((pin) => {
-                var latlng = L.latLng([pin.latitude, pin.longitude]);
-                console.log(latlng);
-                self.bounds.push([pin.latitude, pin.longitude]);
-                L.marker(latlng, {
-                    title: pin.title,
-                })
-                    .on({
-                        mouseover: function () {
-                            document.getElementById(pin.id).classList.add('border');
-                            document.getElementById(pin.id).classList.add('border-primary');
-                        },
-                        mouseout: function () {
-                            document.getElementById(pin.id).classList.remove('border');
-                            document.getElementById(pin.id).classList.remove('border-primary');
-                        },
-                    })
-                    .addTo(self.map);
-                self.map.fitBounds(self.bounds);
-            });
-        });
+        axios.get('/api/dashboard/checkins/' + self.date).then(this.accountResponse);
+        axios.get('/api/dashboard/pending_checkins/' + self.date).then(this.accountResponse);
     },
 }).mount('#dashboard-container');

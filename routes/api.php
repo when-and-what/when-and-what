@@ -27,6 +27,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware('auth:sanctum')->group(function(){
     Route::get('dashboard/checkins/{date}', [DashboardController::class, 'checkins']);
+    Route::get('dashboard/pending_checkins/{date}', [DashboardController::class, 'pendingCheckins']);
     Route::get('dashboard/notes/{date}', [DashboardController::class, 'notes']);
     Route::get('dashboard/podcasts/{date}', [DashboardController::class, 'podcasts']);
     Route::get('/dashboard/{account}/{date}', [DashboardController::class, 'day']);
