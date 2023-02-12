@@ -32,14 +32,14 @@ class ApiTokenPermissionsTest extends TestCase
                     ->set(['managingPermissionsFor' => $token])
                     ->set(['updateApiTokenForm' => [
                         'permissions' => [
-                            'delete',
+                            'checkins',
                             'missing-permission',
                         ],
                     ]])
                     ->call('updateApiToken');
 
-        $this->assertTrue($user->fresh()->tokens->first()->can('delete'));
-        $this->assertFalse($user->fresh()->tokens->first()->can('read'));
+        $this->assertTrue($user->fresh()->tokens->first()->can('checkins'));
+        $this->assertFalse($user->fresh()->tokens->first()->can('podcasts'));
         $this->assertFalse($user->fresh()->tokens->first()->can('missing-permission'));
     }
 }
