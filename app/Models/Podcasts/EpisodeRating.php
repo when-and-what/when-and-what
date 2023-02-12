@@ -23,12 +23,12 @@ class EpisodeRating extends Model
 
     protected $fillable = ['rating', 'notes'];
 
-    public function episode()
+    public function episode(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Episode::class);
     }
 
-    public function user()
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
     }

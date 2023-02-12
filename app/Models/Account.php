@@ -14,7 +14,7 @@ class Account extends Model
         return $query->whereRelation('users', 'user_id', $user->id);
     }
 
-    public function users()
+    public function users(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(User::class)->using(AccountUser::class);
     }

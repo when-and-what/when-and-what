@@ -14,12 +14,12 @@ class Category extends Model
 
     protected $fillable = ['name', 'emoji'];
 
-    public function user()
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function locations()
+    public function locations(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Location::class)->withTimestamps();
     }

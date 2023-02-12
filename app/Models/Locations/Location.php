@@ -12,12 +12,12 @@ class Location extends Model
 
     protected $fillable = ['latitude', 'longitude', 'name'];
 
-    public function category()
+    public function category(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Category::class);
     }
 
-    public function user()
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
     }

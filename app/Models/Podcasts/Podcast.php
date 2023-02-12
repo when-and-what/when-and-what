@@ -24,12 +24,12 @@ class Podcast extends Model
 
     protected $fillable = ['name', 'nickname', 'website', 'feed', 'created_by'];
 
-    public function episodes()
+    public function episodes(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Episode::class);
     }
 
-    public function user()
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
     }

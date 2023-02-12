@@ -37,17 +37,17 @@ class Episode extends Model
 
     protected $with = ['podcast'];
 
-    public function podcast()
+    public function podcast(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Podcast::class);
     }
 
-    public function plays()
+    public function plays(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(EpisodePlay::class);
     }
 
-    public function rating()
+    public function rating(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(EpisodeRating::class);
     }

@@ -14,12 +14,12 @@ class Checkin extends Model
 
     protected $casts = ['checkin_at' => 'datetime'];
 
-    public function location()
+    public function location(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Location::class);
     }
 
-    public function user()
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
     }
