@@ -37,17 +37,24 @@ class DashboardController extends Controller
         $checkins = Checkin::whereBelongsTo($request->user())
             ->where('checkin_at', '>=', $start)
             ->where('checkin_at', '<', $end)
-            ->with('location')
+            ->with('location.category')
             ->get();
 
         $dashboard = new DashboardResponse('checkin');
         foreach ($checkins as $checkin) {
+            $icon = '';
+            foreach ($checkin->location->category as $category) {
+                $icon .= $category->emoji;
+            }
+            if ($icon == '') {
+                $icon = '📍';
+            }
             $dashboard->addEvent(
                 id: $checkin->id,
                 date: $checkin->checkin_at,
                 title: $checkin->location->name,
                 details: [
-                    'icon' => '📍',
+                    'icon' => $icon,
                     'titleLink' => route('locations.show', $checkin->location),
                     'dateLink' => route('checkins.edit', $checkin),
                     'subTitle' => $checkin->note,

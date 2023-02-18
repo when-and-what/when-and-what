@@ -4,7 +4,9 @@ namespace Tests\Feature\Dashboard;
 
 use App\Models\Account;
 use App\Models\AccountUser;
+use App\Models\Locations\Category;
 use App\Models\Locations\Checkin;
+use App\Models\Locations\Location;
 use App\Models\Locations\PendingCheckin;
 use App\Models\User;
 use App\Services\Accounts\Trakt;
@@ -35,6 +37,74 @@ class DashboardApiTest extends TestCase
             ->assertJsonCount(1, 'events')
             ->assertJsonCount(1, 'pins')
             ->assertJsonFragment(['subTitle' => $checkin->note]);
+    }
+
+    public function test_icon_returned_for_checkin_event()
+    {
+        $user = User::factory()->create(['timezone' => 'America/Denver']);
+        $categoryNoEmoji = Category::factory()->create(['emoji' => null]);
+        $category1 = Category::factory()->create();
+        ray($category1);
+        $category2 = Category::factory()->create();
+        $this->assertNotEquals($category1->emoji, $category2->emoji);
+
+        // No location category
+        $checkin = Checkin::factory()->create([
+            'user_id' => $user->id,
+            'checkin_at' => '2023-01-01 12:00:00',
+        ]);
+        $response = $this->actingAs($user)->getJson('api/dashboard/checkins/2023-01-01');
+        $response
+            ->assertStatus(200)
+            ->assertJsonCount(1, 'events')
+            ->assertJsonCount(1, 'pins')
+            ->assertJsonFragment(['icon' => '📍']);
+
+        // Location category but no emoji
+        $location = Location::factory()->create();
+        $location->category()->save($categoryNoEmoji);
+        $checkin = Checkin::factory()->create([
+            'user_id' => $user->id,
+            'location_id' => $location->id,
+            'checkin_at' => '2023-01-02 12:00:00',
+        ]);
+        $response = $this->actingAs($user)->getJson('api/dashboard/checkins/2023-01-02');
+        $response
+            ->assertStatus(200)
+            ->assertJsonCount(1, 'events')
+            ->assertJsonCount(1, 'pins')
+            ->assertJsonFragment(['icon' => '📍']);
+
+        // one category
+        $location = Location::factory()->create();
+        $location->category()->save($category1);
+        $checkin = Checkin::factory()->create([
+            'user_id' => $user->id,
+            'location_id' => $location->id,
+            'checkin_at' => '2023-01-03 12:00:00',
+        ]);
+        $response = $this->actingAs($user)->getJson('api/dashboard/checkins/2023-01-03');
+        $response
+            ->assertStatus(200)
+            ->assertJsonCount(1, 'events')
+            ->assertJsonCount(1, 'pins')
+            ->assertJsonFragment(['icon' => $category1->emoji]);
+
+        // two categories with icons
+        $location = Location::factory()->create();
+        $location->category()->save($category1);
+        $location->category()->save($category2);
+        $checkin = Checkin::factory()->create([
+            'user_id' => $user->id,
+            'location_id' => $location->id,
+            'checkin_at' => '2023-01-04 12:00:00',
+        ]);
+        $response = $this->actingAs($user)->getJson('api/dashboard/checkins/2023-01-04');
+        $response
+            ->assertStatus(200)
+            ->assertJsonCount(1, 'events')
+            ->assertJsonCount(1, 'pins')
+            ->assertJsonFragment(['icon' => $category1->emoji . $category2->emoji]);
     }
 
     public function test_it_returns_pending_checkins_for_dashboard()
