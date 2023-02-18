@@ -41,8 +41,8 @@ class Trakt extends UserAccount
             $dashboard->addEvent(
                 id: $episode['id'],
                 date: new Carbon($episode['watched_at']),
-                title: $episode['show']['title'] . ' : ' . $episode['episode']['title'],
-                details: ['icon' => '📺']
+                title: $episode['show']['title'],
+                details: ['icon' => '📺', 'subTitle' => $episode['episode']['title']]
             );
         }
         return $dashboard;
