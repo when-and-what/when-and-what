@@ -5,7 +5,7 @@
                 v-if="event.titleLink"
                 :href="event.titleLink"
                 v-html="tagLinks(event.icon + ' ' + event.title)"
-                class="text-decoration-none"
+                class="text-decoration-none d-block"
             ></a>
             <div v-else v-html="tagLinks(event.icon + ' ' + event.title)"></div>
             <a :href="event.subTitleLink" v-if="event.subTitleLink">{{ event.subTitle }}</a>
