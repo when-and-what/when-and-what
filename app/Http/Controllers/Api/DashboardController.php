@@ -50,6 +50,7 @@ class DashboardController extends Controller
                     'icon' => '📍',
                     'titleLink' => route('locations.show', $checkin->location),
                     'dateLink' => route('checkins.edit', $checkin),
+                    'subTitle' => $checkin->note,
                 ]
             );
             $dashboard->addPin(
@@ -80,6 +81,7 @@ class DashboardController extends Controller
                 details: [
                     'icon' => '📍',
                     'dateLink' => route('pending.edit', $checkin),
+                    'subTitle' => $checkin->note,
                 ]
             );
             $dashboard->addPin(
