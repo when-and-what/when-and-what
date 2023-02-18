@@ -44,7 +44,6 @@ class DashboardApiTest extends TestCase
         $user = User::factory()->create(['timezone' => 'America/Denver']);
         $categoryNoEmoji = Category::factory()->create(['emoji' => null]);
         $category1 = Category::factory()->create();
-        ray($category1);
         $category2 = Category::factory()->create();
         $this->assertNotEquals($category1->emoji, $category2->emoji);
 
