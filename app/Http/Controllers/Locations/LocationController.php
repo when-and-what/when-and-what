@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Locations;
 
 use App\Actions\CreateNewLocation;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Locations\LocationRequest;
 use App\Models\Locations\Category;
 use App\Models\Locations\Checkin;
 use App\Models\Locations\Location;
@@ -59,15 +60,9 @@ class LocationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, CreateNewLocation $createNewLocation)
+    public function store(LocationRequest $request, CreateNewLocation $createNewLocation)
     {
-        $validated = $request->validate([
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric',
-            'name' => 'required',
-            'category' => 'nullable',
-        ]);
-
+        $validated = $request->validated();
         $location = $createNewLocation(
             ...[
                 'categories' => isset($validated['category']) ? $validated['category'] : null,
@@ -122,19 +117,17 @@ class LocationController extends Controller
      * @param  \App\Models\Locations\Location  $location
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Location $location)
+    public function update(LocationRequest $request, Location $location)
     {
-        $validated = $request->validate([
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric',
-            'name' => 'required',
-            'category' => 'nullable',
-        ]);
-
+        $validated = $request->validated();
         $location->fill($validated);
         $location->save();
 
-        $location->category()->sync($validated['category']);
+        if (isset($validated['category']) && count($validated['category']) > 0) {
+            $location->category()->sync($validated['category']);
+        } else {
+            $location->category()->sync([]);
+        }
 
         return redirect(route('locations.edit', $location));
     }
