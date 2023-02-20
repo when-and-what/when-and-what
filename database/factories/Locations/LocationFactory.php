@@ -2,7 +2,6 @@
 
 namespace Database\Factories\Locations;
 
-use App\Models\Locations\Category;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,9 +17,8 @@ class LocationFactory extends Factory
      */
     public function definition()
     {
-        $user = User::factory()->create();
         return [
-            'user_id' => $user,
+            'user_id' => User::factory(),
             'name' => $this->faker->words(2, true),
             'latitude' => $this->faker->latitude(),
             'longitude' => $this->faker->longitude(),
