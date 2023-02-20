@@ -147,8 +147,9 @@ class DashboardController extends Controller
                 details: [
                     'icon' => '🎙',
                     'subTitle' => $play->episode->podcast->name,
+                    'titleLink' => route('episodes.show', $play->episode),
                     'subTitleLink' => route('podcasts.show', $play->episode->podcast),
-                    'dateLink' => route('episodes.show', $play),
+                    'dateLink' => route('plays.edit', $play),
                 ]
             );
         }
