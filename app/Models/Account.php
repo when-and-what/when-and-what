@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,9 +10,9 @@ class Account extends Model
 {
     use HasFactory;
 
-    public function scopeUserAccount($query, User $user)
+    public function scopeUserAccount(Builder $query, User $user): void
     {
-        return $query->whereRelation('users', 'user_id', $user->id);
+        $query->whereRelation('users', 'user_id', $user->id);
     }
 
     public function users(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -21,10 +22,8 @@ class Account extends Model
 
     /**
      * Get the route key for accounts
-     *
-     * @return string
      */
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'slug';
     }
