@@ -28,4 +28,9 @@ class Note extends Model
     {
         return $this->morphToMany(Tag::class, 'taggable');
     }
+
+    public function scopeDashboard($query, bool $dashboard): void
+    {
+        $query->where('dashboard_visible', $dashboard);
+    }
 }
