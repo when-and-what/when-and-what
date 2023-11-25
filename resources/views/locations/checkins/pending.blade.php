@@ -47,7 +47,7 @@
         <checkinmap />
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <x-jet-label for="note" value="Note" />
+                <x-label for="note" value="Note" />
                 <textarea name="note" id="note" v-model="checkin.note" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm w-full"></textarea>
             </div>
         </div>
