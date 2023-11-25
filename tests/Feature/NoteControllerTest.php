@@ -24,8 +24,10 @@ class NoteControllerTest extends TestCase
 
     public function test_view_notes()
     {
-        $notes = Note::factory(6)->create(['user_id' => $this->user->id]);
-        $notes2 = Note::factory(8)->create(['user_id' => $this->user2->id]);
+        $notes = Note::factory(6)->dashboard_hidden()->create(['user_id' => $this->user->id]);
+        Note::factory(6)->dashboard_visible()->create(['user_id' => $this->user->id]);
+        $notes2 = Note::factory(8)->dashboard_hidden()->create(['user_id' => $this->user2->id]);
+        Note::factory(8)->dashboard_visible()->create(['user_id' => $this->user2->id]);
         Note::factory(15)->create();
 
         $response = $this->get(route('notes.index'));
@@ -38,6 +40,7 @@ class NoteControllerTest extends TestCase
             'notes',
             Note::whereBelongsTo($this->user)
                 ->orderBy('published_at', 'desc')
+                ->dashboard(false)
                 ->get()
         );
         foreach ($notes as $note) {
@@ -51,6 +54,7 @@ class NoteControllerTest extends TestCase
             'notes',
             Note::whereBelongsTo($this->user2)
                 ->orderBy('published_at', 'desc')
+                ->dashboard(false)
                 ->get()
         );
         foreach ($notes2 as $note) {

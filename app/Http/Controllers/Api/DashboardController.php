@@ -107,9 +107,9 @@ class DashboardController extends Controller
         $start->setTimezone('UTC');
         $end = $start->copy()->addDay(1);
         $notes = Note::whereBelongsTo($request->user())
+            ->dashboard(true)
             ->where('published_at', '>=', $start)
             ->where('published_at', '<', $end)
-            ->where('dashboard_visible', true)
             ->get();
         $response = new DashboardResponse('notes');
         foreach ($notes as $note) {

@@ -14,7 +14,8 @@ class NotesControllerTest extends TestCase
         $this->get(route('notes.index'))->assertRedirect('login');
 
         $user = User::factory()->create();
-        Note::factory(15)->create(['user_id' => $user->id]);
+        Note::factory(15)->dashboard_hidden()->create(['user_id' => $user->id]);
+        Note::factory(7)->dashboard_visible()->create(['user_id' => $user->id]);
         Note::factory(20)->create();
         $response = $this->actingAs($user)->get(route('notes.index'));
         $response->assertStatus(200);

@@ -33,7 +33,7 @@ class NoteFactory extends Factory
      *
      * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function visible()
+    public function dashboard_visible()
     {
         return $this->state(function (array $attributes) {
             return [
@@ -47,7 +47,7 @@ class NoteFactory extends Factory
      *
      * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function hidden()
+    public function dashboard_hidden()
     {
         return $this->state(function (array $attributes) {
             return [
