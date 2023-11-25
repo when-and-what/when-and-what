@@ -1,11 +1,7 @@
 require('./bootstrap');
 
-import Alpine from 'alpinejs';
 import axios from 'axios';
 
-window.Alpine = Alpine;
-
-Alpine.start();
 
 import { createApp } from 'vue';
 import newlocation from './components/location.vue';
