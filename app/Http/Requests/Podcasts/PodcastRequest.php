@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Podcasts;
 
+use App\Models\Podcasts\Podcast;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -15,8 +16,9 @@ class PodcastRequest extends FormRequest
      */
     public function authorize()
     {
+        /** @var Podcast $podcast */
         $podcast = $this->route('podcast');
-        return $podcast == null || $podcast->created_by == $this->user()->id;
+        return $podcast == null || $podcast->created_by === $this->user()->id;
     }
 
     /**

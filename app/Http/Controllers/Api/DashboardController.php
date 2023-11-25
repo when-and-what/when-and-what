@@ -33,7 +33,7 @@ class DashboardController extends Controller
     public function checkins(Request $request, $date)
     {
         $start = new Carbon($date . ' 00:00:00', $request->user()->timezone);
-        $end = $start->copy()->addDay(1);
+        $end = $start->copy()->addDay();
         $checkins = Checkin::whereBelongsTo($request->user())
             ->where('checkin_at', '>=', $start)
             ->where('checkin_at', '<', $end)
