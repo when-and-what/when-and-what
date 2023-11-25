@@ -25,6 +25,7 @@ class NoteController extends Controller
         return view('notes.index', [
             // must filter by user id, access not managed by policy class
             'notes' => Note::whereBelongsTo($request->user())
+                ->dashboard(false)
                 ->orderBy('published_at', 'desc')
                 ->get(),
         ]);
@@ -61,6 +62,7 @@ class NoteController extends Controller
             $note->published_at = new Carbon();
         }
         $note->fill($request->safe()->all());
+        $note->dashboard_visible = $request->boolean('dashboard');
         $note->save();
 
         return redirect(route('notes.index'));
@@ -105,6 +107,7 @@ class NoteController extends Controller
             'GMT'
         );
         $note->fill($request->safe()->all());
+        $note->dashboard_visible = $request->boolean('dashboard');
         $note->save();
 
         return redirect(route('notes.index'));

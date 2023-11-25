@@ -7,10 +7,15 @@
         <h3><a href="{{ route('notes.create') }}" title="New Note" class="float-end">➕️</a></h3>
     </div>
 </div>
-<div class="row">
+<div class="list-group">
     @foreach($notes as $note)
-        <div class="col-md-4 col-lg-3">
-            <a href="{{ route('notes.edit', $note) }}">{{ $note->title }}</a>
+        <div class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <h4><a href="{{ route('notes.show', $note) }}">{{ $note->title }}</a></h4>
+                <a href="{{ route('notes.edit', $note) }}"><small class="text-body-secondary">{{ $note->published_at->diffForHumans() }}</small></a>
+            </div>
+            @if($note->sub_title) <p><small class="text-body-secondary">{{ $note->sub_title }}</small></p> @endif
+            {{ $note->note }}
         </div>
     @endforeach
 </div>

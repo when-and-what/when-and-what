@@ -52,6 +52,9 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link @if(strpos($routeName, 'notes') === 0) active @endif" href="/notes">Journal</a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle @if(strpos($routeName, 'podcasts') === 0 || strpos($routeName, 'episodes') === 0) active @endif" href="#" id="navPodcastDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Podcasts

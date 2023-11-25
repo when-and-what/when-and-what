@@ -87,7 +87,7 @@
     @enderror
 </div>
 <div class="form-check form-switch">
-    <input class="form-check-input" type="checkbox" name="dashboard_visible" value="1" role="switch" id="dashboard_visible" @checked($note ? $note->dashboard_visible: true)>
+    <input class="form-check-input" type="checkbox" name="dashboard_visible" value="1" role="switch" id="dashboard_visible" @checked($note ? $note->dashboard_visible: false)>
     <label class="form-check-label" for="dashboard_visible">Dashboard</label>
 </div>
 <p><input type="submit" class="btn btn-primary" value="{{ $note ? 'Update' : 'Create' }}" /></p>
