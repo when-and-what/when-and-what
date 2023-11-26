@@ -6,6 +6,7 @@ use App\Http\Requests\Notes\CreateNoteRequest;
 use App\Http\Requests\Notes\EditNoteRequest;
 use App\Models\Note;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class NoteController extends Controller
@@ -42,7 +43,7 @@ class NoteController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateNoteRequest $request)
+    public function store(CreateNoteRequest $request): RedirectResponse
     {
         $note = new Note();
         $note->user_id = $request->user()->id;
@@ -55,7 +56,7 @@ class NoteController extends Controller
             $note->published_at = new Carbon();
         }
         $note->fill($request->safe()->all());
-        $note->dashboard_visible = $request->boolean('dashboard');
+        $note->dashboard_visible = $request->boolean('dashboard_visible');
         $note->save();
 
         return redirect(route('notes.index'));
@@ -84,13 +85,13 @@ class NoteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(EditNoteRequest $request, Note $note)
+    public function update(EditNoteRequest $request, Note $note): RedirectResponse
     {
         $note->published_at = Carbon::parse($request->published_at, $request->user()->timezone)->tz(
             'GMT'
         );
         $note->fill($request->safe()->all());
-        $note->dashboard_visible = $request->boolean('dashboard');
+        $note->dashboard_visible = $request->boolean('dashboard_visible');
         $note->save();
 
         return redirect(route('notes.index'));
@@ -99,7 +100,7 @@ class NoteController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Note $note)
+    public function destroy(Note $note): RedirectResponse
     {
         $note->delete();
 
