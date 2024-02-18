@@ -10,7 +10,11 @@
                     {{ $account->name }}
                 </h3>
                 @if(count($account->users) > 0)
-                    ✅️
+                    <form action="{{ route('accounts.destroy', $account) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn">✅️</button>
+                    </form>
                 @else
                     <a href="{{ route('accounts.show', $account) }}">✖️</a>
                 @endif
