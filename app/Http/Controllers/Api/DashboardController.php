@@ -35,8 +35,8 @@ class DashboardController extends Controller
         $start = new Carbon($date . ' 00:00:00', $request->user()->timezone);
         $end = $start->copy()->addDay();
         $checkins = Checkin::whereBelongsTo($request->user())
-            ->where('checkin_at', '>=', $start)
-            ->where('checkin_at', '<', $end)
+            ->where('checkin_at', '>=', $start->toAtomString())
+            ->where('checkin_at', '<', $end->toAtomString())
             ->with('location.category')
             ->get();
 
