@@ -51,7 +51,7 @@
         </div>
         <div class="col-md-7">
             <div id="dashboard-map" style="height:500px;width100%;"></div>
-            <div class="mt-3 d-flex justify-content-between">
+            <div class="my-3 d-flex justify-content-between">
                 <a href="{{ route('pending.create') }}" class="btn btn-primary">📍Save Location</a>
 
                 <a href="{{ route('checkins.create') }}" class="btn btn-primary">➕ New Checkin</a>
