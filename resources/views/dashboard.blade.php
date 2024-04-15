@@ -44,14 +44,14 @@
                                 </div>
                             </div>
                         </div>
-                        <p><button class="btn btn-primary" @click="saveNote">Add</button></p>
+                        <p class="my-3"><button class="btn btn-primary p-2" @click="saveNote">Add Note</button></p>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-7">
             <div id="dashboard-map" style="height:500px;width100%;"></div>
-            <div class="my-3 d-flex justify-content-between">
+            <div class="mt-3 mb-5 d-flex justify-content-between">
                 <a href="{{ route('pending.create') }}" class="btn btn-primary">📍Save Location</a>
 
                 <a href="{{ route('checkins.create') }}" class="btn btn-primary">➕ New Checkin</a>
