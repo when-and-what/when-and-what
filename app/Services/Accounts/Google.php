@@ -30,7 +30,7 @@ class Google extends UserAccount
             [
                 'client_id' => config('services.google.client_id'),
                 'client_secret' => config('services.google.client_secret'),
-                'refresh_token' => $this->account->refresh_token,
+                'refresh_token' => $this->accountUser->refresh_token,
             ]
         );
         $start = new Date();
@@ -41,19 +41,25 @@ class Google extends UserAccount
         $end->setDay($endDate->day);
         $end->setMonth($endDate->month);
         $end->setYear($endDate->year);
+
         $client = new PhotosLibraryClient(['credentials' => $authCredentials]);
         $filter = new FiltersBuilder();
         $filter->addDateRange($start, $end);
+
         $response = $client->searchMediaItems([
             'filters' => $filter->build()
         ]);
 
         foreach($response as $item) {
+            /* @var $item \Google\Photos\Library\V1\MediaItem */
             $dashboard->addEvent(
                 id: $item->getId(),
-                date: new Carbon($item->getMediaMetadata()->getCreationTime()),
+                date: new Carbon($item->getMediaMetadata()->getCreationTime()->getSeconds()),
                 title: $item->getFilename(),
-                details: ['icon' => '📷']
+                details: [
+                    'icon' => '📷',
+                    // 'subTitle' => '<img src="'.$item->getBaseUrl().'=w500-h500" />',
+                ]
             );
         }
         return $dashboard;

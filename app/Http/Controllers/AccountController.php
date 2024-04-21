@@ -34,9 +34,17 @@ class AccountController extends Controller
      */
     public function show(Account $account)
     {
-        return Socialite::driver($account->slug)
+        if($account->slug === 'google') {
+            return Socialite::driver($account->slug)
+            ->scopes(explode(',', $account->scope))
+            ->with(["access_type" => "offline", "prompt" => "consent select_account"])
+            ->redirect();
+        }
+        else {
+            return Socialite::driver($account->slug)
             ->scopes(explode(',', $account->scope))
             ->redirect();
+        }
     }
 
     /**
@@ -54,7 +62,7 @@ class AccountController extends Controller
         $au->account_id = $account->id;
         $au->account_user_id = $user->id;
         $au->token = $user->token;
-        $au->refresh_token = isset($user->accessTokenResponseBody['refresh_token']) ? $user->accessTokenResponseBody['refresh_token'] : '';
+        $au->refresh_token = $user->refreshToken;
         $au->save();
         return redirect(route('accounts.index'));
     }
