@@ -40,4 +40,11 @@ return [
         'client_secret' => env('TRAKT_CLIENT_SECRET'),
         'redirect' => env('APP_URL') . '/accounts/trakt/edit',
     ],
+
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('APP_URL') . '/accounts/google/edit',
+    ],
+
 ];

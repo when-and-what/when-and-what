@@ -31,5 +31,13 @@ class AccountSeeder extends Seeder
                 'scope' => '',
             ]);
         }
+        if( config('services.google.client_id') && !Account::where('slug', 'google')->first()) {
+            Account::create([
+                'name' => 'Google',
+                'slug' => 'google',
+                'service' => 'App\Services\Accounts\Google',
+                'scope' => 'https://www.googleapis.com/auth/photoslibrary.readonly',
+            ]);
+        }
     }
 }
