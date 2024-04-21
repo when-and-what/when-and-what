@@ -27,7 +27,11 @@ class Google extends UserAccount
 
         $authCredentials = new UserRefreshCredentials(
             $this->account->scope,
-            config('services.google.client_secret'),
+            [
+                'client_id' => config('services.google.client_id'),
+                'client_secret' => config('services.google.client_secret'),
+                'refresh_token' => $this->account->refresh_token,
+            ]
         );
         $start = new Date();
         $start->setDay($startDate->day);
