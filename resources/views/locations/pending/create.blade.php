@@ -27,11 +27,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="row text-center">
-                <input type="submit" class="btn btn-primary" value="Create" />
-            </div>
-        </div>
+        <x-submit-button value="Checkin!" />
         </form>
     </div>
 @endsection
