@@ -31,7 +31,7 @@ class Checkin extends Model
     public function scopeAfter(Builder $query, Carbon $date): void
     {
         if($date->timezone->getName() != config('app.timezone')) {
-            $date->shiftTimezone(config('app.timezone'));
+            $date->setTimezone(config('app.timezone'));
         }
         $query->where('checkin_at', '>=', $date);
     }
@@ -42,7 +42,7 @@ class Checkin extends Model
     public function scopeBefore(Builder $query, Carbon $date): void
     {
         if($date->timezone->getName() != config('app.timezone')) {
-            $date->shiftTimezone(config('app.timezone'));
+            $date->setTimezone(config('app.timezone'));
         }
         $query->where('checkin_at', '<=', $date);
     }
