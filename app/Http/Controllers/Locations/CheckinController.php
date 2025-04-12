@@ -17,9 +17,10 @@ class CheckinController extends Controller
     {
         $this->authorizeResource(Checkin::class, 'checkin');
     }
+
     /**
      * Display a listing of the resource.
-     *!this is not restricted  by the Checkin::class policy
+     *!this is not restricted  by the Checkin::class policy.
      *
      * @return \Illuminate\Http\Response
      */
@@ -29,6 +30,7 @@ class CheckinController extends Controller
             ->with(['location', 'location.category'])
             ->orderBy('checkin_at', 'DESC')
             ->paginate(30);
+
         return view('locations.checkins.list', [
             'checkins' => $checkins->groupBy(function ($checkin) use ($request) {
                 return $checkin->checkin_at
@@ -47,7 +49,7 @@ class CheckinController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Location $location = null)
+    public function create(?Location $location = null)
     {
         return view('locations.checkins.create', [
             'location' => $location,
@@ -76,6 +78,7 @@ class CheckinController extends Controller
         }
         $checkin->note = $validated['note'];
         $checkin->save();
+
         return redirect(route('locations.show', $checkin->location));
     }
 
@@ -120,6 +123,7 @@ class CheckinController extends Controller
         );
         $checkin->note = $validated['note'];
         $checkin->save();
+
         return redirect(route('checkins.edit', $checkin));
     }
 
@@ -132,6 +136,7 @@ class CheckinController extends Controller
     public function destroy(Checkin $checkin)
     {
         $checkin->delete();
+
         return redirect(route('checkins.index'));
     }
 }

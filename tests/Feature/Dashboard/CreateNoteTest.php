@@ -5,8 +5,6 @@ namespace Tests\Feature\Dashboard;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use ReflectionFunction;
 use Tests\TestCase;
 
 class CreateNoteTest extends TestCase

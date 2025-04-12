@@ -18,16 +18,15 @@ class Fitbit extends UserAccount
     public function refreshToken()
     {
         $response = Http::withHeaders([
-            'Authorization' =>
-                'Basic ' .
+            'Authorization' => 'Basic '.
                 base64_encode(
-                    config('services.fitbit.client_id') .
-                        ':' .
+                    config('services.fitbit.client_id').
+                        ':'.
                         config('services.fitbit.client_secret')
                 ),
         ])
             ->withBody(
-                'grant_type=refresh_token&refresh_token=' . $this->accountUser->refresh_token,
+                'grant_type=refresh_token&refresh_token='.$this->accountUser->refresh_token,
                 'application/x-www-form-urlencoded'
             )
             ->post('https://api.fitbit.com/oauth2/token');
@@ -37,12 +36,13 @@ class Fitbit extends UserAccount
             $this->accountUser->refresh_token = $details['refresh_token'];
             $this->accountUser->save();
         }
+
         return $response->json();
     }
 
     public function summary(Carbon $date)
     {
-        $url = 'https://api.fitbit.com/1/user/-/activities/date/' . $date->toDateString() . '.json';
+        $url = 'https://api.fitbit.com/1/user/-/activities/date/'.$date->toDateString().'.json';
 
         $response = Http::acceptJson()
             ->withToken($this->accountUser->token)
@@ -54,26 +54,28 @@ class Fitbit extends UserAccount
                 ->withToken($this->accountUser->token)
                 ->get($url);
         }
+
         return $response->json();
     }
 
     public function activities(Carbon $startDate, int $limit)
     {
         $url = 'https://api.fitbit.com/1/user/-/activities/list.json?afterDate=';
-        $url .= $startDate->toDateString() . '&limit=' . $limit;
+        $url .= $startDate->toDateString().'&limit='.$limit;
         $url .= '&sort=asc&offset=0';
 
         $response = Http::acceptJson()
             ->withToken($this->accountUser->token)
             ->get($url);
+
         return $response->json();
     }
 
     /**
      * Gets latitude and longitude from a tcx file
-     * some auto-detected and manual events will not have lat & lng
+     * some auto-detected and manual events will not have lat & lng.
      *
-     * @param array $activity from fitbit API
+     * @param  array  $activity  from fitbit API
      * @return array|null
      */
     public function getTcx(array $activity): ?array
@@ -92,21 +94,24 @@ class Fitbit extends UserAccount
                         (float) $trackpoint->Position->LongitudeDegrees,
                     ];
                 }
+
                 return $cords;
             }
         }
+
         return null;
     }
 
     private function getSleep(Carbon $startDate, Carbon $endDate)
     {
         $url = 'https://api.fitbit.com/1.2/user/-/sleep/date/';
-        $url .= $startDate->toDateString() . '/' . $endDate->toDateString();
+        $url .= $startDate->toDateString().'/'.$endDate->toDateString();
         $url .= '.json';
 
         $response = Http::acceptJson()
             ->withToken($this->accountUser->token)
             ->get($url);
+
         return $response->json();
     }
 
@@ -116,7 +121,7 @@ class Fitbit extends UserAccount
         if (isset($sleep['sleep']) && count($sleep['sleep']) > 0) {
             foreach ($sleep['sleep'] as $log) {
                 $duration =
-                    floor($log['minutesAsleep'] / 60) . 'h : ' . $log['minutesAsleep'] % 60 . 'm';
+                    floor($log['minutesAsleep'] / 60).'h : '.$log['minutesAsleep'] % 60 .'m';
                 // * using W&W timezone, not fitbit profile
                 $startSleep = new Carbon($log['startTime'], $this->accountUser->user->timezone);
                 if ($startDate->isSameDay($startSleep)) {
@@ -135,7 +140,7 @@ class Fitbit extends UserAccount
                         date: $endSleep,
                         title: 'Wake Up',
                         details: [
-                            'subTitle' => $log['isMainSleep'] ? '' : 'Nap :' . $duration,
+                            'subTitle' => $log['isMainSleep'] ? '' : 'Nap :'.$duration,
                             'icon' => $log['isMainSleep'] ? '⏰' : '😴',
                         ]
                     );
@@ -166,7 +171,7 @@ class Fitbit extends UserAccount
                     title: $activity['activityName'],
                     details: [
                         'subtitle' => isset($activity['distance'])
-                            ? $activity['distance'] . ' ' . $activity['distanceUnit']
+                            ? $activity['distance'].' '.$activity['distanceUnit']
                             : '',
                     ]
                 );

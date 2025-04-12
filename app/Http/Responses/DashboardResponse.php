@@ -4,7 +4,6 @@ namespace App\Http\Responses;
 
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Support\Collection;
 
 class DashboardResponse implements Jsonable
 {
@@ -85,6 +84,6 @@ class DashboardResponse implements Jsonable
 
     protected function id($id): string
     {
-        return $this->slug . '-' . $id;
+        return $this->slug.'-'.$id;
     }
 }

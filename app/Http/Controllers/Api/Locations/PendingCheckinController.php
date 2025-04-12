@@ -17,7 +17,8 @@ class PendingCheckinController extends Controller
 
     /**
      * Display a listing of the resource.
-     *! this is not restricted by the Pending:class policy
+     *! this is not restricted by the Pending:class policy.
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -47,6 +48,7 @@ class PendingCheckinController extends Controller
             $checkin->checkin_at = new Carbon();
         }
         $checkin->save();
+
         return response($checkin, 201);
     }
 

@@ -29,7 +29,7 @@ Route::get('/', function () {
     return redirect('/dashboard');
 });
 
-Route::middleware('auth:sanctum')->group(function(){
+Route::middleware('auth:sanctum')->group(function () {
     Route::get('/dashboard', [DayController::class, 'index'])->name('dashboard');
     Route::get('/day/{year}/{month}/{day}', [DayController::class, 'day'])->name('day')->whereNumber(['year', 'month', 'day']);
 

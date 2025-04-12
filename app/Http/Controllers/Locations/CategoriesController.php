@@ -16,7 +16,8 @@ class CategoriesController extends Controller
 
     /**
      * Display all of a user's categories
-     *!this is not restricted by the Category::class policy
+     *!this is not restricted by the Category::class policy.
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -58,6 +59,7 @@ class CategoriesController extends Controller
         $category->user_id = $request->user()->id;
         $category->fill($valid);
         $category->save();
+
         return redirect(route('categories.edit', $category));
     }
 
@@ -101,6 +103,7 @@ class CategoriesController extends Controller
 
         $category->fill($valid);
         $category->save();
+
         return redirect(route('categories.edit', $category));
     }
 

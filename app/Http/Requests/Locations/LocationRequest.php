@@ -26,6 +26,7 @@ class LocationRequest extends FormRequest
     public function rules()
     {
         $user_id = $this->user()->id;
+
         return [
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
@@ -36,8 +37,8 @@ class LocationRequest extends FormRequest
                 function ($attribute, $value, $fail) use ($user_id) {
                     $ids = [];
                     foreach ($value as $v) {
-                        if (!is_numeric($v)) {
-                            $fail($attribute . ' must be a valid category');
+                        if (! is_numeric($v)) {
+                            $fail($attribute.' must be a valid category');
                         } else {
                             $ids[] = $v;
                         }
@@ -46,7 +47,7 @@ class LocationRequest extends FormRequest
                         ->whereIn('id', $ids)
                         ->get();
                     if (count($check) != count($value)) {
-                        $fail($attribute . ' must be a valid category');
+                        $fail($attribute.' must be a valid category');
                     }
                 },
                 // 'exists:location_categories,id',

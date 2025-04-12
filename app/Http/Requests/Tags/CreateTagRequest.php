@@ -28,7 +28,7 @@ class CreateTagRequest extends FormRequest
             'name' => [
                 'required',
                 Rule::unique('tags')->where(
-                    fn($query) => $query->where('user_id', $this->user()->id)
+                    fn ($query) => $query->where('user_id', $this->user()->id)
                 ),
             ],
             'display_name' => 'required',

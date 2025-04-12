@@ -24,13 +24,13 @@ class Location extends Model
     }
 
     /**
-     * Restrict query to locations inside of a map boundery
+     * Restrict query to locations inside of a map boundery.
      *
-     * @param Builder $query
-     * @param float $north latitude
-     * @param float $south latitude
-     * @param float $east  longitude
-     * @param float $west  longitude
+     * @param  Builder  $query
+     * @param  float  $north  latitude
+     * @param  float  $south  latitude
+     * @param  float  $east  longitude
+     * @param  float  $west  longitude
      */
     public function scopeMap(Builder $query, float $north, float $south, float $east, float $west): void
     {

@@ -17,7 +17,7 @@ class CheckinController extends Controller
 
     /**
      * Return checkins
-     *!this is not restricted  by the Checkin policy
+     *!this is not restricted  by the Checkin policy.
      *
      * @return void
      */
@@ -54,6 +54,7 @@ class CheckinController extends Controller
     public function destroy(Checkin $checkin)
     {
         $checkin->delete();
+
         return $checkin;
     }
 }

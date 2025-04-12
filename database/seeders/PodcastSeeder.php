@@ -7,7 +7,6 @@ use App\Models\Podcasts\EpisodePlay;
 use App\Models\Podcasts\EpisodeRating;
 use App\Models\Podcasts\Podcast;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class PodcastSeeder extends Seeder

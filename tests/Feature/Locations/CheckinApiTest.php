@@ -55,11 +55,11 @@ class CheckinApiTest extends TestCase
         Sanctum::actingAs($user = User::factory()->create());
 
         $checkin = Checkin::factory()->create(['user_id' => $user->id]);
-        $response = $this->getJson('/api/locations/checkins/' . $checkin->id);
+        $response = $this->getJson('/api/locations/checkins/'.$checkin->id);
         $response->assertStatus(200);
 
         $checkin = Checkin::factory()->create();
-        $response = $this->getJson('/api/locations/checkins/' . $checkin->id);
+        $response = $this->getJson('/api/locations/checkins/'.$checkin->id);
         $response->assertStatus(403);
     }
 
@@ -68,13 +68,13 @@ class CheckinApiTest extends TestCase
         Sanctum::actingAs($user = User::factory()->create());
 
         $checkin = Checkin::factory()->create(['user_id' => $user->id]);
-        $response = $this->deleteJson('/api/locations/checkins/' . $checkin->id);
+        $response = $this->deleteJson('/api/locations/checkins/'.$checkin->id);
         $response->assertStatus(200);
         $this->assertNotNull($response->json('deleted_at'));
         $this->assertSoftDeleted('checkins', ['id' => $checkin->id]);
 
         $checkin = Checkin::factory()->create();
-        $response = $this->deleteJson('/api/locations/checkins/' . $checkin->id);
+        $response = $this->deleteJson('/api/locations/checkins/'.$checkin->id);
         $response->assertStatus(403);
         $this->assertNull($response->json('deleted_at'));
         $this->assertNotSoftDeleted('checkins', ['id' => $checkin->id]);

@@ -21,7 +21,7 @@ class Account extends Model
     }
 
     /**
-     * Get the route key for accounts
+     * Get the route key for accounts.
      */
     public function getRouteKeyName(): string
     {

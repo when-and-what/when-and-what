@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Account;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class AccountSeeder extends Seeder
@@ -15,7 +14,7 @@ class AccountSeeder extends Seeder
      */
     public function run()
     {
-        if (config('services.fitbit.client_id') && !Account::where('slug', 'fitbit')->first()) {
+        if (config('services.fitbit.client_id') && ! Account::where('slug', 'fitbit')->first()) {
             Account::create([
                 'name' => 'Fitbit',
                 'slug' => 'fitbit',
@@ -23,7 +22,7 @@ class AccountSeeder extends Seeder
                 'scope' => 'activity, heartrate, location, nutrition, profile, sleep, weight',
             ]);
         }
-        if (config('services.trakt.client_id') && !Account::where('slug', 'trakt')->first()) {
+        if (config('services.trakt.client_id') && ! Account::where('slug', 'trakt')->first()) {
             Account::create([
                 'name' => 'Trakt',
                 'slug' => 'trakt',

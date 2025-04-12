@@ -48,6 +48,7 @@ class PendingCheckinController extends Controller
             $checkin->checkin_at = new Carbon();
         }
         $checkin->save();
+
         return redirect(route('pending.edit', $checkin));
     }
 
@@ -104,12 +105,14 @@ class PendingCheckinController extends Controller
         if (isset($location)) {
             return redirect(route('locations.edit', $location));
         }
+
         return redirect(route('checkins.edit', $checkin));
     }
 
     public function destroy(PendingCheckin $pending)
     {
         $pending->delete();
+
         return redirect(route('checkins.index'));
     }
 }

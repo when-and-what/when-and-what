@@ -4,7 +4,6 @@ namespace App\Services\Accounts;
 
 use App\Http\Responses\DashboardResponse;
 use App\Models\User;
-use App\Services\DashboardElement;
 use App\Services\UserAccount;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
@@ -18,10 +17,10 @@ class Trakt extends UserAccount
     }
 
     /**
-     * Get history to populate dashboard
+     * Get history to populate dashboard.
      *
-     * @param Carbon $startDate
-     * @param Carbon $endDate
+     * @param  Carbon  $startDate
+     * @param  Carbon  $endDate
      * @return DashboardResponse
      */
     public function dashboard(Carbon $startDate, Carbon $endDate)
@@ -45,35 +44,38 @@ class Trakt extends UserAccount
                 details: ['icon' => '📺', 'subTitle' => $episode['episode']['title']]
             );
         }
+
         return $dashboard;
     }
 
     /**
-     * Get user's watch history
+     * Get user's watch history.
      *
-     * @param Carbon $startDate
-     * @param Carbon $endDate
-     * @param string $type  movies | shows | seasons | episodes
+     * @param  Carbon  $startDate
+     * @param  Carbon  $endDate
+     * @param  string  $type  movies | shows | seasons | episodes
      * @return mixed json
      */
     public function getHistory(Carbon $startDate, Carbon $endDate, string $type)
     {
-        $url = 'https://api.trakt.tv/users/' . $this->username() . '/history/' . $type;
-        $url .= '?start_at=' . $startDate->toIso8601ZuluString();
-        $url .= '&end_at=' . $endDate->toIso8601ZuluString();
+        $url = 'https://api.trakt.tv/users/'.$this->username().'/history/'.$type;
+        $url .= '?start_at='.$startDate->toIso8601ZuluString();
+        $url .= '&end_at='.$endDate->toIso8601ZuluString();
+
         return $this->_get($url);
     }
 
     /**
-     * Looks up the authenticated user's username if it's not saved in the model
+     * Looks up the authenticated user's username if it's not saved in the model.
      *
      * @return string
      */
     public function username(): string
     {
-        if (!$this->accountUser->username) {
+        if (! $this->accountUser->username) {
             $this->updateProfile();
         }
+
         return $this->accountUser->username;
     }
 
@@ -86,9 +88,9 @@ class Trakt extends UserAccount
     }
 
     /**
-     * Perform get request to track API
+     * Perform get request to track API.
      *
-     * @param string $url
+     * @param  string  $url
      * @return mixed
      */
     private function _get(string $url)

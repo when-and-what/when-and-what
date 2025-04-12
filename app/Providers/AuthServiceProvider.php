@@ -11,7 +11,6 @@ use App\Policies\Locations\CheckinPolicy;
 use App\Policies\Locations\LocationPolicy;
 use App\Policies\PendingPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {

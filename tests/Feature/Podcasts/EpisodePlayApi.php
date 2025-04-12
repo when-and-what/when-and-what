@@ -12,6 +12,7 @@ use Tests\TestCase;
 class EpisodePlayApi extends TestCase
 {
     use RefreshDatabase, WithFaker;
+
     /**
      * A basic feature test example.
      *
