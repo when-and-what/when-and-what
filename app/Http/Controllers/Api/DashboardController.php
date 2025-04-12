@@ -20,19 +20,20 @@ class DashboardController extends Controller
     {
         $user = $request->user();
         try {
-            $startDate = new Carbon($date . ' 00:00:00', new DateTimeZone($user->timezone));
+            $startDate = new Carbon($date.' 00:00:00', new DateTimeZone($user->timezone));
             $endDate = $startDate->copy()->endOfDay();
         } catch (Exception) {
             return new DashboardResponse($account->slug);
         }
 
         $service = new $account->service($account, $user);
+
         return $service->dashboard($startDate, $endDate);
     }
 
     public function checkins(Request $request, $date)
     {
-        $start = new Carbon($date . ' 00:00:00', $request->user()->timezone);
+        $start = new Carbon($date.' 00:00:00', $request->user()->timezone);
         $end = $start->copy()->addDay();
         $checkins = Checkin::whereBelongsTo($request->user())
             ->after($start)
@@ -67,12 +68,13 @@ class DashboardController extends Controller
                 title: $checkin->location->name
             );
         }
+
         return $dashboard;
     }
 
     public function pendingCheckins(Request $request, $date)
     {
-        $start = new Carbon($date . ' 00:00:00', $request->user()->timezone);
+        $start = new Carbon($date.' 00:00:00', $request->user()->timezone);
         $end = $start->copy()->addDay(1);
         $checkins = PendingCheckin::whereBelongsTo($request->user())
             ->where('checkin_at', '>=', $start)
@@ -98,12 +100,13 @@ class DashboardController extends Controller
                 title: $checkin->name ?: 'Pending Checkin'
             );
         }
+
         return $dashboard;
     }
 
     public function notes(Request $request, $date)
     {
-        $start = new Carbon($date . ' 00:00:00', $request->user()->timezone);
+        $start = new Carbon($date.' 00:00:00', $request->user()->timezone);
         $start->setTimezone('UTC');
         $end = $start->copy()->addDay(1);
         $notes = Note::whereBelongsTo($request->user())
@@ -124,12 +127,13 @@ class DashboardController extends Controller
                 ]
             );
         }
+
         return $response;
     }
 
     public function podcasts(Request $request, $date)
     {
-        $start = new Carbon($date . ' 00:00:00', $request->user()->timezone);
+        $start = new Carbon($date.' 00:00:00', $request->user()->timezone);
         $start->setTimezone('UTC');
         $end = $start->copy()->addDay(1);
 
@@ -153,6 +157,7 @@ class DashboardController extends Controller
                 ]
             );
         }
+
         return $response;
     }
 }

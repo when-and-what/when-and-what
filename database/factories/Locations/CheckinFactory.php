@@ -19,6 +19,7 @@ class CheckinFactory extends Factory
     public function definition()
     {
         $user = User::factory();
+
         return [
             'location_id' => Location::factory()->create(['user_id' => $user]),
             'user_id' => $user,

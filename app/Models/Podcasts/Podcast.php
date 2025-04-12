@@ -35,10 +35,10 @@ class Podcast extends Model
     }
 
     /**
-     * Only match podcasts with the given name
+     * Only match podcasts with the given name.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param string $name
+     * @param  string  $name
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeName($query, string $name)

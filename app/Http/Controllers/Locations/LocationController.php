@@ -16,9 +16,10 @@ class LocationController extends Controller
     {
         $this->authorizeResource(Location::class, 'location');
     }
+
     /**
      * Display a listing of the resource.
-     *!this is not restricted  by the Location policy
+     *!this is not restricted  by the Location policy.
      *
      * @return \Illuminate\Http\Response
      */
@@ -45,6 +46,7 @@ class LocationController extends Controller
         } else {
             $latitude = $longitude = null;
         }
+
         return view('locations.create', [
             'categories' => Category::whereBelongsTo($request->user())
                 ->orderBy('name', 'ASC')

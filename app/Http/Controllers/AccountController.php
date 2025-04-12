@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Models\AccountUser;
-use App\Services\UserAccount;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -56,6 +55,7 @@ class AccountController extends Controller
         $au->token = $user->token;
         $au->refresh_token = $user->refreshToken;
         $au->save();
+
         return redirect(route('accounts.index'));
     }
 
@@ -80,6 +80,7 @@ class AccountController extends Controller
     public function destroy(Request $request, Account $account)
     {
         AccountUser::whereBelongsTo($account)->whereBelongsTo($request->user())->delete();
+
         return redirect(route('accounts.index'));
     }
 }

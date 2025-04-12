@@ -11,7 +11,6 @@ use App\Models\Locations\PendingCheckin;
 use App\Models\User;
 use App\Services\Accounts\Trakt;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Http;
 use Mockery;
 use Mockery\MockInterface;
@@ -27,11 +26,11 @@ class DashboardApiTest extends TestCase
         $user = User::factory()->create(['timezone' => 'America/Denver']);
         $checkin = Checkin::factory()->create([
             'user_id' => $user->id,
-            'checkin_at' => $date . ' 12:00:00',
+            'checkin_at' => $date.' 12:00:00',
         ]);
-        Checkin::factory(5)->create(['checkin_at' => $date . ' 12:00:00']);
+        Checkin::factory(5)->create(['checkin_at' => $date.' 12:00:00']);
 
-        $response = $this->actingAs($user)->getJson('api/dashboard/checkins/' . $date);
+        $response = $this->actingAs($user)->getJson('api/dashboard/checkins/'.$date);
         $response
             ->assertStatus(200)
             ->assertJsonCount(1, 'events')
@@ -103,7 +102,7 @@ class DashboardApiTest extends TestCase
             ->assertStatus(200)
             ->assertJsonCount(1, 'events')
             ->assertJsonCount(1, 'pins')
-            ->assertJsonFragment(['icon' => $category1->emoji . $category2->emoji]);
+            ->assertJsonFragment(['icon' => $category1->emoji.$category2->emoji]);
     }
 
     public function test_it_returns_pending_checkins_for_dashboard()
@@ -112,11 +111,11 @@ class DashboardApiTest extends TestCase
         $user = User::factory()->create(['timezone' => 'America/Denver']);
         $checkin = PendingCheckin::factory()->create([
             'user_id' => $user->id,
-            'checkin_at' => $date . ' 12:00:00',
+            'checkin_at' => $date.' 12:00:00',
         ]);
-        PendingCheckin::factory(5)->create(['checkin_at' => $date . ' 12:00:00']);
+        PendingCheckin::factory(5)->create(['checkin_at' => $date.' 12:00:00']);
 
-        $response = $this->actingAs($user)->getJson('api/dashboard/pending_checkins/' . $date);
+        $response = $this->actingAs($user)->getJson('api/dashboard/pending_checkins/'.$date);
         $response
             ->assertStatus(200)
             ->assertJsonCount(1, 'events')
@@ -145,6 +144,6 @@ class DashboardApiTest extends TestCase
             })
         );
         Http::fake(['*' => '']);
-        $response = $this->actingAs($user)->getJson('api/dashboard/trakt/' . date('Y-m-d'));
+        $response = $this->actingAs($user)->getJson('api/dashboard/trakt/'.date('Y-m-d'));
     }
 }

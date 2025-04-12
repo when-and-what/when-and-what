@@ -42,6 +42,7 @@ class PodcastController extends Controller
         }
         $podcast->created_by = $request->user()->id;
         $podcast->save();
+
         return redirect('podcasts');
     }
 
@@ -75,6 +76,7 @@ class PodcastController extends Controller
     {
         $podcast->fill($request->safe()->all());
         $podcast->save();
+
         return redirect('podcasts');
     }
 
@@ -87,6 +89,7 @@ class PodcastController extends Controller
             abort(401, 'You do not have access to delete this podcast');
         }
         $podcast->delete();
+
         return redirect('podcasts');
     }
 }

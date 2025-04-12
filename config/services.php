@@ -32,12 +32,12 @@ return [
     'fitbit' => [
         'client_id' => env('FITBIT_CLIENT_ID'),
         'client_secret' => env('FITBIT_CLIENT_SECRET'),
-        'redirect' => env('APP_URL') . '/accounts/fitbit/edit',
+        'redirect' => env('APP_URL').'/accounts/fitbit/edit',
     ],
 
     'trakt' => [
         'client_id' => env('TRAKT_CLIENT_ID'),
         'client_secret' => env('TRAKT_CLIENT_SECRET'),
-        'redirect' => env('APP_URL') . '/accounts/trakt/edit',
+        'redirect' => env('APP_URL').'/accounts/trakt/edit',
     ],
 ];

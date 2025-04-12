@@ -26,22 +26,22 @@ class Checkin extends Model
     }
 
     /**
-     * Scope a query to only return checkins after a given date
+     * Scope a query to only return checkins after a given date.
      */
     public function scopeAfter(Builder $query, Carbon $date): void
     {
-        if($date->timezone->getName() != config('app.timezone')) {
+        if ($date->timezone->getName() != config('app.timezone')) {
             $date->setTimezone(config('app.timezone'));
         }
         $query->where('checkin_at', '>=', $date);
     }
 
     /**
-     * Scope a query to only return checkins before a given date
+     * Scope a query to only return checkins before a given date.
      */
     public function scopeBefore(Builder $query, Carbon $date): void
     {
-        if($date->timezone->getName() != config('app.timezone')) {
+        if ($date->timezone->getName() != config('app.timezone')) {
             $date->setTimezone(config('app.timezone'));
         }
         $query->where('checkin_at', '<=', $date);

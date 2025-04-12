@@ -15,11 +15,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $duration
  * @property int $season
  * @property int $episode
- * @property boolean $imported
+ * @property bool $imported
  * @property \Illuminate\Support\Carbon $deleted_at
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
- *
  * @property-read Podcast $podcast
  */
 class Episode extends Model

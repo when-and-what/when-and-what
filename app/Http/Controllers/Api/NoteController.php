@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 class NoteController extends Controller
 {
     use TaggableController;
+
     /**
      * Display a listing of the resource.
      *
@@ -63,6 +64,7 @@ class NoteController extends Controller
                 'dateLink' => route('notes.edit', $note),
             ]
         );
+
         return response($dashboard, 201);
     }
 

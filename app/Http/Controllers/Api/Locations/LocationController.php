@@ -10,7 +10,7 @@ class LocationController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *!this is not restricted  by the Location policy
+     *!this is not restricted  by the Location policy.
      *
      * @return \Illuminate\Http\Response
      */
@@ -30,6 +30,7 @@ class LocationController extends Controller
                 $request->input('west')
             );
         }
+
         return $locations->paginate(30);
     }
 

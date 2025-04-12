@@ -18,6 +18,7 @@ class PodcastRequest extends FormRequest
     {
         /** @var Podcast $podcast */
         $podcast = $this->route('podcast');
+
         return $podcast == null || $podcast->created_by === $this->user()->id;
     }
 

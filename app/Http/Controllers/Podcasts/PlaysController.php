@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Podcasts;
 use App\Http\Controllers\Controller;
 use App\Models\Podcasts\Episode;
 use App\Models\Podcasts\EpisodePlay;
-use App\Models\Podcasts\PodcastPlay;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -67,6 +66,7 @@ class PlaysController extends Controller
         ]);
         $play->seconds = $validated['seconds'];
         $play->save();
+
         return redirect(route('episodes.show', $play->episode));
     }
 
@@ -77,6 +77,7 @@ class PlaysController extends Controller
     {
         $episode = $play->episode;
         $play->delete();
+
         return redirect(route('episodes.show', $episode));
     }
 }

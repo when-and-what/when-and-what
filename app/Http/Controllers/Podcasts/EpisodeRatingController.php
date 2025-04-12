@@ -18,7 +18,7 @@ class EpisodeRatingController extends Controller
         $rating = EpisodeRating::whereBelongsTo($request->user())
             ->whereBelongsTo($episode)
             ->first();
-        if (!$rating) {
+        if (! $rating) {
             $rating = new EpisodeRating();
             $rating->episode_id = $episode->id;
             $rating->user_id = $request->user()->id;
@@ -26,6 +26,7 @@ class EpisodeRatingController extends Controller
         $rating->rating = $valid['rating'];
         $rating->notes = isset($valid['notes']) ? $valid['notes'] : null;
         $rating->save();
+
         return redirect(route('episodes.show', $episode));
     }
 
@@ -33,6 +34,7 @@ class EpisodeRatingController extends Controller
     {
         $episode = $rating->episode;
         $rating->delete();
+
         return redirect(route('episodes.show', $episode));
     }
 }

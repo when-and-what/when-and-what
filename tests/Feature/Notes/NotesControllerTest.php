@@ -4,7 +4,6 @@ namespace Tests\Feature\Notes;
 
 use App\Models\Note;
 use App\Models\User;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class NotesControllerTest extends TestCase

@@ -29,7 +29,7 @@ class NoteFactory extends Factory
     }
 
     /**
-     * visible on the dashboard
+     * visible on the dashboard.
      *
      * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
@@ -43,7 +43,7 @@ class NoteFactory extends Factory
     }
 
     /**
-     * hidden from the dashboard
+     * hidden from the dashboard.
      *
      * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
