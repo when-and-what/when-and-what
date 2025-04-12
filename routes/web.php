@@ -40,7 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('locations/checkins', CheckinController::class)->except('create');
     Route::resource('locations/categories', CategoriesController::class);
     Route::post('locations/search', LocationSearchController::class)->name('locations.search');
-    Route::get('locations/search', function() {
+    Route::get('locations/search', function () {
         return redirect('/locations');
     });
     Route::resource('locations', LocationController::class);

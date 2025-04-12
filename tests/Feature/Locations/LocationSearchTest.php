@@ -11,7 +11,7 @@ test('example', function () {
     ])
     ->assertOk()
     ->assertSeeText($locations[0]['name'])
-    ->assertViewHas('locations', function($locations) {
+    ->assertViewHas('locations', function ($locations) {
         return count($locations) === 1;
     });
 });
