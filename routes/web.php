@@ -5,6 +5,7 @@ use App\Http\Controllers\DayController;
 use App\Http\Controllers\Locations\CategoriesController;
 use App\Http\Controllers\Locations\CheckinController;
 use App\Http\Controllers\Locations\LocationController;
+use App\Http\Controllers\Locations\LocationSearchController;
 use App\Http\Controllers\Locations\PendingCheckinController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\Podcasts\EpisodeController;
@@ -38,6 +39,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('locations/checkins/create/{location?}', [CheckinController::class, 'create'])->name('checkins.create');
     Route::resource('locations/checkins', CheckinController::class)->except('create');
     Route::resource('locations/categories', CategoriesController::class);
+    Route::post('locations/search', LocationSearchController::class)->name('locations.search');
+    Route::get('locations/search', function () {
+        return redirect('/locations');
+    });
     Route::resource('locations', LocationController::class);
 
     // Podcasts
