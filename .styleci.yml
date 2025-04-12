@@ -1,6 +1,17 @@
-php:
-  preset: laravel
-  version: 8.2
-  finder:
-    not-name:
-      - bad-syntax-strategy.php
+risky: false
+version: 8.4
+preset: laravel
+monolithic: true
+finder:
+  exclude:
+    - "modules"
+    - "node_modules"
+    - "nova"
+    - "nova-components"
+    - "storage"
+    - "spark"
+    - "vendor"
+  name: "*.php"
+  not-name:
+    - "*.blade.php"
+    - "_ide_helper.php"
