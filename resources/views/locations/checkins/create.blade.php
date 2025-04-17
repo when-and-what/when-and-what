@@ -2,9 +2,6 @@
 @section('content')
     <div class="d-flex">
         <div><h1>Checkin</h1></div>
-        <div class="flex-fill">
-            <h3><a href="#" title="New Location" class="float-end">➕️</a></h3>
-        </div>
     </div>
 
     <div id="location-container">
