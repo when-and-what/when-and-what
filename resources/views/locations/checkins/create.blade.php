@@ -18,7 +18,7 @@
             @endif
         <div class="row">
             <div class="col-md">
-                <checkinmap :location="{{ $location ?? 'null' }}" />
+                <checkinmap :location="{{ $location ?? 'null' }}" :new_checkin="true" />
             </div>
             <div class="col-md">
                 <div>
