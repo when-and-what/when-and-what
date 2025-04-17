@@ -4,17 +4,16 @@
     </div>
     <div id="mapid" style="height: 500px; width: 100%">Map</div>
     <input type="hidden" name="location" v-model="location_id" />
-    <div>
-        <label for="location">Location</label>
-        <input type="text" class="form-control" v-model="location_name" />
+    <div class="input-group">
+        <input type="text" class="form-control" v-model="location_name" placeholder="Select a location" />
+        <div v-if="new_checkin" class="input-group-text">
+            <a href="#" @click.capture="savePendingLocation" title="Save as pending checkin">🔖</a>
+        </div>
         <input type="hidden" name="latitude" v-model="lat" />
         <input type="hidden" name="longitude" v-model="lng" />
     </div>
 </template>
 <script>
-function testEvent() {
-    alert('hi');
-}
 export default {
     data() {
         return {
@@ -32,9 +31,18 @@ export default {
         location: null,
         latitude: null,
         longitude: null,
+        new_checkin: false,
     },
     emits: ['update:latitude', 'update:longitude'],
     methods: {
+        savePendingLocation: function () {
+            axios.post('/api/locations/checkins/pending', {
+                latitude: this.lat,
+                longitude: this.lng,
+            }).then(function(response) {
+                window.location = '/locations/checkins/pending/'+response.data.id+'/edit';
+            });
+        },
         getLocations: function () {
             var self = this;
             self.layer.clearLayers();

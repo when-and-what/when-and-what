@@ -2,9 +2,6 @@
 @section('content')
     <div class="d-flex">
         <div><h1>Checkin</h1></div>
-        <div class="flex-fill">
-            <h3><a href="#" title="New Location" class="float-end">➕️</a></h3>
-        </div>
     </div>
 
     <div id="location-container">
@@ -21,7 +18,7 @@
             @endif
         <div class="row">
             <div class="col-md">
-                <checkinmap :location="{{ $location ?? 'null' }}" />
+                <checkinmap :location="{{ $location ?? 'null' }}" :new_checkin="true" />
             </div>
             <div class="col-md">
                 <div>
