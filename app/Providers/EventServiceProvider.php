@@ -18,6 +18,7 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [SendEmailVerificationNotification::class],
         \SocialiteProviders\Manager\SocialiteWasCalled::class => [
             \SocialiteProviders\Fitbit\FitbitExtendSocialite::class.'@handle',
+            \SocialiteProviders\Todoist\TodoistExtendSocialite::class.'@handle',
             \SocialiteProviders\Trakt\TraktExtendSocialite::class.'@handle',
         ],
     ];

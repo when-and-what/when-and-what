@@ -40,4 +40,10 @@ return [
         'client_secret' => env('TRAKT_CLIENT_SECRET'),
         'redirect' => env('APP_URL').'/accounts/trakt/edit',
     ],
+
+    'todoist' => [
+        'client_id' => env('TODOIST_CLIENT_ID'),
+        'client_secret' => env('TODOIST_CLIENT_SECRET'),
+        'redirect' => env('APP_URL').'/accounts/todoist/edit',
+    ],
 ];
