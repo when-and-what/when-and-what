@@ -30,5 +30,21 @@ class AccountSeeder extends Seeder
                 'scope' => '',
             ]);
         }
+        if (config('services.todoist.client_id') && ! Account::where('slug', 'todoist')->first()) {
+            Account::create([
+                'name' => 'ToDoist',
+                'slug' => 'todoist',
+                'service' => 'App\Services\Accounts\Todoist',
+                'scope' => 'data:read',
+            ]);
+        }
+        if (config('services.todoist.client_id') && ! Account::where('slug', 'todoist')->first()) {
+            Account::create([
+                'name' => 'Google',
+                'slug' => 'google',
+                'service' => 'App\Services\Accounts\Google',
+                'scope' => 'photoslibrary.readonly.appcreateddata',
+            ]);
+        }
     }
 }

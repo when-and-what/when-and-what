@@ -19,6 +19,7 @@ class EventServiceProvider extends ServiceProvider
         \SocialiteProviders\Manager\SocialiteWasCalled::class => [
             \SocialiteProviders\Fitbit\FitbitExtendSocialite::class.'@handle',
             \SocialiteProviders\Trakt\TraktExtendSocialite::class.'@handle',
+            \SocialiteProviders\Google\GoogleExtendSocialite::class.'@handle',
         ],
     ];
 
