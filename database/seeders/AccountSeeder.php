@@ -30,8 +30,7 @@ class AccountSeeder extends Seeder
                 'scope' => '',
             ]);
         }
-        if(config('services.todoist.client_id') && ! Account::where('slug', 'todoist')->first())
-        {
+        if (config('services.todoist.client_id') && ! Account::where('slug', 'todoist')->first()) {
             Account::create([
                 'name' => 'ToDoist',
                 'slug' => 'todoist',
@@ -39,8 +38,7 @@ class AccountSeeder extends Seeder
                 'scope' => 'data:read',
             ]);
         }
-        if(config('services.todoist.client_id') && ! Account::where('slug', 'todoist')->first())
-        {
+        if (config('services.todoist.client_id') && ! Account::where('slug', 'todoist')->first()) {
             Account::create([
                 'name' => 'Google',
                 'slug' => 'google',
