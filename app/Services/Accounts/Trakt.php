@@ -18,12 +18,8 @@ class Trakt extends UserAccount
 
     /**
      * Get history to populate dashboard.
-     *
-     * @param  Carbon  $startDate
-     * @param  Carbon  $endDate
-     * @return DashboardResponse
      */
-    public function dashboard(Carbon $startDate, Carbon $endDate)
+    public function dashboard(Carbon $startDate, Carbon $endDate): DashboardResponse
     {
         $dashboard = new DashboardResponse('trakt');
         $movies = $this->getHistory($startDate, $endDate, 'movies');
@@ -67,8 +63,6 @@ class Trakt extends UserAccount
 
     /**
      * Looks up the authenticated user's username if it's not saved in the model.
-     *
-     * @return string
      */
     public function username(): string
     {
@@ -79,7 +73,7 @@ class Trakt extends UserAccount
         return $this->accountUser->username;
     }
 
-    public function updateProfile()
+    public function updateProfile(): void
     {
         $settings = $this->_get('https://api.trakt.tv/users/settings');
 
@@ -91,18 +85,46 @@ class Trakt extends UserAccount
      * Perform get request to track API.
      *
      * @param  string  $url
-     * @return mixed
+     * @return mixed json
      */
-    private function _get(string $url)
+    private function _get(string $url): mixed
     {
         return Http::acceptJson()
             ->asJson()
-            ->withToken($this->accountUser->token)
+            ->withToken($this->getToken())
             ->withHeaders([
                 'trakt-api-key' => config('services.trakt.client_id'),
                 'trakt-api-version' => '2',
             ])
             ->get($url)
             ->json();
+    }
+
+    private function getToken(): string
+    {
+        if($this->accountUser->updated_at <= now()->subDay()) {
+            return $this->refreshToken();
+        }
+        return $this->accountUser->token;
+    }
+
+    public function refreshToken(): string
+    {
+        $respone = Http::acceptJson()
+            ->post('https://api.trakt.tv/oauth/token', [
+                'refresh_token' => $this->accountUser->refresh_token,
+                'client_id' => config('services.trakt.client_id'),
+                'client_secret' =>  config('services.trakt.client_secret'),
+                'redirect_uri' => 'https://whenandwhat.app/accounts/trakt/edit',
+                'grant_type' => 'refresh_token',
+            ])
+            ->throw()
+            ->json();
+
+        $this->accountUser->token = $respone['access_token'];
+        $this->accountUser->refresh_token = $respone['refresh_token'];
+        $this->accountUser->save();
+
+        return $respone['access_token'];
     }
 }
