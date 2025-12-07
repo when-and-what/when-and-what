@@ -38,6 +38,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('accounts/user', [AccountController::class, 'userAccounts']);
 
-    Route::post('notes/dashboard', [NoteController::class, 'storeDashboard'])->name('api.notes.dashboard');
+    Route::post('notes/dashboard', [NoteController::class, 'storeDashboard'])->name('notes.dashboard');
     Route::resource('notes', NoteController::class);
 });
