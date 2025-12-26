@@ -23,7 +23,7 @@
             <div class="col-md">
                 <div>
                     <label for="checkin_at">Date</label>
-                    <input type="datetime-local" name="date" class="form-control" id="checkin_at" value="{{ old('date') }}" placeholder="Now" />
+                    <input type="datetime-local" name="date" class="form-control" id="checkin_at" value="{{ old('date', now()->tz(auth()->user()->timezone)->format('Y-m-d\TH:i')) }}" placeholder="Now" />
                 </div>
                 <div>
                     <label for="note">Note</label>
