@@ -145,5 +145,6 @@ const dashboard = createApp({
         axios.get('/api/dashboard/podcasts/' + self.date).then(this.accountResponse);
         axios.get('/api/dashboard/checkins/' + self.date).then(this.accountResponse);
         axios.get('/api/dashboard/pending_checkins/' + self.date).then(this.accountResponse);
+        axios.get('/api/dashboard/events/'+self.date).then(this.accountResponse);
     },
 }).mount('#dashboard-container');
