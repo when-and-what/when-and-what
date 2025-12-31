@@ -9,7 +9,6 @@ use App\Models\Locations\Checkin;
 use App\Models\Locations\PendingCheckin;
 use App\Models\Note;
 use App\Models\Podcasts\EpisodePlay;
-use App\Models\Trackers\Event;
 use App\Models\Trackers\Tracker;
 use Carbon\Carbon;
 use DateTimeZone;
@@ -172,30 +171,27 @@ class DashboardController extends Controller
         $end = $start->copy()->addDay(1);
 
         $trackers = Tracker::whereBelongsTo($request->user())
-            ->with('events', function(HasMany $query) use($start, $end) {
+            ->with('events', function (HasMany $query) use ($start, $end) {
                 $query->where('event_time', '>=', $start)
                 ->where('event_time', '<=', $end);
             })
-            ->whereHas('events', function(Builder $query) use($start, $end) {
+            ->whereHas('events', function (Builder $query) use ($start, $end) {
                 $query->where('event_time', '>=', $start)
                 ->where('event_time', '<=', $end);
             })
             ->get();
 
         $response = new DashboardResponse('events');
-        foreach($trackers as $tracker)
-        {
-            foreach($tracker->events as $event)
-            {
-                if( !$event->all_day)
-                {
+        foreach ($trackers as $tracker) {
+            foreach ($tracker->events as $event) {
+                if (! $event->all_day) {
                     $response->addEvent(
                         id: $event->id,
                         date: $event->event_time,
                         title: $tracker->name,
                         details: [
                             'icon' => $tracker->icon,
-                            'subTitle' => $event->event_value . ' '.$tracker->unit,
+                            'subTitle' => $event->event_value.' '.$tracker->unit,
                         ],
                     );
                 }
