@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('code');
             $table->string('type')->default('NUMBER');
-            $table->string('unit', 10)->nullable()->default(NULL);
-            $table->string('icon', 100)->nullable()->default(NULL);
+            $table->string('unit', 10)->nullable()->default(null);
+            $table->string('icon', 100)->nullable()->default(null);
             $table->string('color', 7)->default('#000000');
             $table->timestamps();
             $table->softDeletes();
