@@ -29,6 +29,7 @@ Route::middleware('auth:sanctum')->name('api.')->group(function () {
     Route::get('dashboard/pending_checkins/{date}', [DashboardController::class, 'pendingCheckins']);
     Route::get('dashboard/notes/{date}', [DashboardController::class, 'notes']);
     Route::get('/dashboard/{account}/{date}', [DashboardController::class, 'day']);
+    Route::get('dashboard/events/{date}', [DashboardController::class, 'events']);
 
     Route::apiResource('locations/checkins/pending', PendingCheckinController::class);
     Route::apiResource('locations/checkins', CheckinController::class);

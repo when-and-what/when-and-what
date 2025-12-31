@@ -8,9 +8,12 @@ use App\Models\Account;
 use App\Models\Locations\Checkin;
 use App\Models\Locations\PendingCheckin;
 use App\Models\Note;
+use App\Models\Trackers\Tracker;
 use Carbon\Carbon;
 use DateTimeZone;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -125,6 +128,46 @@ class DashboardController extends Controller
                     'dateLink' => route('notes.edit', $note),
                 ]
             );
+        }
+
+        return $response;
+    }
+
+    public function events(Request $request, $date)
+    {
+        $start = new Carbon($date.' 00:00:00', $request->user()->timezone);
+        $start->setTimezone('UTC');
+        $end = $start->copy()->addDay(1);
+
+        $trackers = Tracker::whereBelongsTo($request->user())
+            ->with('events', function(HasMany $query) use($start, $end) {
+                $query->where('event_time', '>=', $start)
+                ->where('event_time', '<=', $end);
+            })
+            ->whereHas('events', function(Builder $query) use($start, $end) {
+                $query->where('event_time', '>=', $start)
+                ->where('event_time', '<=', $end);
+            })
+            ->get();
+
+        $response = new DashboardResponse('events');
+        foreach($trackers as $tracker)
+        {
+            foreach($tracker->events as $event)
+            {
+                if( !$event->all_day)
+                {
+                    $response->addEvent(
+                        id: $event->id,
+                        date: $event->event_time,
+                        title: $tracker->name,
+                        details: [
+                            'icon' => $tracker->icon,
+                            'subTitle' => $event->event_value . ' '.$tracker->unit,
+                        ],
+                    );
+                }
+            }
         }
 
         return $response;

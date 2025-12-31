@@ -261,6 +261,7 @@ export default {
         axios.get('/api/dashboard/notes/' + this.date).then(this.accountResponse);
         axios.get('/api/dashboard/checkins/' + this.date).then(this.accountResponse);
         axios.get('/api/dashboard/pending_checkins/' + this.date).then(this.accountResponse);
+        axios.get('/api/dashboard/events/'+self.date).then(this.accountResponse);
     },
 };
 </script>
