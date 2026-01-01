@@ -29,13 +29,14 @@ class DayController extends Controller
         $yesterday = $today->copy()->subDay();
 
         $trackers = Tracker::whereBelongsTo($user)
-            ->with('events', function(HasMany $query) use($tomorrow, $yesterday) {
+            ->with('events', function (HasMany $query) use ($tomorrow, $yesterday) {
                 $query->before($tomorrow)->after($yesterday);
             })
-            ->whereHas('events', function(Builder $query) use($tomorrow, $yesterday) {
+            ->whereHas('events', function (Builder $query) use ($tomorrow, $yesterday) {
                 $query->before($tomorrow)->after($yesterday);
             })
             ->get();
+
         return view('dashboard', [
             'trackers' => $trackers,
             'today' => $today,
