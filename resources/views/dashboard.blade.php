@@ -5,6 +5,19 @@
     <h1 class="text-center">{{ $today->toFormattedDateString() }}</h1>
     <h1><a href="{{ route('day', [$tomorrow->year, $tomorrow->month, $tomorrow->day]) }}">⏭️</a></h1>
 </div>
+<div class="row">
+    @foreach($trackers as $tracker)
+        <div class="col d-flex">
+            <div class="d-flex align-items-center h-100 pe-3 fs-3">
+                {{ $tracker->icon }}
+            </div>
+            <div class="flex-grow-1">
+                {{ $tracker->name }} <br />
+                {{  $tracker->events->first()->event_value }}
+            </div>
+        </div>
+    @endforeach
+</div>
 <div id="dashboard-container">
     <div class="row pb-3">
         <item v-for="item in items" :item="item" />

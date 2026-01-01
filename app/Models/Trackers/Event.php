@@ -3,10 +3,12 @@
 namespace App\Models\Trackers;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Support\Carbon;
 
 class Event extends Model
 {
@@ -27,5 +29,26 @@ class Event extends Model
     public function user(): HasOneThrough
     {
         return $this->hasOneThrough(User::class, Tracker::class);
+    }
+
+    protected function scopeAllDay(Builder $query, bool $allDay = true): void
+    {
+        $query->where('all_day', $allDay);
+    }
+
+    public function scopeAfter(Builder $query, Carbon $date): void
+    {
+        if ($date->timezone->getName() != config('app.timezone')) {
+            $date->setTimezone(config('app.timezone'));
+        }
+        $query->where('event_time', '>=', $date);
+    }
+
+    public function scopeBefore(Builder $query, Carbon $date): void
+    {
+        if ($date->timezone->getName() != config('app.timezone')) {
+            $date->setTimezone(config('app.timezone'));
+        }
+        $query->where('event_time', '<=', $date);
     }
 }
