@@ -18,10 +18,13 @@ class PodcastFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->words(4, true),
-            'nickname' => $this->faker->words(2, true),
-            'website' => $this->faker->url(),
-            'created_by' => User::factory(),
+            'id' => $this->faker->uuid(),
+            'title' => $this->faker->words(4, true),
+            'description' => $this->faker->sentence(),
+            'url' => $this->faker->url(),
+            'author' => $this->faker->company(),
+            'image' => 'podcasts/images.webp',
+            'is_private' => false,
         ];
     }
 }

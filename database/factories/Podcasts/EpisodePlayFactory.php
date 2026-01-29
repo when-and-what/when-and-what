@@ -21,7 +21,7 @@ class EpisodePlayFactory extends Factory
         return [
             'episode_id' => Episode::factory(),
             'user_id' => User::factory(),
-            'played_at' => $this->faker->dateTime(),
+            'play_date' => $this->faker->date,
             'seconds' => $this->faker->numberBetween(4, 1999),
         ];
     }
