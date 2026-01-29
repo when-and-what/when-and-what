@@ -2,7 +2,6 @@
 
 namespace Database\Factories\Podcasts;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
