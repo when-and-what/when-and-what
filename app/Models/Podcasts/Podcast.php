@@ -6,13 +6,18 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property string $name
+ * @property string $title
+ * @property string $description
  * @property string $url
- * @property \Illuminate\Support\Carbon $created_at
- * @property \Illuminate\Support\Carbon $updated_at
+ * @property string $image
+ * @property string $author
+ * @property bool $is_private
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  */
 class Podcast extends Model
 {
