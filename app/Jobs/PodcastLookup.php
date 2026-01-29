@@ -7,7 +7,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\File\File;
 
 class PodcastLookup implements ShouldQueue
 {
@@ -18,7 +17,6 @@ class PodcastLookup implements ShouldQueue
      */
     public function __construct(public string $uuid)
     {
-
     }
 
     /**

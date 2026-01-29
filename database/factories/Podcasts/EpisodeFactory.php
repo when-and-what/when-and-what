@@ -3,7 +3,6 @@
 namespace Database\Factories\Podcasts;
 
 use App\Models\Podcasts\Podcast;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
