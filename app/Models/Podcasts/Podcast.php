@@ -2,47 +2,39 @@
 
 namespace App\Models\Podcasts;
 
-use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
  * @property string $name
- * @property string $nickname
- * @property string $website
- * @property string $feed
- * @property int $created_by
- * @property \Illuminate\Support\Carbon $deleted_at
+ * @property string $url
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
  */
 class Podcast extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
-    protected $fillable = ['name', 'nickname', 'website', 'feed', 'created_by'];
+    protected $keyType = 'string';
+    public $incrementing = false;
 
-    public function episodes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    protected $fillable = ['name'];
+
+    protected $casts = [
+        'is_private' => 'boolean',
+    ];
+
+    public function episodes(): HasMany
     {
         return $this->hasMany(Episode::class);
     }
 
-    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function scopeName(Builder $query, string $name): void
     {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-
-    /**
-     * Only match podcasts with the given name.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  string  $name
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeName($query, string $name)
-    {
-        return $query->where('name', $name);
+        $query->where('name', $name);
     }
 }

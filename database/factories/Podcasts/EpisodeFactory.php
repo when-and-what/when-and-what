@@ -19,15 +19,14 @@ class EpisodeFactory extends Factory
     public function definition()
     {
         return [
+            'id' => $this->faker->uuid(),
             'podcast_id' => Podcast::factory(),
-            'name' => $this->faker->words(4, true),
+            'title' => $this->faker->words(4, true),
             'published_at' => $this->faker->dateTime(),
             'description' => $this->faker->paragraph(),
             'duration' => $this->faker->numberBetween(200, 1999),
-            'imported' => $this->faker->boolean(),
             'season' => $this->faker->randomDigit(),
             'episode' => $this->faker->randomDigit(),
-            'created_by' => User::factory(),
         ];
     }
 }

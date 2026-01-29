@@ -5,15 +5,18 @@ namespace App\Models\Podcasts;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property int $episode_id
+ * @property string $episode_id
  * @property int $user_id
- * @property \Illuminate\Support\Carbon $played_at
+ * @property Carbon $played_date
  * @property int $seconds
- * @property \Illuminate\Support\Carbon $created_at
- * @property \Illuminate\Support\Carbon $updated_at
+ * @property ?Carbon $deleted_at
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  */
 class EpisodePlay extends Model
 {
@@ -27,12 +30,12 @@ class EpisodePlay extends Model
         'played_at' => 'datetime',
     ];
 
-    public function episode(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function episode(): BelongsTo
     {
         return $this->belongsTo(Episode::class);
     }
 
-    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
