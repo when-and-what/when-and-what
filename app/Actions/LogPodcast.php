@@ -13,11 +13,11 @@ class LogPodcast
     public function fromHistory(array $history, User $user, Carbon $playDay): EpisodePlay
     {
         $podcast = Podcast::find($history['podcastUuid']);
-        if( !$podcast) {
+        if (! $podcast) {
             $podcast = $this->createPodcast($history['podcastUuid'], $history['podcastTitle']);
         }
         $episode = Episode::find($history['uuid']);
-        if( !$episode) {
+        if (! $episode) {
             $episode = $this->createEpisode($history['uuid'], $history['podcastUuid'], $history['title'], $history['duration']);
         }
 

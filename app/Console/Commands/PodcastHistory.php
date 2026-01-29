@@ -32,7 +32,7 @@ class PodcastHistory extends Command
     public function handle(LogPodcast $log)
     {
         $yesterday = null;
-        if(Storage::fileExists($this->filename)) {
+        if (Storage::fileExists($this->filename)) {
             $json = json_decode(Storage::get($this->filename), true);
             $yesterday = collect($json['episodes'])->groupBy('uuid');
         }
@@ -42,12 +42,10 @@ class PodcastHistory extends Command
             ->json();
         // Storage::put($this->filename, json_encode($history), Visibility::PRIVATE);
 
-        if($yesterday)
-        {
+        if ($yesterday) {
             $user = User::where('email', 'natec23@gmail.com')->first();
-            foreach($history['episodes'] as $episode)
-            {
-                if(isset($yesterday[$episode['uuid']]) && $yesterday[$episode['uuid']][0]['duration'] == $episode['duration']) {
+            foreach ($history['episodes'] as $episode) {
+                if (isset($yesterday[$episode['uuid']]) && $yesterday[$episode['uuid']][0]['duration'] == $episode['duration']) {
                     return Command::SUCCESS;
                 }
                 $log->fromHistory($episode, $user, now()->yesterday());
