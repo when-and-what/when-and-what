@@ -19,7 +19,7 @@ class EpisodePlayPolicy
     }
 
     /**
-     * Determine whether the user can view the model
+     * Determine whether the user can view the model.
      */
     public function view(User $user, EpisodePlay $play)
     {
