@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\AccountUser;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Socialite;
@@ -12,7 +13,7 @@ class SocialiteController extends Controller
     /**
      * Redirects to oAuth destination.
      */
-    public function show(Account $account): RedirectResponse
+    public function redirect(Account $account): RedirectResponse
     {
         return Socialite::driver($account->slug)
             ->scopes(explode(',', $account->scope))
@@ -22,7 +23,7 @@ class SocialiteController extends Controller
     /**
      * Saves the response from oAuth service.
      */
-    public function edit(Request $request, Account $account): RedirectResponse
+    public function update(Request $request, Account $account): RedirectResponse
     {
         $user = Socialite::driver($account->slug)->user();
 

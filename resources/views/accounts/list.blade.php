@@ -19,7 +19,7 @@
                     @if($account->edit_username || $account->edit_token)
                         <a href="{{ route('accounts.edit', $account) }}">✖️</a>
                     @else
-                        <a href="{{ route('socialite.show', $account) }}">✖️</a>
+                        <a href="{{ route('socialite.redirect', $account) }}">✖️</a>
                     @endif
                 @endif
             </li>

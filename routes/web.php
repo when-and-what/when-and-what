@@ -56,7 +56,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Accounts
     Route::resource('accounts', AccountController::class)->except(['create', 'store', 'show']);
-    Route::resource('socialite', SocialiteController::class)->only(['show', 'edit']);
+    Route::get('socialite/redirect/{account}', [SocialiteController::class, 'redirect'])->name('socialite.redirect');
+    Route::get('socialite/update/{account}', [SocialiteController::class, 'update']);
 
     Route::resource('tags', TagController::class);
 
