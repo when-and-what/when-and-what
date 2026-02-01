@@ -4,17 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Models\AccountUser;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Laravel\Socialite\Facades\Socialite;
+use Illuminate\View\View;
 
 class AccountController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         return view('accounts.list', [
             'accounts' => Account::with([
@@ -25,59 +21,36 @@ class AccountController extends Controller
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Account  $account
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Account $account)
+    public function edit(Account $account): View
     {
-        return Socialite::driver($account->slug)
-            ->scopes(explode(',', $account->scope))
-            ->redirect();
+        return view('accounts.account', [
+            'account' => $account,
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Account  $account
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Request $request, Account $account)
+    public function update(Request $request, Account $account): RedirectResponse
     {
-        $user = Socialite::driver($account->slug)->user();
+        $validated = $request->validate([
+            'username' => $account->edit_username ? 'required' : 'nullable',
+            'token' => $account->edit_token ? 'required' : 'nullable',
+        ]);
 
         $au = new AccountUser();
         $au->user_id = $request->user()->id;
         $au->account_id = $account->id;
-        $au->account_user_id = $user->id;
-        $au->token = $user->token;
-        $au->refresh_token = $user->refreshToken;
+        $au->account_user_id = null;
+        $au->refresh_token = '';
+        $au->username = $validated['username'] ?? '';
+        $au->token = $validated['token'] ?? '';
         $au->save();
 
         return redirect(route('accounts.index'));
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Account  $account
-     * @return \Illuminate\Http\Response
+     * Remove the account for the authenticated user
      */
-    public function update(Request $request, Account $account)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Account  $account
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Request $request, Account $account)
+    public function destroy(Request $request, Account $account): RedirectResponse
     {
         AccountUser::whereBelongsTo($account)->whereBelongsTo($request->user())->delete();
 

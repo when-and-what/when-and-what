@@ -12,6 +12,7 @@ use App\Http\Controllers\Podcasts\EpisodeController;
 use App\Http\Controllers\Podcasts\EpisodeRatingController;
 use App\Http\Controllers\Podcasts\PlaysController;
 use App\Http\Controllers\Podcasts\PodcastController;
+use App\Http\Controllers\SocialiteController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
@@ -54,7 +55,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('episodes/{episode}/rating', [EpisodeRatingController::class, 'destroy'])->name('episodes.rating.destroy');
 
     // Accounts
-    Route::resource('accounts', AccountController::class);
+    Route::resource('accounts', AccountController::class)->except(['create', 'store', 'show']);
+    Route::resource('socialite', SocialiteController::class)->only(['show', 'edit']);
 
     Route::resource('tags', TagController::class);
 

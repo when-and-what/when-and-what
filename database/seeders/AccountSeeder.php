@@ -46,5 +46,23 @@ class AccountSeeder extends Seeder
                 'scope' => 'photoslibrary.readonly.appcreateddata',
             ]);
         }
+        if( !Account::where('slug', 'listenbrainz')->first()) {
+            Account::create([
+                'name' => 'Listenbrainz',
+                'slug' => 'listenbrainz',
+                'service' => 'App\Services\Accounts\Listenbrainz',
+                'scope' => '',
+                'edit_username' => true,
+            ]);
+        }
+        if( !Account::where('slug', 'pocketcasts')->first()) {
+            Account::create([
+                'name' => 'Pocket Casts',
+                'slug' => 'pocketcasts',
+                'service' => 'App\Services\Accounts\Pocketcasts',
+                'scope' => '',
+                'edit_token' => true,
+            ]);
+        }
     }
 }
