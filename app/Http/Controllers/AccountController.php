@@ -48,7 +48,7 @@ class AccountController extends Controller
     }
 
     /**
-     * Remove the account for the authenticated user
+     * Remove the account for the authenticated user.
      */
     public function destroy(Request $request, Account $account): RedirectResponse
     {

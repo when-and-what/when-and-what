@@ -10,7 +10,7 @@ use Laravel\Socialite\Socialite;
 class SocialiteController extends Controller
 {
     /**
-     * Redirects to oAuth destination
+     * Redirects to oAuth destination.
      */
     public function show(Account $account): RedirectResponse
     {
@@ -20,7 +20,7 @@ class SocialiteController extends Controller
     }
 
     /**
-     * Saves the response from oAuth service
+     * Saves the response from oAuth service.
      */
     public function edit(Request $request, Account $account): RedirectResponse
     {
