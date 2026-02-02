@@ -2,15 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Actions\LogPodcast;
 use App\Jobs\PodcastUserHistory;
 use App\Models\Account;
 use App\Models\AccountUser;
 use App\Models\User;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Storage;
-use League\Flysystem\Visibility;
 
 class PodcastHistory extends Command
 {
@@ -30,7 +26,7 @@ class PodcastHistory extends Command
 
     /**
      * TODO: This is not an efficient way to grab each user at midnight
-     ** but should scale for a while... so this sounds like a problem for the future 🙃
+     ** but should scale for a while... so this sounds like a problem for the future 🙃.
      */
     public function handle()
     {
@@ -39,10 +35,9 @@ class PodcastHistory extends Command
         $userAccounts = AccountUser::with('user')
             ->where('account_id', $account->id)
             ->get();
-        foreach($userAccounts as $userAccount)
-        {
+        foreach ($userAccounts as $userAccount) {
             $now = now()->shiftTimezone($userAccount->user->timezone);
-            if($now->format('G') === 0) {
+            if ($now->format('G') === 0) {
                 PodcastUserHistory::dispatch($userAccount);
             }
         }
