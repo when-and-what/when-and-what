@@ -16,7 +16,11 @@
                         <button type="submit" class="btn">✅️</button>
                     </form>
                 @else
-                    <a href="{{ route('accounts.show', $account) }}">✖️</a>
+                    @if($account->edit_username || $account->edit_token)
+                        <a href="{{ route('accounts.edit', $account) }}">✖️</a>
+                    @else
+                        <a href="{{ route('socialite.redirect', $account) }}">✖️</a>
+                    @endif
                 @endif
             </li>
         @endforeach

@@ -147,3 +147,13 @@ const dashboard = createApp({
         axios.get('/api/dashboard/pending_checkins/' + self.date).then(this.accountResponse);
     },
 }).mount('#dashboard-container');
+
+const button = document.getElementById('generate-token');
+if(button)
+{
+    button.addEventListener('click', function()
+    {
+        document.getElementById('pocketcasts-email').innerHTML = document.getElementById('email').value;
+        document.getElementById('pocketcasts-password').innerHTML = document.getElementById('password').value;
+    });
+}
