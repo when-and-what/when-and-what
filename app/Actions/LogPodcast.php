@@ -10,8 +10,10 @@ use Illuminate\Support\Carbon;
 
 class LogPodcast
 {
-    public function fromHistory(array $history, User $user, Carbon $playDay): EpisodePlay
+    public function fromHistory(array $history, int|User $user, Carbon $playDay): EpisodePlay
     {
+        $userId = $user instanceof User ? $user->id : $user;
+
         $podcast = Podcast::find($history['podcastUuid']);
         if (! $podcast) {
             $podcast = $this->createPodcast($history['podcastUuid'], $history['podcastTitle']);
@@ -22,7 +24,7 @@ class LogPodcast
         }
 
         $lastPlay = EpisodePlay::where('episode_uid', $history['uuid'])
-            ->where('user_id', $user->id)
+            ->where('user_id', $userId)
             ->orderBy('play_day', 'desc')
             ->limit(1)
             ->first();
@@ -30,7 +32,7 @@ class LogPodcast
 
         $play = new EpisodePlay;
         $play->episode_id = $history['uuid'];
-        $play->user_id = $user->id;
+        $play->user_id = $userId;
         $play->play_date = $playDay;
         $play->seconds = $history['playedUpTo'] - $duration;
         $play->save();

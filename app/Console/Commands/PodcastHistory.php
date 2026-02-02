@@ -3,6 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Actions\LogPodcast;
+use App\Jobs\PodcastUserHistory;
+use App\Models\Account;
+use App\Models\AccountUser;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
@@ -11,7 +14,6 @@ use League\Flysystem\Visibility;
 
 class PodcastHistory extends Command
 {
-    protected string $filename = 'podcast_history.json';
     /**
      * The name and signature of the console command.
      *
@@ -24,31 +26,24 @@ class PodcastHistory extends Command
      *
      * @var string
      */
-    protected $description = 'Check the pocketcast API to see what was listened to yesterday';
+    protected $description = "Find all users who have authenticated with pocketcasts and update their history if it's midnight";
 
     /**
-     * Execute the console command.
+     * TODO: This is not an efficient way to grab each user at midnight
+     ** but should scale for a while... so this sounds like a problem for the future 🙃
      */
-    public function handle(LogPodcast $log)
+    public function handle()
     {
-        $yesterday = null;
-        if (Storage::fileExists($this->filename)) {
-            $json = json_decode(Storage::get($this->filename), true);
-            $yesterday = collect($json['episodes'])->groupBy('uuid');
-        }
-        $history = Http::withToken(env('POCKETCASTS_TOKEN'))
-            ->post('https://api.pocketcasts.com/user/history')
-            ->throw()
-            ->json();
-        // Storage::put($this->filename, json_encode($history), Visibility::PRIVATE);
+        $account = Account::where('slug', 'pocketcasts')->first();
 
-        if ($yesterday) {
-            $user = User::where('email', 'natec23@gmail.com')->first();
-            foreach ($history['episodes'] as $episode) {
-                if (isset($yesterday[$episode['uuid']]) && $yesterday[$episode['uuid']][0]['duration'] == $episode['duration']) {
-                    return Command::SUCCESS;
-                }
-                $log->fromHistory($episode, $user, now()->yesterday());
+        $userAccounts = AccountUser::with('user')
+            ->where('account_id', $account->id)
+            ->get();
+        foreach($userAccounts as $userAccount)
+        {
+            $now = now()->shiftTimezone($userAccount->user->timezone);
+            if($now->format('G') === 0) {
+                PodcastUserHistory::dispatch($userAccount);
             }
         }
 
