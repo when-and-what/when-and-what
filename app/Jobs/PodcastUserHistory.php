@@ -43,7 +43,7 @@ class PodcastUserHistory implements ShouldQueue
 
         if ($yesterday) {
             foreach ($history['episodes'] as $episode) {
-                if (! isset($yesterday[$episode['uuid']]) || $yesterday[$episode['uuid']][0]['duration'] != $episode['duration']) {
+                if (! isset($yesterday[$episode['uuid']]) || $yesterday[$episode['uuid']][0]['playedUpTo'] != $episode['playedUpTo']) {
                     $log->fromHistory($episode, $this->userAccount->user_id, now()->yesterday());
                 }
             }

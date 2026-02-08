@@ -15,7 +15,7 @@ class PodcastHistory extends Command
      *
      * @var string
      */
-    protected $signature = 'app:podcast-history';
+    protected $signature = 'podcasts:history';
 
     /**
      * The console command description.
