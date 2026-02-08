@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Podcasts\Episode;
 use App\Models\Podcasts\EpisodePlay;
-use App\Models\Podcasts\EpisodeRating;
 use App\Models\Podcasts\Podcast;
 use App\Models\User;
 use Illuminate\Database\Seeder;

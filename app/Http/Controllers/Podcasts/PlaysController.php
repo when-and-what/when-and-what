@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Podcasts;
 
 use App\Http\Controllers\Controller;
-use App\Models\Podcasts\Episode;
 use App\Models\Podcasts\EpisodePlay;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
