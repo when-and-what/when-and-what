@@ -6,7 +6,6 @@ use App\Http\Controllers\Api\Locations\CheckinController;
 use App\Http\Controllers\Api\Locations\LocationController;
 use App\Http\Controllers\Api\Locations\PendingCheckinController;
 use App\Http\Controllers\Api\NoteController;
-use App\Http\Controllers\Api\Podcasts\EpisodePlayController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,7 +30,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('dashboard/notes/{date}', [DashboardController::class, 'notes']);
     Route::get('dashboard/podcasts/{date}', [DashboardController::class, 'podcasts']);
     Route::get('/dashboard/{account}/{date}', [DashboardController::class, 'day']);
-    Route::post('podcasts/play', EpisodePlayController::class);
+
     Route::apiResource('locations/checkins/pending', PendingCheckinController::class);
     Route::apiResource('locations/checkins', CheckinController::class);
     Route::apiResource('locations', LocationController::class);
