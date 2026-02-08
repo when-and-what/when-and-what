@@ -4,7 +4,6 @@ use App\Actions\LogPodcast;
 use App\Jobs\PodcastUserHistory;
 use App\Models\Account;
 use App\Models\AccountUser;
-use App\Models\Podcasts\EpisodePlay;
 use App\Models\Podcasts\Podcast;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
@@ -27,7 +26,7 @@ beforeEach(function () {
     $account->save();
 });
 
-test('first time lookup user history', function() {
+test('first time lookup user history', function () {
     Storage::fake('local');
 
     $user = User::factory()->create();
@@ -48,7 +47,7 @@ test('first time lookup user history', function() {
     Storage::assertExists('podcast_history/1.json');
 });
 
-test('update user history', function() {
+test('update user history', function () {
     Storage::fake('local');
     Storage::put('podcast_history/1.json', file_get_contents('tests/Feature/Podcasts/history.json'));
 
@@ -79,5 +78,4 @@ test('update user history', function() {
         'play_date' => now()->subDay()->startOfDay()->toDateTimeString(),
         'seconds' => 3291,
     ]);
-
 });
