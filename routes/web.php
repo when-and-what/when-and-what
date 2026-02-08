@@ -47,7 +47,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('locations', LocationController::class);
 
     // Podcasts
-    Route::resource('podcasts', PodcastController::class);
+    Route::resource('podcasts', PodcastController::class)->only(['index', 'show']);
     Route::resource('podcasts.episodes', EpisodeController::class)->shallow();
     Route::get('episode/plays', [PlaysController::class, 'index'])->name('episodes.plays.index');
     Route::resource('episodes.plays', PlaysController::class)->shallow()->except(['index', 'show']);
