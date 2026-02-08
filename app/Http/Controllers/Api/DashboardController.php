@@ -130,34 +130,4 @@ class DashboardController extends Controller
 
         return $response;
     }
-
-    public function podcasts(Request $request, $date)
-    {
-        $start = new Carbon($date.' 00:00:00', $request->user()->timezone);
-        $start->setTimezone('UTC');
-        $end = $start->copy()->addDay(1);
-
-        $plays = EpisodePlay::with('episode')
-            ->whereBelongsTo($request->user())
-            ->where('played_at', '>=', $start)
-            ->where('played_at', '<', $end)
-            ->get();
-        $response = new DashboardResponse('podcasts');
-        foreach ($plays as $play) {
-            $response->addEvent(
-                id: $play->id,
-                date: $play->played_at,
-                title: $play->episode->name,
-                details: [
-                    'icon' => '🎙',
-                    'subTitle' => $play->episode->podcast->name,
-                    'titleLink' => route('episodes.show', $play->episode),
-                    'subTitleLink' => route('podcasts.show', $play->episode->podcast),
-                    'dateLink' => route('plays.edit', $play),
-                ]
-            );
-        }
-
-        return $response;
-    }
 }
