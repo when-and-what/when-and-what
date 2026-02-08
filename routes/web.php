@@ -47,12 +47,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('locations', LocationController::class);
 
     // Podcasts
-    Route::resource('podcasts', PodcastController::class)->only(['index', 'show']);
-    Route::resource('podcasts.episodes', EpisodeController::class)->shallow();
-    Route::get('episode/plays', [PlaysController::class, 'index'])->name('episodes.plays.index');
-    Route::resource('episodes.plays', PlaysController::class)->shallow()->except(['index', 'show']);
-    Route::post('episodes/{episode}/rating', [EpisodeRatingController::class, 'update'])->name('episodes.rating.update');
-    Route::delete('episodes/{episode}/rating', [EpisodeRatingController::class, 'destroy'])->name('episodes.rating.destroy');
+    Route::get('episode/plays', [PlaysController::class, 'index'])->name('podcasts.plays');
 
     // Accounts
     Route::resource('accounts', AccountController::class)->except(['create', 'store', 'show']);

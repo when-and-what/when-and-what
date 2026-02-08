@@ -6,15 +6,13 @@
             <div class="col">
                 <div class="card">
                     <div class="card-header">
-                        <a href="{{ route('episodes.show', $play->episode) }}">{{ $play->episode->name }}</a>
+                        {{ $play->episode->title }}
                     </div>
                     <div class="card-body">
                         @if($play->episode->podcast->image)
-                            <a href="{{ route('podcasts.episodes.index', $play->episode->podcast) }}">
-                                <img src="{{ $play->episode->podcast->image }}" class="img-fluid" alt="{{ $play->episode->podcast->nickname }}" />
-                            </a>
+                            <img src="{{ $play->episode->podcast->image }}" class="img-fluid" alt="{{ $play->episode->podcast->title }}" />
                         @else
-                            <a href="{{ route('podcasts.episodes.index', $play->episode->podcast) }}">{{ $play->episode->podcast->nickname }}</a>
+                            {{ $play->episode->podcast->title }}
                         @endif
                     </div>
                     <div class="card-footer">
