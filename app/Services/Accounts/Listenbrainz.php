@@ -11,7 +11,7 @@ class Listenbrainz extends UserAccount
 {
     /**
      * currently limited to 100 listens. this could be increased to 1000: https://listenbrainz.readthedocs.io/en/latest/users/api/core.html#listenbrainz.webserver.views.api_tools.MAX_ITEMS_PER_GET
-     * although ideally this would be something like 50 and then lookup more if needed
+     * although ideally this would be something like 50 and then lookup more if needed.
      */
     public function getRange(?Carbon $startDate, Carbon $endDate): Collection
     {
@@ -21,10 +21,9 @@ class Listenbrainz extends UserAccount
         ])->json(['payload']);
 
         $day = collect([]);
-        foreach($listens['listens'] as $listen)
-        {
+        foreach ($listens['listens'] as $listen) {
             $at = Carbon::createFromTimestamp($listen['listened_at']);
-            if($at->greaterThan($startDate)) {
+            if ($at->greaterThan($startDate)) {
                 $day->push([
                     'listened_at' => $listen['listened_at'],
                     'artist_names' => $listen['track_metadata']['additional_info']['artist_names'],
@@ -33,6 +32,7 @@ class Listenbrainz extends UserAccount
                 ]);
             }
         }
+
         return $day;
     }
 }
