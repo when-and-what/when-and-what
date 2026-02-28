@@ -42,6 +42,7 @@ class Listenbrainz extends UserAccount
         $songs = $this->getRange($startDate, $endDate);
         $dashboard = new DashboardResponse('listenbrainz');
         $dashboard->addItem('Music', count($songs), '🎵');
+
         return $dashboard;
     }
 }
