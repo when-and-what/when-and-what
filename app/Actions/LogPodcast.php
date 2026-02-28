@@ -23,7 +23,7 @@ class LogPodcast
             $episode = $this->createEpisode($history['uuid'], $history['podcastUuid'], $history['title'], $history['duration']);
         }
 
-        $lastPlay = EpisodePlay::where('episode_uid', $history['uuid'])
+        $lastPlay = EpisodePlay::where('episode_id', $history['uuid'])
             ->where('user_id', $userId)
             ->orderBy('play_day', 'desc')
             ->limit(1)
