@@ -2,8 +2,9 @@
 
 namespace App\Services\Accounts;
 
+use App\Http\Responses\DashboardResponse;
 use App\Services\UserAccount;
-use Illuminate\Support\Carbon;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 
@@ -26,7 +27,7 @@ class Listenbrainz extends UserAccount
             if ($at->greaterThan($startDate)) {
                 $day->push([
                     'listened_at' => $listen['listened_at'],
-                    'artist_names' => $listen['track_metadata']['additional_info']['artist_names'],
+                    'artist_names' => isset($listen['track_metadata']['additional_info']['artist_names']) ? $listen['track_metadata']['additional_info']['artist_names'] : [],
                     'track_name' => $listen['track_metadata']['track_name'],
                     'recording_mbid' => isset($listen['track_metadata']['mbid_mapping']['recording_mbid']) ? $listen['track_metadata']['mbid_mapping']['recording_mbid'] : null,
                 ]);
@@ -34,5 +35,13 @@ class Listenbrainz extends UserAccount
         }
 
         return $day;
+    }
+
+    public function dashboard(?Carbon $startDate, Carbon $endDate): DashboardResponse
+    {
+        $songs = $this->getRange($startDate, $endDate);
+        $dashboard = new DashboardResponse('listenbrainz');
+        $dashboard->addItem('Music', count($songs), '🎵');
+        return $dashboard;
     }
 }
