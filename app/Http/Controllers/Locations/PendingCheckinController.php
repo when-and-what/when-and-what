@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Locations;
 use App\Actions\CreateNewLocation;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Checkins\CreatePendingCheckinRequest;
+use App\Http\Requests\PendingCheckinUpdateRequest;
 use App\Models\Locations\Category;
 use App\Models\Locations\Checkin;
 use App\Models\Locations\PendingCheckin;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class PendingCheckinController extends Controller
 {
@@ -27,12 +30,12 @@ class PendingCheckinController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(): View
     {
         return view('locations.pending.create');
     }
 
-    public function store(CreatePendingCheckinRequest $request)
+    public function store(CreatePendingCheckinRequest $request): RedirectResponse
     {
         $checkin = new PendingCheckin();
         $checkin->latitude = $request->latitude;
@@ -52,7 +55,7 @@ class PendingCheckinController extends Controller
         return redirect(route('pending.edit', $checkin));
     }
 
-    public function edit(Request $request, PendingCheckin $pending)
+    public function edit(Request $request, PendingCheckin $pending): View
     {
         return view('locations.pending.edit', [
             'categories' => Category::whereBelongsTo($request->user())
@@ -63,21 +66,12 @@ class PendingCheckinController extends Controller
     }
 
     public function update(
-        Request $request,
+        PendingCheckinUpdateRequest $request,
         PendingCheckin $pending,
         CreateNewLocation $createNewLocation
-    ) {
-        $valid = $request->validate([
-            'location' => 'nullable|required_without:newlocation|exists:locations,id',
-            'date' => 'required',
-            'note' => 'nullable',
-            'newlocation' => 'boolean',
-            'name' => 'required_with:newlocation',
-            'category' => 'nullable',
-            'latitude' => 'required_with:newlocation|numeric',
-            'longitude' => 'required_with:newlocation|numeric',
-        ]);
+    ): RedirectResponse {
 
+        $valid = $request->validated();
         $checkin = new Checkin();
 
         if (isset($valid['newlocation']) && $valid['newlocation']) {
@@ -109,7 +103,7 @@ class PendingCheckinController extends Controller
         return redirect(route('checkins.edit', $checkin));
     }
 
-    public function destroy(PendingCheckin $pending)
+    public function destroy(PendingCheckin $pending): RedirectResponse
     {
         $pending->delete();
 
