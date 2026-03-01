@@ -70,7 +70,6 @@ class PendingCheckinController extends Controller
         PendingCheckin $pending,
         CreateNewLocation $createNewLocation
     ): RedirectResponse {
-
         $valid = $request->validated();
         $checkin = new Checkin();
 
