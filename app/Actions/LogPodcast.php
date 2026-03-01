@@ -25,7 +25,7 @@ class LogPodcast
 
         $lastPlay = EpisodePlay::where('episode_id', $history['uuid'])
             ->where('user_id', $userId)
-            ->orderBy('play_day', 'desc')
+            ->orderBy('play_date', 'desc')
             ->limit(1)
             ->first();
         $duration = $lastPlay ? $lastPlay->seconds : 0;
