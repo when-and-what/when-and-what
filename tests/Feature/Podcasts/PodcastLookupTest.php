@@ -12,7 +12,7 @@ beforeEach(function () {
 });
 
 test('update podcast details from api', function () {
-    $this->assertTrue(file_exists('tests/Feature/Podcasts/podcast.json'));
+    expect(file_exists('tests/Feature/Podcasts/podcast.json'))->toBeTrue();
     Http::fake([
         'https://podcast-api.pocketcasts.com/podcast/full/cb2108e0-8619-013a-d7f7-0acc26574db2' => Http::response(file_get_contents('tests/Feature/Podcasts/podcast.json')),
         'https://static.pocketcasts.com/discover/images/webp/480/cb2108e0-8619-013a-d7f7-0acc26574db2.webp' => Http::response(file_get_contents('tests/Feature/Podcasts/podcast.webp')),
