@@ -3,8 +3,6 @@
 use App\Models\User;
 use Carbon\Carbon;
 
-
-
 beforeEach(function () {
     parent::setup();
     $this->user = User::factory()->create(['timezone' => 'America/Chicago']);

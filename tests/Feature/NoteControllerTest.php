@@ -3,8 +3,6 @@
 use App\Models\Note;
 use App\Models\User;
 
-
-
 beforeEach(function () {
     $this->user = User::factory()->create(['timezone' => 'America/New_York']);
     $this->user2 = User::factory()->create();

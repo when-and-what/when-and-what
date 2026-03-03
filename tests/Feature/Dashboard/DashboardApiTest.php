@@ -11,8 +11,6 @@ use App\Services\Accounts\Trakt;
 use Illuminate\Support\Facades\Http;
 use Mockery\MockInterface;
 
-
-
 test('it returns checkins for dashboard', function () {
     $date = '2023-02-01';
     $user = User::factory()->create(['timezone' => 'America/Denver']);

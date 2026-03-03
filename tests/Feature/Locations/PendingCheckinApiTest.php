@@ -3,7 +3,6 @@
 use App\Models\User;
 use Laravel\Sanctum\Sanctum;
 
-
 uses(\Illuminate\Foundation\Testing\WithFaker::class);
 
 test('pending checkin with specific time', function () {

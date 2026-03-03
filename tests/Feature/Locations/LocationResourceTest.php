@@ -4,8 +4,6 @@ use App\Models\Locations\Category;
 use App\Models\Locations\Location;
 use App\Models\User;
 
-
-
 test('list of locations', function () {
     $this->markTestIncomplete();
 });

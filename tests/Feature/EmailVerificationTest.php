@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 use Laravel\Fortify\Features;
 
-
-
 test('email verification screen can be rendered', function () {
     if (! Features::enabled(Features::emailVerification())) {
         return $this->markTestSkipped('Email verification not enabled.');

@@ -5,7 +5,6 @@ use App\Models\Locations\Location;
 use App\Models\User;
 use Laravel\Sanctum\Sanctum;
 
-
 uses(\Illuminate\Foundation\Testing\WithFaker::class);
 
 test('checkin with specific date', function () {

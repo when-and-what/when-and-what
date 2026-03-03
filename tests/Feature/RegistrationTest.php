@@ -4,8 +4,6 @@ use App\Providers\RouteServiceProvider;
 use Laravel\Fortify\Features;
 use Laravel\Jetstream\Jetstream;
 
-
-
 test('registration screen can be rendered', function () {
     if (! Features::enabled(Features::registration())) {
         return $this->markTestSkipped('Registration support is not enabled.');
