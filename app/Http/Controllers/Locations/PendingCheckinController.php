@@ -95,11 +95,7 @@ class PendingCheckinController extends Controller
 
         $pending->delete();
 
-        if (isset($location)) {
-            return redirect(route('locations.edit', $location));
-        }
-
-        return redirect(route('checkins.edit', $checkin));
+        return redirect(route('checkins.index'));
     }
 
     public function destroy(PendingCheckin $pending): RedirectResponse
