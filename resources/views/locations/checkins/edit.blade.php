@@ -22,7 +22,7 @@
             @endif
         <div class="row">
             <div class="col">
-                <checkinmap :location="{{ $checkin->location }}" />
+                <checkinmap :location="{{ $checkin->location }}" :zoom="18" />
             </div>
             <div class="col">
                 <div>

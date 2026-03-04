@@ -32,6 +32,7 @@ export default {
         latitude: null,
         longitude: null,
         new_checkin: false,
+        zoom: 15,
     },
     emits: ['update:latitude', 'update:longitude'],
     methods: {
@@ -76,7 +77,7 @@ export default {
         },
         setupMap(marker) {
             var self = this;
-            self.map = L.map('mapid').setView([self.lat, self.lng], 15);
+            self.map = L.map('mapid').setView([self.lat, self.lng], self.zoom ? self.zoom : 15);
             self.layer = L.layerGroup().addTo(self.map);
             L.tileLayer(
                 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' +
