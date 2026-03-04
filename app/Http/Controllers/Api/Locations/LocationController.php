@@ -38,7 +38,7 @@ class LocationController extends Controller
     }
 
     /**
-     * Store a newly created location
+     * Store a newly created location.
      */
     public function store(LocationRequest $request, CreateNewLocation $createNewLocation): Response
     {
@@ -52,6 +52,7 @@ class LocationController extends Controller
                 'user' => $request->user(),
             ]
         );
+
         return response($location, 201);
     }
 

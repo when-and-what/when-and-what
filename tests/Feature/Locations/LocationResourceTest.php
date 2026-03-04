@@ -12,10 +12,10 @@ test('list of locations', function () {
     $response = $this->actingAs($user)
         ->get(route('locations.index'))
         ->assertOk();
-    foreach($locations as $location) {
+    foreach ($locations as $location) {
         $response->assertSeeText($location->name);
     }
-    $response->assertViewHas('locations', function($locations) {
+    $response->assertViewHas('locations', function ($locations) {
         return count($locations) === 5;
     });
 });

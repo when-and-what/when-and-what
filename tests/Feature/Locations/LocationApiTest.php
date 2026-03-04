@@ -3,7 +3,7 @@
 use App\Models\Locations\Category;
 use App\Models\User;
 
-test('it creates a new location', function() {
+test('it creates a new location', function () {
     $user = User::factory()->create();
     $category = Category::factory()->create(['user_id' => $user->id]);
     $this->actingAs($user)
@@ -16,7 +16,7 @@ test('it creates a new location', function() {
         ->assertStatus(201);
 });
 
-test('other user locations are not allowed', function() {
+test('other user locations are not allowed', function () {
     $user = User::factory()->create();
     $category = Category::factory()->create();
     $this->actingAs($user)
