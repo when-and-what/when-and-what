@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Api\Locations;
 
+use App\Actions\CreateNewLocation;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Locations\LocationRequest;
 use App\Models\Locations\Location;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class LocationController extends Controller
 {
@@ -35,14 +38,21 @@ class LocationController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Store a newly created location
      */
-    public function store(Request $request)
+    public function store(LocationRequest $request, CreateNewLocation $createNewLocation): Response
     {
-        //
+        $validated = $request->validated();
+        $location = $createNewLocation(
+            ...[
+                'categories' => isset($validated['category']) ? $validated['category'] : null,
+                'latitude' => $validated['latitude'],
+                'longitude' => $validated['longitude'],
+                'name' => $validated['name'],
+                'user' => $request->user(),
+            ]
+        );
+        return response($location, 201);
     }
 
     /**
