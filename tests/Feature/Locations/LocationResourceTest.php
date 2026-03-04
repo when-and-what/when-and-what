@@ -5,7 +5,19 @@ use App\Models\Locations\Location;
 use App\Models\User;
 
 test('list of locations', function () {
-    $this->markTestIncomplete();
+    $user = User::factory()->create();
+    $locations = Location::factory(5)->create(['user_id' => $user->id]);
+    Location::factory(10)->create();
+
+    $response = $this->actingAs($user)
+        ->get(route('locations.index'))
+        ->assertOk();
+    foreach($locations as $location) {
+        $response->assertSeeText($location->name);
+    }
+    $response->assertViewHas('locations', function($locations) {
+        return count($locations) === 5;
+    });
 });
 
 test('create location', function () {
