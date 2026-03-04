@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Locations;
 
-use App\Models\Locations\Category;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -34,26 +33,7 @@ class LocationRequest extends FormRequest
             'category' => [
                 'nullable',
                 'array',
-                function ($attribute, $value, $fail) use ($user_id) {
-                    $ids = [];
-                    foreach ($value as $v) {
-                        if (! is_numeric($v)) {
-                            $fail($attribute.' must be a valid category');
-                        } else {
-                            $ids[] = $v;
-                        }
-                    }
-                    $check = Category::where('user_id', $user_id)
-                        ->whereIn('id', $ids)
-                        ->get();
-                    if (count($check) != count($value)) {
-                        $fail($attribute.' must be a valid category');
-                    }
-                },
-                // 'exists:location_categories,id',
-                // Rule::exists('location_categories,id')->where(function ($query) use ($user_id) {
-                // return $query->where('user_id', $user_id);
-                // }),
+                Rule::exists('location_categories', 'id')->where('user_id', $user_id),
             ],
         ];
     }
