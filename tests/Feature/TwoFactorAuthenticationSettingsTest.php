@@ -10,7 +10,7 @@ test('two factor authentication can be enabled', function () {
     $this->withSession(['auth.password_confirmed_at' => time()]);
 
     Livewire::test(TwoFactorAuthenticationForm::class)
-            ->call('enableTwoFactorAuthentication');
+        ->call('enableTwoFactorAuthentication');
 
     $user = $user->fresh();
 
@@ -24,8 +24,8 @@ test('recovery codes can be regenerated', function () {
     $this->withSession(['auth.password_confirmed_at' => time()]);
 
     $component = Livewire::test(TwoFactorAuthenticationForm::class)
-            ->call('enableTwoFactorAuthentication')
-            ->call('regenerateRecoveryCodes');
+        ->call('enableTwoFactorAuthentication')
+        ->call('regenerateRecoveryCodes');
 
     $user = $user->fresh();
 
@@ -41,7 +41,7 @@ test('two factor authentication can be disabled', function () {
     $this->withSession(['auth.password_confirmed_at' => time()]);
 
     $component = Livewire::test(TwoFactorAuthenticationForm::class)
-            ->call('enableTwoFactorAuthentication');
+        ->call('enableTwoFactorAuthentication');
 
     expect($user->fresh()->two_factor_secret)->not->toBeNull();
 

@@ -76,7 +76,6 @@ class Fitbit extends UserAccount
      * some auto-detected and manual events will not have lat & lng.
      *
      * @param  array  $activity  from fitbit API
-     * @return array|null
      */
     public function getTcx(array $activity): ?array
     {

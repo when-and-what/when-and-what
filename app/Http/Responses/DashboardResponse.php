@@ -8,10 +8,15 @@ use Illuminate\Contracts\Support\Jsonable;
 class DashboardResponse implements Jsonable
 {
     public string $color;
+
     protected $events;
+
     protected $items;
+
     protected $lines;
+
     protected $pins;
+
     protected string $slug;
 
     public function __construct(string $slug, string $color = '#000000')

@@ -12,8 +12,6 @@ trait TaggableController
      * Parse the given text(s) for any tags and associate them with the given model.
      *
      * @param  string|string[]  $texts
-     * @param  Model  $model
-     * @param  User  $user
      * @return Tag[]
      */
     public function saveTags($texts, Model $model, User $user)
@@ -32,7 +30,7 @@ trait TaggableController
                     ->first();
 
                 if (! $tag) {
-                    $tag = new Tag();
+                    $tag = new Tag;
                     $tag->user_id = $user->id;
                     $tag->display_name = $tag_name;
                     $tag->name = $name;

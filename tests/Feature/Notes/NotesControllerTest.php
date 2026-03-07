@@ -14,6 +14,6 @@ test('view user notes', function () {
     $response->assertStatus(200);
     $response->assertViewIs('notes.index');
     $response->assertViewHas('notes', function ($notes) {
-        return 15 === count($notes);
+        return count($notes) === 15;
     });
 });

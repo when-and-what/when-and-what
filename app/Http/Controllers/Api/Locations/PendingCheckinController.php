@@ -36,7 +36,7 @@ class PendingCheckinController extends Controller
      */
     public function store(CreatePendingCheckinRequest $request)
     {
-        $checkin = new PendingCheckin();
+        $checkin = new PendingCheckin;
         $checkin->latitude = $request->latitude;
         $checkin->longitude = $request->longitude;
         $checkin->name = $request->name;
@@ -45,7 +45,7 @@ class PendingCheckinController extends Controller
         if ($request->date) {
             $checkin->checkin_at = new Carbon($request->date, 'UTC');
         } else {
-            $checkin->checkin_at = new Carbon();
+            $checkin->checkin_at = new Carbon;
         }
         $checkin->save();
 
@@ -66,7 +66,6 @@ class PendingCheckinController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Locations\PendingCheckin  $pendingCheckin
      * @return \Illuminate\Http\Response
      */

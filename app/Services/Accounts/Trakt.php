@@ -47,8 +47,6 @@ class Trakt extends UserAccount
     /**
      * Get user's watch history.
      *
-     * @param  Carbon  $startDate
-     * @param  Carbon  $endDate
      * @param  string  $type  movies | shows | seasons | episodes
      * @return mixed json
      */
@@ -84,7 +82,6 @@ class Trakt extends UserAccount
     /**
      * Perform get request to track API.
      *
-     * @param  string  $url
      * @return mixed json
      */
     private function _get(string $url): mixed

@@ -9,6 +9,7 @@ use App\Models\User;
 class UserAccount
 {
     protected $account;
+
     protected $accountUser;
 
     public function __construct(Account $account, User $user)

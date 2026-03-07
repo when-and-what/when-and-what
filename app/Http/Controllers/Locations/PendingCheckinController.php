@@ -37,7 +37,7 @@ class PendingCheckinController extends Controller
 
     public function store(CreatePendingCheckinRequest $request): RedirectResponse
     {
-        $checkin = new PendingCheckin();
+        $checkin = new PendingCheckin;
         $checkin->latitude = $request->latitude;
         $checkin->longitude = $request->longitude;
         $checkin->name = $request->name;
@@ -48,7 +48,7 @@ class PendingCheckinController extends Controller
                 'gmt'
             );
         } else {
-            $checkin->checkin_at = new Carbon();
+            $checkin->checkin_at = new Carbon;
         }
         $checkin->save();
 
@@ -71,7 +71,7 @@ class PendingCheckinController extends Controller
         CreateNewLocation $createNewLocation
     ): RedirectResponse {
         $valid = $request->validated();
-        $checkin = new Checkin();
+        $checkin = new Checkin;
 
         if (isset($valid['newlocation']) && $valid['newlocation']) {
             $location = $createNewLocation(

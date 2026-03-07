@@ -27,7 +27,7 @@ class SocialiteController extends Controller
     {
         $user = Socialite::driver($account->slug)->user();
 
-        $au = new AccountUser();
+        $au = new AccountUser;
         $au->user_id = $request->user()->id;
         $au->account_id = $account->id;
         $au->account_user_id = $user->id;

@@ -27,18 +27,17 @@ class NoteController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $note = new Note();
+        $note = new Note;
         $note->user_id = $request->user()->id;
     }
 
     public function storeDashboard(StoreDashboardRequest $request)
     {
-        $note = new Note();
+        $note = new Note;
         $note->user_id = $request->user()->id;
         if ($request->published_at) {
             $note->published_at = Carbon::parse(
@@ -71,7 +70,6 @@ class NoteController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Note  $note
      * @return \Illuminate\Http\Response
      */
     public function show(Note $note)
@@ -82,8 +80,6 @@ class NoteController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Note  $note
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Note $note)
@@ -94,7 +90,6 @@ class NoteController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Note  $note
      * @return \Illuminate\Http\Response
      */
     public function destroy(Note $note)

@@ -21,9 +21,7 @@ class CheckinController extends Controller
      *
      * @return void
      */
-    public function index()
-    {
-    }
+    public function index() {}
 
     public function store(CreateCheckinRequest $request)
     {
@@ -32,14 +30,14 @@ class CheckinController extends Controller
             abort(403);
         }
 
-        $checkin = new Checkin();
+        $checkin = new Checkin;
         $checkin->location_id = $request->location;
         $checkin->user_id = $request->user()->id;
         $checkin->note = $request->note;
         if ($request->date) {
             $checkin->checkin_at = new Carbon($request->date, 'UTC');
         } else {
-            $checkin->checkin_at = new Carbon();
+            $checkin->checkin_at = new Carbon;
         }
         $checkin->save();
 

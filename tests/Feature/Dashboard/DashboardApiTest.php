@@ -116,7 +116,7 @@ test('api user account', function () {
 
     $account = Account::where('slug', 'trakt')->first();
     $user = User::factory()->create();
-    $au = new AccountUser();
+    $au = new AccountUser;
     $au->user_id = $user->id;
     $au->account_id = $account->id;
     $au->account_user_id = $user->id;

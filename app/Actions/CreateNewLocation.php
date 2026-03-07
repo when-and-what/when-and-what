@@ -14,7 +14,7 @@ class CreateNewLocation
         float $longitude,
         ?array $categories
     ): Location {
-        $location = new Location();
+        $location = new Location;
         $location->user_id = $user->id;
         $location->name = $name;
         $location->latitude = $latitude;

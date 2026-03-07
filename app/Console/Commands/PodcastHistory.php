@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\Jobs\PodcastUserHistory;
 use App\Models\Account;
 use App\Models\AccountUser;
-use App\Models\User;
 use Illuminate\Console\Command;
 
 class PodcastHistory extends Command

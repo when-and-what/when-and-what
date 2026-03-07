@@ -29,7 +29,7 @@ class TagController extends Controller
 
     public function store(CreateTagRequest $request)
     {
-        $tag = new Tag();
+        $tag = new Tag;
         $tag->name = $request->name;
         $tag->user_id = $request->user()->id;
         $tag->fill($request->safe()->only('display_name', 'icon'));

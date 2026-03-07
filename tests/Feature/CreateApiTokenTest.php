@@ -13,14 +13,14 @@ test('api tokens can be created', function () {
     $this->actingAs($user = User::factory()->withPersonalTeam()->create());
 
     Livewire::test(ApiTokenManager::class)
-                ->set(['createApiTokenForm' => [
-                    'name' => 'Test Token',
-                    'permissions' => [
-                        'checkins',
-                        'update',
-                    ],
-                ]])
-                ->call('createApiToken');
+        ->set(['createApiTokenForm' => [
+            'name' => 'Test Token',
+            'permissions' => [
+                'checkins',
+                'update',
+            ],
+        ]])
+        ->call('createApiToken');
 
     expect($user->fresh()->tokens)->toHaveCount(1);
     expect($user->fresh()->tokens->first()->name)->toEqual('Test Token');

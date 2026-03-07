@@ -45,7 +45,7 @@ class NoteController extends Controller
      */
     public function store(CreateNoteRequest $request): RedirectResponse
     {
-        $note = new Note();
+        $note = new Note;
         $note->user_id = $request->user()->id;
         if ($request->published_at) {
             $note->published_at = Carbon::parse(
@@ -53,7 +53,7 @@ class NoteController extends Controller
                 $request->user()->timezone
             )->tz('GMT');
         } else {
-            $note->published_at = new Carbon();
+            $note->published_at = new Carbon;
         }
         $note->fill($request->safe()->all());
         $note->dashboard_visible = $request->boolean('dashboard_visible');

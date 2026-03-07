@@ -9,9 +9,9 @@ test('example', function () {
     $this->actingAs($user)->post(route('locations.search'), [
         'search' => $locations[0]['name'],
     ])
-    ->assertOk()
-    ->assertSeeText($locations[0]['name'])
-    ->assertViewHas('locations', function ($locations) {
-        return count($locations) === 1;
-    });
+        ->assertOk()
+        ->assertSeeText($locations[0]['name'])
+        ->assertViewHas('locations', function ($locations) {
+            return count($locations) === 1;
+        });
 });

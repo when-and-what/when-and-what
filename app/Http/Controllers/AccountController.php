@@ -35,7 +35,7 @@ class AccountController extends Controller
             'token' => $account->edit_token ? 'required' : 'nullable',
         ]);
 
-        $au = new AccountUser();
+        $au = new AccountUser;
         $au->user_id = $request->user()->id;
         $au->account_id = $account->id;
         $au->account_user_id = null;

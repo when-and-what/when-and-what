@@ -66,7 +66,7 @@ class CheckinController extends Controller
     {
         $validated = $request->safe();
 
-        $checkin = new Checkin();
+        $checkin = new Checkin;
         $checkin->user_id = $request->user()->id;
         $checkin->location_id = $validated['location'];
         if (isset($validated['date'])) {
@@ -85,7 +85,6 @@ class CheckinController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Locations\Checkin  $checkin
      * @return \Illuminate\Http\Response
      */
     public function show(Checkin $checkin)
@@ -96,7 +95,6 @@ class CheckinController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Locations\Checkin  $checkin
      * @return \Illuminate\Http\Response
      */
     public function edit(Checkin $checkin)
@@ -111,7 +109,6 @@ class CheckinController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Locations\Checkin  $checkin
      * @return \Illuminate\Http\Response
      */
     public function update(EditCheckin $request, Checkin $checkin)
@@ -130,7 +127,6 @@ class CheckinController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Locations\Checkin  $checkin
      * @return \Illuminate\Http\Response
      */
     public function destroy(Checkin $checkin)
