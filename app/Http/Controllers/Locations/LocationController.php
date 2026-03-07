@@ -74,7 +74,7 @@ class LocationController extends Controller
     }
 
     /**
-     * Display the specified location
+     * Display the specified location.
      */
     public function show(Request $request, Location $location): View
     {
@@ -88,7 +88,7 @@ class LocationController extends Controller
     }
 
     /**
-     * Show the form for editing the specified location
+     * Show the form for editing the specified location.
      */
     public function edit(Request $request, Location $location): View
     {
