@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services\Accounts;
 
 use App\Http\Responses\DashboardResponse;
