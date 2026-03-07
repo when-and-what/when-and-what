@@ -10,6 +10,10 @@ class Account extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'admin_only' => 'boolean',
+    ];
+
     public function scopeUserAccount(Builder $query, User $user): void
     {
         $query->whereRelation('users', 'user_id', $user->id);

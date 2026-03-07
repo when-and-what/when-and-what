@@ -54,7 +54,7 @@
                                 </li>
                             </ul>
                         </li>
-                        @if(auth()->user() && auth()->user()->email == 'natec23@gmail.com')
+                        @if(auth()->user() && in_array(auth()->user()->email, config('auth.admin_emails')))
                             <li class="nav-item">
                                 <a class="nav-link @if(strpos($routeName, 'notes') === 0) active @endif" href="/notes">Journal</a>
                             </li>

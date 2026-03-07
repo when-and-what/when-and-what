@@ -108,4 +108,5 @@ return [
 
     'password_timeout' => 10800,
 
+    'admin_emails' => ['natec23@gmail.com'],
 ];

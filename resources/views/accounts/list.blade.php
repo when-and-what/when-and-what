@@ -5,24 +5,26 @@
     </div>
     <ul class="list-group list-group-horizontal d-flex w-100">
         @foreach($accounts as $account)
-            <li class="list-group-item w-full">
-                <h3>
-                    {{ $account->name }}
-                </h3>
-                @if(count($account->users) > 0)
-                    <form action="{{ route('accounts.destroy', $account) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn">✅️</button>
-                    </form>
-                @else
-                    @if($account->edit_username || $account->edit_token)
-                        <a href="{{ route('accounts.edit', $account) }}">✖️</a>
+            @if( !$account->admin_only || in_array(auth()->user()->email, config('auth.admin_emails')))
+                <li class="list-group-item w-full">
+                    <h3>
+                        {{ $account->name }}
+                    </h3>
+                    @if(count($account->users) > 0)
+                        <form action="{{ route('accounts.destroy', $account) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn">✅️</button>
+                        </form>
                     @else
-                        <a href="{{ route('socialite.redirect', $account) }}">✖️</a>
+                        @if($account->edit_username || $account->edit_token)
+                            <a href="{{ route('accounts.edit', $account) }}">✖️</a>
+                        @else
+                            <a href="{{ route('socialite.redirect', $account) }}">✖️</a>
+                        @endif
                     @endif
-                @endif
-            </li>
+                </li>
+            @endif
         @endforeach
     </ul>
 @endsection
