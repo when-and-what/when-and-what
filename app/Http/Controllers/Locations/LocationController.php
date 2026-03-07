@@ -8,7 +8,9 @@ use App\Http\Requests\Locations\LocationRequest;
 use App\Models\Locations\Category;
 use App\Models\Locations\Checkin;
 use App\Models\Locations\Location;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class LocationController extends Controller
 {
@@ -20,10 +22,8 @@ class LocationController extends Controller
     /**
      * Display a listing of the resource.
      *!this is not restricted  by the Location policy.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         return view('locations.list', [
             'locations' => Location::whereBelongsTo($request->user())
@@ -34,11 +34,9 @@ class LocationController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Show the form for creating a new location.
      */
-    public function create(Request $request)
+    public function create(Request $request): View
     {
         if (is_numeric($request->latitude) && is_numeric($request->longitude)) {
             $latitude = $request->latitude;
@@ -57,12 +55,9 @@ class LocationController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Store a newly created location in storage.
      */
-    public function store(LocationRequest $request, CreateNewLocation $createNewLocation)
+    public function store(LocationRequest $request, CreateNewLocation $createNewLocation): RedirectResponse
     {
         $validated = $request->validated();
         $location = $createNewLocation(
@@ -79,11 +74,9 @@ class LocationController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Display the specified location
      */
-    public function show(Request $request, Location $location)
+    public function show(Request $request, Location $location): View
     {
         return view('locations/location', [
             'checkins' => Checkin::whereBelongsTo($request->user())
@@ -95,11 +88,9 @@ class LocationController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Show the form for editing the specified location
      */
-    public function edit(Request $request, Location $location)
+    public function edit(Request $request, Location $location): View
     {
         return view('locations.edit', [
             'categories' => Category::whereBelongsTo($request->user())
@@ -112,11 +103,8 @@ class LocationController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function update(LocationRequest $request, Location $location)
+    public function update(LocationRequest $request, Location $location): RedirectResponse
     {
         $validated = $request->validated();
         $location->fill($validated);
@@ -132,12 +120,12 @@ class LocationController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @return \Illuminate\Http\Response
+     * Remove the specified location from storage.
      */
-    public function destroy(Location $location)
+    public function destroy(Location $location): RedirectResponse
     {
-        //
+        $location->delete();
+
+        return redirect(route('locations.index'));
     }
 }

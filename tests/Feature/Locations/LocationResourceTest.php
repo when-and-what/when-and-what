@@ -130,5 +130,18 @@ test('view location', function () {
 });
 
 test('delete location', function () {
-    $this->markTestIncomplete();
+    $user = User::factory()->create();
+    $location = Location::factory()->create(['user_id' => $user->id]);
+    $user2 = User::factory()->create();
+
+    $this->actingAs($user2)
+        ->delete(route('locations.destroy', $location))
+        ->assertStatus(403);
+
+    $this->assertNotSoftDeleted($location);
+
+    $this->actingAs($user)
+        ->delete(route('locations.destroy', $location))
+        ->assertStatus(302);
+    $this->assertSoftDeleted($location);
 });

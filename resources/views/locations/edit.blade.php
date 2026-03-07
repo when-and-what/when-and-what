@@ -1,7 +1,14 @@
 @extends('layouts.bootstrap')
 @section('content')
-    <h1>Edit Location</h1>
+    <div class="d-flex w-100 justify-content-between pb-3">
+        <h1>Edit Location</h1>
 
+        <form action="{{ route('locations.destroy', $location) }}" method="POST" class="d-inline">
+            @csrf
+            @method('delete')
+            <button type="submit" class="btn" title="Delete Location">❌</button>
+        </form>
+    </div>
     <div id="location-container">
         <form action="{{ route('locations.update', $location) }}" method="POST">
             @method('PUT')
