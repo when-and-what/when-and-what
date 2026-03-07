@@ -21,7 +21,9 @@ class CheckinController extends Controller
      *
      * @return void
      */
-    public function index() {}
+    public function index()
+    {
+    }
 
     public function store(CreateCheckinRequest $request)
     {

@@ -8,7 +8,9 @@ use Illuminate\Http\Request;
 
 class AccountController extends Controller
 {
-    public function all() {}
+    public function all()
+    {
+    }
 
     public function userAccounts(Request $request)
     {
