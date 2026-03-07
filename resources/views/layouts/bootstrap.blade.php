@@ -54,12 +54,14 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link @if(strpos($routeName, 'notes') === 0) active @endif" href="/notes">Journal</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('podcasts.plays') }}">Podcasts</a>
-                        </li>
+                        @if(auth()->user() && auth()->user()->email == 'natec23@gmail.com')
+                            <li class="nav-item">
+                                <a class="nav-link @if(strpos($routeName, 'notes') === 0) active @endif" href="/notes">Journal</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" @if(strpos($routeName, 'podcasts') === 0) active @endif href="{{ route('podcasts.plays') }}">Podcasts</a>
+                            </li>
+                        @endif
                         <li class="nav-item">
                             <a href="/user/profile" class="nav-link">Profile</a>
                         </li>

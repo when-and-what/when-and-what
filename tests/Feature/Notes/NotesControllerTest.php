@@ -17,3 +17,9 @@ test('view user notes', function () {
         return count($notes) === 15;
     });
 });
+
+test('link hidden for non-admin users', function() {
+    $this->actingAs(User::factory()->create())
+        ->get('/dashboard')
+        ->assertSeeTextInOrder(['Home', 'Locations', 'Profile']);
+});
