@@ -24,7 +24,9 @@ class Pocketcasts extends UserAccount
 
         $dashboard = new DashboardResponse('pocketcasts');
         $dashboard->addItem('Episodes', count($plays), '🎙️');
-        $dashboard->addItem('Minutes', floor($plays->sum('seconds') / 60), '🎙️');
+        if(count($plays) > 0) {
+            $dashboard->addItem('Minutes', floor($plays->sum('seconds') / 60), '🎙️');
+        }
 
         return $dashboard;
     }
