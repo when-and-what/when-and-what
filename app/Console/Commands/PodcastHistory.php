@@ -36,7 +36,7 @@ class PodcastHistory extends Command
             ->get();
         foreach ($userAccounts as $userAccount) {
             $now = now($userAccount->user->timezone);
-            if ($now->format('G') === 0) {
+            if ($now->format('G') == 0) {
                 PodcastUserHistory::dispatch($userAccount);
             }
         }
