@@ -46,6 +46,7 @@ const dashboard = createApp({
     data() {
         return {
             bounds: [],
+            changeDay: false,
             date: day,
             events: [],
             items: [],
@@ -98,6 +99,12 @@ const dashboard = createApp({
                 })
                 .addTo(self.map);
             self.map.fitBounds(self.bounds);
+        },
+        changeDate() {
+            self.changeDay = true;
+        },
+        redirectDate() {
+            window.location = "/day/"+self.date.replaceAll('-', '/');
         },
         resetNote() {
             this.note = {
