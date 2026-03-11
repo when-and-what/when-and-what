@@ -6,8 +6,10 @@ use App\Actions\CreateNewLocation;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Locations\LocationRequest;
 use App\Models\Locations\Location;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 
 class LocationController extends Controller
 {
@@ -57,13 +59,12 @@ class LocationController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Display the specified location
      */
-    public function show(Location $location)
+    public function show(Location $location): JsonResponse
     {
-        //
+        Gate::authorize('view', $location);
+        return response()->json($location);
     }
 
     /**

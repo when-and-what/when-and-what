@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Locations\Category;
+use App\Models\Locations\Location;
 use App\Models\User;
 
 test('it creates a new location', function () {
@@ -28,4 +29,20 @@ test('other user locations are not allowed', function () {
         ]))
         ->assertStatus(422)
         ->assertJsonValidationErrorFor('category');
+});
+
+test('display location', function () {
+    $location = Location::factory()->create();
+    $this->actingAs($location->user)
+        ->get(route('api.locations.show', $location))
+        ->assertOk()
+        ->assertJsonFragment(['id' => $location->id]);
+
+    $user = User::factory()->create();
+    $this->actingAs($user)
+        ->get(route('api.locations.show', $location))
+        ->assertStatus(403);
+    $this->actingAs($user)
+        ->get(route('api.locations.show', 12345))
+        ->assertStatus(404);
 });
