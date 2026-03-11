@@ -13,13 +13,13 @@ class Strava extends UserAccount
     {
         $dashboard = new DashboardResponse('strava', '#FC4C02');
         $activities = $this->activities($startDate, $endDate);
-        foreach($activities as $activity)
-        {
+        foreach ($activities as $activity) {
             $dashboard->addEvent(id: $activity['id'], date: new Carbon($activity['start_date']), title: $activity['type'], details: [
-                'icon' => '🚶'
+                'icon' => '🚶',
             ]);
-            $dashboard->addLine(id: $activity['id'], cords: $this->decodePolyline(""));
+            $dashboard->addLine(id: $activity['id'], cords: $this->decodePolyline(''));
         }
+
         return $dashboard;
     }
 
@@ -60,7 +60,7 @@ class Strava extends UserAccount
             $result = 0;
             do {
                 $byte = ord($encoded[$index++]) - 63;
-                $result |= ($byte & 0x1f) << $shift;
+                $result |= ($byte & 0x1F) << $shift;
                 $shift += 5;
             } while ($byte >= 0x20);
             $lat += ($result & 1) ? ~($result >> 1) : ($result >> 1);
@@ -69,7 +69,7 @@ class Strava extends UserAccount
             $result = 0;
             do {
                 $byte = ord($encoded[$index++]) - 63;
-                $result |= ($byte & 0x1f) << $shift;
+                $result |= ($byte & 0x1F) << $shift;
                 $shift += 5;
             } while ($byte >= 0x20);
             $lng += ($result & 1) ? ~($result >> 1) : ($result >> 1);
