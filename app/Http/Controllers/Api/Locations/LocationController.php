@@ -59,11 +59,12 @@ class LocationController extends Controller
     }
 
     /**
-     * Display the specified location
+     * Display the specified location.
      */
     public function show(Location $location): JsonResponse
     {
         Gate::authorize('view', $location);
+
         return response()->json($location);
     }
 
