@@ -62,8 +62,16 @@
                                 <a class="nav-link" @if(strpos($routeName, 'podcasts') === 0) active @endif href="{{ route('podcasts.plays') }}">Podcasts</a>
                             </li>
                         @endif
-                        <li class="nav-item">
-                            <a href="/user/profile" class="nav-link">Profile</a>
+                        <li class="nav-item dropdown">
+                            <a href="/user/profile" class="nav-link dropdown-toggle" id="navProfileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Profile</a>
+                            <ul class="dropdown-menu" aria-labelledby="navProfileDropdown">
+                                <li>
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault(); this.closest('form').submit();">{{ __('Log Out') }}</a>
+                                    </form>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
