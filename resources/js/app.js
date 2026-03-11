@@ -77,7 +77,7 @@ const dashboard = createApp({
         addEvent(event) {},
         addLine(color, cords, id) {
             var self = this;
-            this.mapLine = L.polyline(cords, { color: color, weight: 2 })
+            this.mapLine = L.polyline(cords, { color: color, weight: 5 })
                 .on({
                     mouseover: function () {
                         document.getElementById(id).classList.add('border');
