@@ -64,5 +64,13 @@ class AccountSeeder extends Seeder
                 'edit_token' => true,
             ]);
         }
+        if (config('services.strava.client_id') && ! Account::where('slug', 'strava')->first()) {
+            Account::create([
+                'name' => 'Strava',
+                'slug' => 'strava',
+                'service' => 'App\Services\Accounts\Strava',
+                'scope' => 'activity:read_all',
+            ]);
+        }
     }
 }
