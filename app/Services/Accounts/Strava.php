@@ -16,6 +16,7 @@ class Strava extends UserAccount
         foreach ($activities as $activity) {
             $dashboard->addEvent(id: $activity['id'], date: new Carbon($activity['start_date']), title: $activity['type'], details: [
                 'icon' => '🚶',
+                'subTitle' => $activity['device_name'],
             ]);
             $dashboard->addLine(id: $activity['id'], cords: $this->decodePolyline(''));
         }
