@@ -14,9 +14,9 @@ class Strava extends UserAccount
         $dashboard = new DashboardResponse('strava', '#FC4C02');
         $activities = $this->activities($startDate, $endDate);
         foreach ($activities as $activity) {
-            $dashboard->addEvent(id: $activity['id'], date: new Carbon($activity['start_date']), title: $activity['type'], details: [
-                'icon' => '🚶',
-                'subTitle' => $activity['device_name'],
+            $dashboard->addEvent(id: $activity['id'], date: new Carbon($activity['start_date']), title: $activity['sport_type'], details: [
+                'icon' => $this->activityIcon($activity['sport_type']),
+                'subTitle' => isset($activity['device_name']) ? $activity['device_name'] : '',
             ]);
             $details = $this->activity($activity['id']);
             if (isset($details['map']['polyline'])) {
@@ -77,6 +77,63 @@ class Strava extends UserAccount
         $this->accountUser->save();
 
         return $respone['access_token'];
+    }
+
+    public function activityIcon(string $sport): ?string
+    {
+        return match($sport) {
+            'AlpineSki'                       => '⛷️',
+            'BackcountrySki'                  => '🎿',
+            'Badminton'                       => '🏸',
+            'Canoeing'                        => '🛶',
+            'Crossfit'                        => '🏋️',
+            'EBikeRide'                       => '⚡🚴',
+            'Elliptical'                      => '🏃',
+            'EMountainBikeRide'               => '⚡🚵',
+            'Golf'                            => '⛳',
+            'GravelRide'                      => '🚴',
+            'Handcycle'                       => '🦽',
+            'HighIntensityIntervalTraining'   => '💪',
+            'Hike'                            => '🥾',
+            'IceSkate'                        => '⛸️',
+            'InlineSkate'                     => '🛼',
+            'Kayaking'                        => '🛶',
+            'Kitesurf'                        => '🪁',
+            'MountainBikeRide'                => '🚵',
+            'NordicSki'                       => '🎿',
+            'Pickleball'                      => '🏓',
+            'Pilates'                         => '🧘',
+            'Racquetball'                     => '🎾',
+            'Ride'                            => '🚴',
+            'RockClimbing'                    => '🧗',
+            'RollerSki'                       => '🛷',
+            'Rowing'                          => '🚣',
+            'Run'                             => '🏃',
+            'Sail'                            => '⛵',
+            'Skateboard'                      => '🛹',
+            'Snowboard'                       => '🏂',
+            'Snowshoe'                        => '🌨️',
+            'Soccer'                          => '⚽',
+            'Squash'                          => '🎾',
+            'StairStepper'                    => '🪜',
+            'StandUpPaddling'                 => '🏄',
+            'Surfing'                         => '🏄',
+            'Swim'                            => '🏊',
+            'TableTennis'                     => '🏓',
+            'Tennis'                          => '🎾',
+            'TrailRun'                        => '🏃',
+            'Velomobile'                      => '🚴',
+            'VirtualRide'                     => '🚴',
+            'VirtualRow'                      => '🚣',
+            'VirtualRun'                      => '🏃',
+            'Walk'                            => '🚶',
+            'WeightTraining'                  => '🏋️',
+            'Wheelchair'                      => '♿',
+            'Windsurf'                        => '🏄',
+            'Workout'                         => '💪',
+            'Yoga'                            => '🧘',
+            default => null,
+        };
     }
 
     private function decodePolyline(string $encoded): array
