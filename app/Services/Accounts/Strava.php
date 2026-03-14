@@ -152,11 +152,10 @@ class Strava extends UserAccount
     {
         $profile = $this->getProfile();
 
-        if(isset($profile['measurement_preference']) && $profile['measurement_preference'] == 'feet') {
-            return number_format($meters / 609.344, 2) .' miles';
-        }
-        else {
-            return number_format($meters / 1000, 2) .' km';
+        if (isset($profile['measurement_preference']) && $profile['measurement_preference'] == 'feet') {
+            return number_format($meters / 609.344, 2).' miles';
+        } else {
+            return number_format($meters / 1000, 2).' km';
         }
     }
 
