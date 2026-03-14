@@ -17,6 +17,7 @@ class Strava extends UserAccount
             $dashboard->addEvent(id: $activity['id'], date: new Carbon($activity['start_date']), title: $activity['sport_type'], details: [
                 'icon' => $this->activityIcon($activity['sport_type']),
                 'subTitle' => isset($activity['device_name']) ? $activity['device_name'] : '',
+                'titleLink' => 'https://www.strava.com/activities/'.$activity['id'],
             ]);
             $details = $this->activity($activity['id']);
             if (isset($details['map']['polyline'])) {
