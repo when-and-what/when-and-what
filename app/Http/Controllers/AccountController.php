@@ -6,6 +6,7 @@ use App\Models\Account;
 use App\Models\AccountUser;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 
 class AccountController extends Controller
@@ -53,6 +54,7 @@ class AccountController extends Controller
     public function destroy(Request $request, Account $account): RedirectResponse
     {
         AccountUser::whereBelongsTo($account)->whereBelongsTo($request->user())->delete();
+        Cache::forget($request->user()->id.'-strava-athlete');
 
         return redirect(route('accounts.index'));
     }

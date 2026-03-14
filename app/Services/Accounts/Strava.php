@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Http;
 
 class Strava extends UserAccount
 {
+    public int $maxCache = 604800; // 7 days
+
     public function dashboard(Carbon $startDate, Carbon $endDate): DashboardResponse
     {
         $dashboard = new DashboardResponse('strava', '#FC4C02');
@@ -18,7 +20,7 @@ class Strava extends UserAccount
         foreach ($activities as $activity) {
             $dashboard->addEvent(id: $activity['id'], date: new Carbon($activity['start_date']), title: $activity['sport_type'], details: [
                 'icon' => $this->activityIcon($activity['sport_type']),
-                'subTitle' => isset($activity['device_name']) ? $activity['device_name'] : '',
+                'subTitle' => $this->isGarmin($activity) ? $activity['device_name'] : $this->displayDistance($activity['distance']),
                 'titleLink' => 'https://www.strava.com/activities/'.$activity['id'],
             ]);
             $details = $this->activity($activity['id']);
@@ -47,7 +49,7 @@ class Strava extends UserAccount
     {
         $url = 'https://www.strava.com/api/v3/activities/'.$id;
 
-        return Cache::remember($this->accountUser->user_id.'-strava-activity-'.$id, 604800, function () use ($url) {
+        return Cache::remember($this->accountUser->user_id.'-strava-activity-'.$id, $this->maxCache, function () use ($url) {
             return Http::withToken($this->getToken())
                 ->acceptJson()
                 ->throw()
@@ -139,6 +141,36 @@ class Strava extends UserAccount
             'Yoga' => '🧘',
             default => null,
         };
+    }
+
+    public function isGarmin(array $activity): bool
+    {
+        return isset($activity['device_name']) && str_contains(strtolower($activity['device_name']), 'garmin');
+    }
+
+    public function displayDistance(int $meters): string
+    {
+        $profile = $this->getProfile();
+
+        if(isset($profile['measurement_preference']) && $profile['measurement_preference'] == 'feet') {
+            return number_format($meters / 609.344, 2) .' miles';
+        }
+        else {
+            return number_format($meters / 1000, 2) .' km';
+        }
+    }
+
+    public function getProfile()
+    {
+        $url = 'https://www.strava.com/api/v3/athlete';
+
+        return Cache::remember($this->accountUser->user_id.'-strava-athlete', $this->maxCache, function () use ($url) {
+            return Http::withToken($this->getToken())
+            ->acceptJson()
+            ->throw()
+            ->get($url)
+            ->json();
+        });
     }
 
     private function decodePolyline(string $encoded): array
