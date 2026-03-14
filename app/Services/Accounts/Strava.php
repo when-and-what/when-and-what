@@ -5,6 +5,7 @@ namespace App\Services\Accounts;
 use App\Http\Responses\DashboardResponse;
 use App\Services\UserAccount;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
 class Strava extends UserAccount
@@ -13,6 +14,7 @@ class Strava extends UserAccount
     {
         $dashboard = new DashboardResponse('strava', '#FC4C02');
         $activities = $this->activities($startDate, $endDate);
+
         foreach ($activities as $activity) {
             $dashboard->addEvent(id: $activity['id'], date: new Carbon($activity['start_date']), title: $activity['sport_type'], details: [
                 'icon' => $this->activityIcon($activity['sport_type']),
@@ -28,7 +30,7 @@ class Strava extends UserAccount
         return $dashboard;
     }
 
-    public function activities(Carbon $startDate, Carbon $endDate)
+    public function activities(Carbon $startDate, Carbon $endDate): array
     {
         $url = 'https://www.strava.com/api/v3/athlete/activities';
 
@@ -41,15 +43,17 @@ class Strava extends UserAccount
             ])->json();
     }
 
-    public function activity(int $id)
+    public function activity(int $id): array
     {
         $url = 'https://www.strava.com/api/v3/activities/'.$id;
 
-        return Http::withToken($this->getToken())
-            ->acceptJson()
-            ->throw()
-            ->get($url)
-            ->json();
+        return Cache::remember($this->accountUser->user_id.'-strava-activity-'.$id, 604800, function() use($url) {
+            return Http::withToken($this->getToken())
+                ->acceptJson()
+                ->throw()
+                ->get($url)
+                ->json();
+        });
     }
 
     private function getToken(): string
