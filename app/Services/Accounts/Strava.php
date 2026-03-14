@@ -18,7 +18,10 @@ class Strava extends UserAccount
                 'icon' => '🚶',
                 'subTitle' => $activity['device_name'],
             ]);
-            $dashboard->addLine(id: $activity['id'], cords: $this->decodePolyline(''));
+            $details = $this->activity($activity['id']);
+            if(isset($details['map']['polyline'])) {
+                $dashboard->addLine(id: $activity['id'], cords: $this->decodePolyline($details['map']['polyline']));
+            }
         }
 
         return $dashboard;
@@ -28,7 +31,7 @@ class Strava extends UserAccount
     {
         $url = 'https://www.strava.com/api/v3/athlete/activities';
 
-        return Http::withToken($this->accountUser->token)
+        return Http::withToken($this->getToken())
             ->acceptJson()
             ->throw()
             ->get($url, [
@@ -41,12 +44,40 @@ class Strava extends UserAccount
     {
         $url = 'https://www.strava.com/api/v3/activities/'.$id;
 
-        return Http::withToken($this->accountUser->token)
+        return Http::withToken($this->getToken())
             ->acceptJson()
             ->throw()
             ->get($url, [
                 'include_all_efforts' => 1,
             ])->json();
+    }
+
+    private function getToken(): string
+    {
+        if ($this->accountUser->updated_at <= now()->subHours(5)) {
+            return $this->refreshToken();
+        }
+
+        return $this->accountUser->token;
+    }
+
+    private function refreshToken(): string
+    {
+        $respone = Http::acceptJson()
+            ->post('https://www.strava.com/api/v3/oauth/token', [
+                'refresh_token' => $this->accountUser->refresh_token,
+                'client_id' => config('services.strava.client_id'),
+                'client_secret' => config('services.strava.client_secret'),
+                'grant_type' => 'refresh_token',
+            ])
+            ->throw()
+            ->json();
+
+        $this->accountUser->token = $respone['access_token'];
+        $this->accountUser->refresh_token = $respone['refresh_token'];
+        $this->accountUser->save();
+
+        return $respone['access_token'];
     }
 
     private function decodePolyline(string $encoded): array
