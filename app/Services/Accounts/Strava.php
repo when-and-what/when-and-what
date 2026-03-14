@@ -47,9 +47,8 @@ class Strava extends UserAccount
         return Http::withToken($this->getToken())
             ->acceptJson()
             ->throw()
-            ->get($url, [
-                'include_all_efforts' => 1,
-            ])->json();
+            ->get($url)
+            ->json();
     }
 
     private function getToken(): string
