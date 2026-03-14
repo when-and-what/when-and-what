@@ -19,7 +19,7 @@ class Strava extends UserAccount
                 'subTitle' => $activity['device_name'],
             ]);
             $details = $this->activity($activity['id']);
-            if(isset($details['map']['polyline'])) {
+            if (isset($details['map']['polyline'])) {
                 $dashboard->addLine(id: $activity['id'], cords: $this->decodePolyline($details['map']['polyline']));
             }
         }
