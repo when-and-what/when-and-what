@@ -9,7 +9,7 @@
                 <input type="submit" value="Search" class="btn btn-primary" />
             </div>
         </form>
-        <a href="{{ route('locations.create') }}" class="btn btn-primary">New Location</a>
+        <p><a href="{{ route('locations.create') }}" class="btn btn-primary">New Location</a></p>
     </div>
     @foreach($locations as $count => $location)
         @if($count % 2 == 0)
