@@ -6,6 +6,7 @@ use App\Http\Controllers\Locations\CategoriesController;
 use App\Http\Controllers\Locations\CheckinController;
 use App\Http\Controllers\Locations\LocationController;
 use App\Http\Controllers\Locations\LocationSearchController;
+use App\Http\Controllers\Locations\MapLocationsController;
 use App\Http\Controllers\Locations\PendingCheckinController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\Podcasts\PlaysController;
@@ -41,6 +42,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('locations/search', function () {
         return redirect('/locations');
     });
+    Route::get('locations/map', MapLocationsController::class)->name('locations.map');
     Route::resource('locations', LocationController::class);
 
     // Podcasts

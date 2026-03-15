@@ -47,7 +47,7 @@
                                     <a class="dropdown-item" href="{{ route('checkins.index') }}">Checkins</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="{{ route('locations.index') }}">Locations</a>
+                                    <a class="dropdown-item" href="{{ route('locations.map') }}">Locations</a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('categories.index') }}">Categories</a>

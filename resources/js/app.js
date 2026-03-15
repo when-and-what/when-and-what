@@ -4,6 +4,7 @@ import axios from 'axios';
 
 
 import { createApp } from 'vue';
+import locationsmap from './components/locations.vue';
 import newlocation from './components/location.vue';
 import checkinmap from './components/checkin.vue';
 import event from './components/dashboard/event.vue';
@@ -14,6 +15,7 @@ const newLocation = createApp({
     components: {
         newlocation,
         checkinmap,
+        locationsmap,
     },
     data() {
         return {
