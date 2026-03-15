@@ -63,7 +63,7 @@ const dashboard = createApp({
             this.events = this.events.concat(response.data.events);
             this.items = this.items.concat(response.data.items);
             response.data.lines.forEach((line) => {
-                this.addLine(response.data.color, line.cords);
+                this.addLine(response.data.color, line.cords, line.id);
             });
             response.data.pins.forEach((pin) => {
                 this.addPin(pin);
@@ -75,9 +75,20 @@ const dashboard = createApp({
                 .then(this.accountResponse);
         },
         addEvent(event) {},
-        addLine(color, cords) {
+        addLine(color, cords, id) {
             var self = this;
-            this.mapLine = L.polyline(cords, { color: color, weight: 2 }).addTo(self.map);
+            this.mapLine = L.polyline(cords, { color: color, weight: 5 })
+                .on({
+                    mouseover: function () {
+                        document.getElementById(id).classList.add('border');
+                        document.getElementById(id).classList.add('border-primary');
+                    },
+                    mouseout: function () {
+                        document.getElementById(id).classList.remove('border');
+                        document.getElementById(id).classList.remove('border-primary');
+                    },
+                })
+                .addTo(self.map);
             self.bounds.push(self.mapLine.getBounds());
             this.map.fitBounds(self.bounds);
         },

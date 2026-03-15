@@ -20,6 +20,7 @@ class EventServiceProvider extends ServiceProvider
             \SocialiteProviders\Fitbit\FitbitExtendSocialite::class.'@handle',
             \SocialiteProviders\Trakt\TraktExtendSocialite::class.'@handle',
             \SocialiteProviders\Google\GoogleExtendSocialite::class.'@handle',
+            \SocialiteProviders\Strava\StravaExtendSocialite::class.'@handle',
         ],
     ];
 
