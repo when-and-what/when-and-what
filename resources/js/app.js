@@ -19,7 +19,7 @@ const newLocation = createApp({
     },
     data() {
         return {
-            mapboxToken: process.env.MIX_MAPBOX_TOKEN,
+            mapboxToken: import.meta.env.VITE_MAPBOX_TOKEN,
             newLocation: 0,
         };
     },
@@ -55,7 +55,7 @@ const dashboard = createApp({
             map: null,
             mapLayer: null,
             mapLine: null,
-            mapboxToken: process.env.MIX_MAPBOX_TOKEN,
+            mapboxToken: import.meta.env.VITE_MAPBOX_TOKEN,
             note: {},
             today: day == new Date().toISOString().split('T')[0],
         };
