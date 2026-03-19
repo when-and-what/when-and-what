@@ -478,6 +478,29 @@ a:hover { color: var(--ww-accent-dark); }
 
 .day-date-input:focus { border-color: var(--ww-accent); }
 
+/* ─── Small action button ───────────────────────────────────── */
+.btn-sm-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.6rem .75rem;
+    border-radius: 8px;
+    background: var(--ww-accent);
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s;
+    white-space: nowrap;
+}
+
+.btn-sm-action:hover {
+    background: var(--ww-accent-dark);
+    color: #fff;
+}
+
 /* ─── Page header ───────────────────────────────────────────── */
 .page-header {
     margin-bottom: 1.75rem;
@@ -699,6 +722,209 @@ a:hover { color: var(--ww-accent-dark); }
     word-break: break-all;
     color: var(--ww-dark);
     margin-bottom: 1rem;
+}
+
+/* ─── Check-in list page ────────────────────────────────────── */
+
+/* Pending section */
+.pending-section {
+    border: 1px solid #fde68a;
+    background: #fffbeb;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1.75rem;
+}
+
+.pending-section-header {
+    padding: 0.65rem 1.1rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #92400e;
+    border-bottom: 1px solid #fde68a;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pending-cards-row {
+    display: flex;
+    gap: 0;
+    flex-wrap: wrap;
+}
+
+.pending-card {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.875rem 1.1rem;
+    border-right: 1px solid #fde68a;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.pending-card:last-child { border-right: none; }
+
+.pending-card-time {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #92400e;
+}
+
+.pending-card-note {
+    font-size: 0.78rem;
+    color: #78350f;
+    line-height: 1.4;
+    flex: 1;
+}
+
+.pending-card-note-empty {
+    font-style: italic;
+    color: #a16207;
+}
+
+.pending-card-action {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #b45309;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    margin-top: 0.25rem;
+    transition: color 0.15s;
+}
+
+.pending-card-action:hover { color: #78350f; }
+
+/* Timeline */
+.checkin-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.checkin-timeline-day {
+    margin-bottom: 1.25rem;
+}
+
+.checkin-timeline-date {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.checkin-timeline-date span {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--ww-muted);
+    white-space: nowrap;
+}
+
+.checkin-timeline-date::before,
+.checkin-timeline-date::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--ww-border);
+}
+
+.checkin-timeline-date::before { display: none; }
+
+.checkin-timeline-rows {
+    border: 1px solid var(--ww-border);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.checkin-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--ww-border);
+    transition: background 0.1s;
+}
+
+.checkin-row:last-child { border-bottom: none; }
+
+.checkin-row:hover { background: var(--ww-light); }
+
+.checkin-row-icon {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: #f0fdfa;
+    color: var(--ww-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+    border: 1px solid #ccfbf1;
+}
+
+.checkin-row-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.checkin-row-location {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--ww-dark);
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.checkin-row-location:hover { color: var(--ww-accent); }
+
+.checkin-row-note {
+    font-size: 0.75rem;
+    color: var(--ww-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.checkin-row-time {
+    font-size: 0.78rem;
+    color: var(--ww-muted);
+    font-weight: 500;
+    white-space: nowrap;
+    flex-shrink: 0;
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+.checkin-row-time:hover { color: var(--ww-accent); }
+
+.checkin-empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--ww-muted);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.checkin-empty i {
+    font-size: 2rem;
+    color: var(--ww-border);
+}
+
+.checkin-empty p { margin: 0; font-size: 0.9rem; }
+
+.checkin-pagination {
+    margin-top: 1.5rem;
 }
 
 /* ─── Check-in create page ──────────────────────────────────── */
