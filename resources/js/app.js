@@ -57,6 +57,7 @@ const dashboard = createApp({
             mapLine: null,
             mapboxToken: process.env.MIX_MAPBOX_TOKEN,
             note: {},
+            showNoteForm: false,
             today: day == new Date().toISOString().split('T')[0],
         };
     },
@@ -122,13 +123,16 @@ const dashboard = createApp({
             window.location = "/day/"+self.date.replaceAll('-', '/');
         },
         resetNote() {
+            const now = new Date();
+            const hhmm = now.toTimeString().slice(0, 5);
             this.note = {
                 title: '',
                 sub_title: '',
                 icon: '',
-                published_at: this.today ? '' : day + 'T12:00',
+                published_at: day + 'T' + hhmm,
                 dashboard_visible: true,
             };
+            this.showNoteForm = false;
         },
         saveNote() {
             var self = this;

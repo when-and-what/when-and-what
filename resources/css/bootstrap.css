@@ -345,49 +345,63 @@ a:hover { color: var(--ww-accent-dark); }
 
 .activity-time a:hover { color: var(--ww-accent); }
 
-/* ─── Add Note accordion ────────────────────────────────────── */
-.add-note-accordion {
-    border-top: 1px solid var(--ww-border);
+/* ─── Add Note form panel ───────────────────────────────────── */
+.note-form-panel {
     flex-shrink: 0;
-}
-
-.add-note-accordion .accordion-button {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--ww-muted);
-    background: var(--ww-light);
-    padding: 0.65rem 1.25rem;
-    box-shadow: none;
-}
-
-.add-note-accordion .accordion-button:not(.collapsed) {
-    color: var(--ww-accent);
-    background: #f0fdfa;
-}
-
-.add-note-accordion .accordion-body {
-    padding: 0.75rem 1.25rem;
     border-top: 1px solid var(--ww-border);
+    background: #fff;
 }
 
-.add-note-accordion .form-label {
-    font-size: 0.72rem;
+.note-form-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.65rem 1rem 0.65rem 1.25rem;
+    border-bottom: 1px solid var(--ww-border);
+    background: var(--ww-light);
+}
+
+.note-form-title {
+    font-size: 0.82rem;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
+    color: var(--ww-dark);
+}
+
+.note-form-close {
+    background: none;
+    border: none;
+    padding: 0.15rem 0.3rem;
+    border-radius: 5px;
     color: var(--ww-muted);
-    margin-bottom: 0.3rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+    line-height: 1;
+    transition: color 0.15s, background 0.15s;
 }
 
-.add-note-accordion .form-control {
-    font-size: 0.875rem;
-    border-color: var(--ww-border);
-    border-radius: 8px;
+.note-form-close:hover {
+    color: var(--ww-dark);
+    background: var(--ww-border);
 }
 
-.add-note-accordion .form-control:focus {
+.note-form-body {
+    padding: 0.875rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.note-form-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 0.65rem;
+}
+
+/* ─── Active state for checkin-bar note button ──────────────── */
+.btn-checkin-active {
+    background: #f0fdfa;
+    color: var(--ww-accent);
     border-color: var(--ww-accent);
-    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12);
 }
 
 /* ─── Map column ────────────────────────────────────────────── */

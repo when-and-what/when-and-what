@@ -41,39 +41,40 @@
             {{-- Feed --}}
             <div class="day-feed-scroll" v-show="sortedEvents.length > 0">
                 <event v-for="event in sortedEvents" :event="event" :key="event.id" />
+            </div>
 
-                {{-- Add Note --}}
-                <div class="add-note-accordion accordion accordion-flush" id="add-note-accordion">
-                    <div class="accordion-item border-0">
-                        <h2 class="accordion-header" id="add-note-heading">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#add-note-content" aria-expanded="false" aria-controls="add-note-content">
-                                + Add Note
-                            </button>
-                        </h2>
-                        <div id="add-note-content" class="accordion-collapse collapse" aria-labelledby="add-note-heading">
-                            <div class="accordion-body">
-                                <div class="row g-2 mb-2">
-                                    <div class="col-12">
-                                        <label class="form-label">Title</label>
-                                        <input type="text" class="form-control form-control-sm" v-model="note.title" />
-                                    </div>
-                                    <div class="col-12">
-                                        <label class="form-label">Sub Title</label>
-                                        <input type="text" class="form-control form-control-sm" v-model="note.sub_title" />
-                                    </div>
-                                    <div class="col-3">
-                                        <label class="form-label">Icon</label>
-                                        <input type="text" class="form-control form-control-sm" v-model="note.icon" />
-                                    </div>
-                                    <div class="col-9">
-                                        <label class="form-label">Date</label>
-                                        <input type="datetime-local" class="form-control form-control-sm" v-model="note.published_at" />
-                                    </div>
-                                </div>
-                                <button class="btn-checkin btn-checkin-primary" @click="saveNote">Save Note</button>
-                            </div>
+            {{-- Add Note form --}}
+            <div class="note-form-panel" v-show="showNoteForm">
+                <div class="note-form-header">
+                    <span class="note-form-title">
+                        <i class="fa-solid fa-note-sticky me-1" style="color: var(--ww-accent)"></i> Add a Note
+                    </span>
+                    <button class="note-form-close" @click="showNoteForm = false" type="button">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="note-form-body">
+                    <div class="checkin-field">
+                        <label>Title</label>
+                        <input type="text" v-model="note.title" placeholder="What happened?" />
+                    </div>
+                    <div class="checkin-field">
+                        <label>Details <span class="optional">— optional</span></label>
+                        <input type="text" v-model="note.sub_title" placeholder="More detail…" />
+                    </div>
+                    <div class="note-form-row">
+                        <div class="checkin-field">
+                            <label>Icon <span class="optional">— optional</span></label>
+                            <input type="text" v-model="note.icon" placeholder="⭐" />
+                        </div>
+                        <div class="checkin-field">
+                            <label>Time <span class="optional">— optional</span></label>
+                            <input type="datetime-local" v-model="note.published_at" />
                         </div>
                     </div>
+                    <button class="btn-checkin btn-checkin-primary" @click="saveNote" type="button">
+                        <i class="fa-solid fa-floppy-disk"></i> Save Note
+                    </button>
                 </div>
             </div>
 
@@ -85,6 +86,9 @@
                 <a href="{{ route('pending.create') }}" class="btn-checkin btn-checkin-secondary">
                     <i class="fa-solid fa-crosshairs"></i> Drop a Pin
                 </a>
+                <button class="btn-checkin btn-checkin-secondary" :class="{ 'btn-checkin-active': showNoteForm }" @click="showNoteForm = !showNoteForm" type="button">
+                    <i class="fa-solid fa-note-sticky"></i> Add Note
+                </button>
             </div>
 
         </div>{{-- /day-feed --}}
