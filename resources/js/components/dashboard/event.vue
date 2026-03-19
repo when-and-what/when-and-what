@@ -1,6 +1,6 @@
 <template>
     <div :id="event.id" class="activity-item">
-        <div class="activity-dot" :style="dotStyle">{{ event.icon }}</div>
+        <div class="activity-dot" :style="dotStyle" v-html="event.icon"></div>
         <div class="activity-body">
             <div class="activity-title">
                 <a v-if="event.titleLink" :href="event.titleLink" v-html="tagLinks(event.title)"></a>
