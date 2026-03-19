@@ -687,6 +687,173 @@ a:hover { color: var(--ww-accent-dark); }
     margin-bottom: 1rem;
 }
 
+/* ─── Check-in create page ──────────────────────────────────── */
+.checkin-page {
+    display: flex;
+    height: calc(100vh - 57px);
+    overflow: hidden;
+}
+
+.checkin-panel {
+    width: 340px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--ww-border);
+    overflow: hidden;
+    background: #fff;
+}
+
+.checkin-panel-header {
+    padding: 1.25rem 1.25rem 1rem;
+    border-bottom: 1px solid var(--ww-border);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.checkin-panel-header h5 {
+    font-weight: 700;
+    font-size: 1rem;
+    margin: 0;
+    color: var(--ww-dark);
+    letter-spacing: -0.02em;
+}
+
+.checkin-back {
+    font-size: 0.78rem;
+    color: var(--ww-muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.checkin-back:hover { color: var(--ww-dark); }
+
+.checkin-form-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+.checkin-field label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ww-muted);
+    margin-bottom: 0.4rem;
+}
+
+.checkin-field label .optional {
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 0.72rem;
+    color: #94a3b8;
+}
+
+.checkin-field input,
+.checkin-field textarea {
+    width: 100%;
+    border: 1px solid var(--ww-border);
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--ww-dark);
+    background: #fff;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    outline: none;
+}
+
+.checkin-field input:focus,
+.checkin-field textarea:focus {
+    border-color: var(--ww-accent);
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12);
+}
+
+.checkin-field textarea {
+    resize: none;
+    height: 80px;
+    line-height: 1.5;
+}
+
+.checkin-field textarea::placeholder { color: #94a3b8; }
+
+.checkin-datetime-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.checkin-footer {
+    flex-shrink: 0;
+    padding: 0.875rem 1.25rem;
+    border-top: 1px solid var(--ww-border);
+    background: #fff;
+}
+
+.btn-submit-checkin {
+    width: 100%;
+    padding: 0.65rem;
+    background: var(--ww-accent);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+}
+
+.btn-submit-checkin:hover { background: var(--ww-accent-dark); }
+
+.checkin-map-col {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.checkin-location-bar {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 0.875rem;
+    border-bottom: 1px solid var(--ww-border);
+    background: #fff;
+}
+
+.checkin-location-bar .field-input {
+    flex: 1;
+    cursor: default;
+    background: var(--ww-light);
+}
+
+.checkin-location-save {
+    flex-shrink: 0;
+    color: var(--ww-muted);
+}
+
+.checkin-location-save:hover { color: var(--ww-accent); }
+
+.checkin-map-fill {
+    flex: 1;
+    min-height: 0;
+}
+
 /* ─── Mobile ────────────────────────────────────────────────── */
 @media (max-width: 767px) {
     .dashboard-page { height: auto; }
@@ -712,5 +879,21 @@ a:hover { color: var(--ww-accent-dark); }
     #dashboard-map {
         position: absolute;
         inset: 0;
+    }
+
+    .checkin-page {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .checkin-panel {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--ww-border);
+    }
+
+    .checkin-map-col {
+        height: 60vw;
+        min-height: 300px;
     }
 }
