@@ -1,76 +1,106 @@
 @extends('layouts.bootstrap')
+
 @section('content')
-    {{--
-        style block in a PHP file? what year is it?!
-        anywho, currently only including the default bootstrap css. didn't want to add an new extra file just for this...
-        so here's the classic:
-        TODO: move this to an external file
-    --}}
-    <style>
-        #pocketcasts-account li::marker {
-            font-weight: bold;
-        }
-    </style>
-    <div class="row">
-        <div class="col-sm-6">
-            <h2>{{ $account->name }}</h2>
-            <form action="{{ route('accounts.update', $account) }}" method="POST">
-                @method('PUT')
-                @csrf
-                @if($account->edit_username)
-                    <div class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" class="form-control @if($errors->has('username')) is-invalid @endif" id="username" name="username" value="{{ old('username') }}" />
-                    </div>
-                @endif
-                @if($account->edit_token)
-                    <div class="form-group">
-                        <label for="token">Token</label>
-                        <input type="text" class="form-control @if($errors->has('token')) is-invalid @endif" id="token" name="token" value="{{ old('token') }}" />
-                    </div>
-                @endif
-                <p class="pt-3"><input type="submit" value="Submit" class="btn btn-primary" /></p>
-            </form>
+
+<div class="col-12">
+    <div class="page-header">
+        <a href="{{ route('accounts.index') }}" class="page-back-link">
+            <i class="fa-solid fa-chevron-left"></i> Integrations
+        </a>
+        <h1 class="page-title mt-2">Connect {{ $account->name }}</h1>
+    </div>
+
+    <div class="row g-4">
+
+        {{-- Credentials form --}}
+        <div class="col-md-5">
+            <div class="content-card">
+                <form action="{{ route('accounts.update', $account) }}" method="POST">
+                    @method('PUT')
+                    @csrf
+
+                    @if($account->edit_username)
+                        <div class="field-group">
+                            <label class="field-label" for="username">Username</label>
+                            <input type="text"
+                                   class="field-input @if($errors->has('username')) is-invalid @endif"
+                                   id="username" name="username" value="{{ old('username') }}" />
+                            @if($errors->has('username'))
+                                <div class="invalid-feedback">{{ $errors->first('username') }}</div>
+                            @endif
+                        </div>
+                    @endif
+
+                    @if($account->edit_token)
+                        <div class="field-group">
+                            <label class="field-label" for="token">Token</label>
+                            <input type="text"
+                                   class="field-input @if($errors->has('token')) is-invalid @endif"
+                                   id="token" name="token" value="{{ old('token') }}" />
+                            @if($errors->has('token'))
+                                <div class="invalid-feedback">{{ $errors->first('token') }}</div>
+                            @endif
+                        </div>
+                    @endif
+
+                    <button type="submit" class="btn-checkin btn-checkin-primary mt-3">Save</button>
+                </form>
+            </div>
         </div>
+
+        {{-- PocketCasts instructions --}}
         @if($account->slug === 'pocketcasts')
-            <div class="col-sm-6" id="pocketcasts-account">
-                <p>To communitate with <a href="https://pocketcasts.com/" target="_blank">PocketCasts</a> we need an access token for your account. </p>
-                <ol>
-                    <li>Open command prompt or terimal on your computer or you may use something like <a href="https://httpie.io/app" target="_blank">HTTPie</a>.
-                        <br />
-                        <div class="alert alert-warning" role="alert">
-                            <small>If you're not familar with command prompt or terminal please use HTTPie. Pasting commands into those apps on your computer without understanding them is a security risks and could cause loss of data.</small>
-                        </div>
-                    </li>
-                    <li>
-                        Enter your email and password in the form below and click "Update CURL Command". You should see your email and password inside the quotes above the form.
-                        <div class="alert alert-info" role="alert">
-                            This is completley optional. Your email & password entered is not sent or saved; it's only to make copy and pasting the curl command easier.
-                        </div>
-                    </li>
-                    <li>Paste the command below into your app from step 1. If you're using HTTPie click "Import" in the bottom left and choose "Text" before pasting and importing.</li>
-                    <li>
-                        Copy the access token and past it into the box on the left.
-                        <div class="alert alert-warning" role="alert">
-                            Do not share this anywhere else. Anyone with this code would be able to make changes to your PocketCasts account. When & What will only use it for looking up your listening history.
-                        </div>
-                    </li>
-                </ol>
+            <div class="col-md-7" id="pocketcasts-account">
+                <div class="content-card">
+                    <h5 class="content-card-title">How to get your token</h5>
+                    <p class="text-muted small">To connect <a href="https://pocketcasts.com/" target="_blank">PocketCasts</a> we need an API access token for your account.</p>
 
-                <div>
-                    curl -H  "Content-Type: application/json" -H "Accept: application/json" -d '{"email": "<span id="pocketcasts-email"></span>", "password":"<span id="pocketcasts-password"></span>"}' https://api.pocketcasts.com/user/login
-                </div>
+                    <ol class="instructions-list">
+                        <li>
+                            Open a terminal or use a tool like <a href="https://httpie.io/app" target="_blank">HTTPie</a>.
+                            <div class="info-box info-box-warning mt-2">
+                                If you're not familiar with the terminal, use HTTPie. Pasting commands you don't understand is a security risk.
+                            </div>
+                        </li>
+                        <li>
+                            Enter your email and password below and click <strong>Update curl command</strong> — your credentials will appear in the command above the form.
+                            <div class="info-box mt-2">
+                                Your email and password are not sent or saved — they only update the curl command for easy copy/paste.
+                            </div>
+                        </li>
+                        <li>Paste the command into your terminal or HTTPie (in HTTPie: click <strong>Import → Text</strong>).</li>
+                        <li>
+                            Copy the <code>token</code> value from the response and paste it into the form on the left.
+                            <div class="info-box info-box-warning mt-2">
+                                Keep this token private. Anyone with it can access your PocketCasts account. When and What only uses it to read your listening history.
+                            </div>
+                        </li>
+                    </ol>
 
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" />
+                    <div class="curl-command">
+                        curl -H "Content-Type: application/json" -H "Accept: application/json" -d '{"email": "<span id="pocketcasts-email"></span>", "password":"<span id="pocketcasts-password"></span>"}' https://api.pocketcasts.com/user/login
+                    </div>
+
+                    <div class="row g-2 mt-1">
+                        <div class="col-sm-6">
+                            <div class="field-group">
+                                <label class="field-label" for="email">Email</label>
+                                <input type="email" class="field-input" id="email" name="email" />
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="field-group">
+                                <label class="field-label" for="password">Password</label>
+                                <input type="password" class="field-input" id="password" name="password" />
+                            </div>
+                        </div>
+                    </div>
+                    <button id="generate-token" class="btn-checkin btn-checkin-secondary mt-3">Update curl command</button>
                 </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" />
-                </div>
-                <p class="pt-3"><button id="generate-token" class="btn btn-primary">Update CURL command</button></p>
             </div>
         @endif
+
     </div>
+</div>
+
 @endsection

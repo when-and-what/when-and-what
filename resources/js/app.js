@@ -62,7 +62,9 @@ const dashboard = createApp({
     },
     methods: {
         accountResponse(response) {
-            this.events = this.events.concat(response.data.events);
+            const color = response.data.color || '#0d9488';
+            const events = response.data.events.map(e => ({ ...e, color }));
+            this.events = this.events.concat(events);
             this.items = this.items.concat(response.data.items);
             response.data.lines.forEach((line) => {
                 this.addLine(response.data.color, line.cords, line.id);
