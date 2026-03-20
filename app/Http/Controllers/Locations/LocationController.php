@@ -82,7 +82,11 @@ class LocationController extends Controller
             'checkins' => Checkin::whereBelongsTo($request->user())
                 ->whereBelongsTo($location)
                 ->orderBy('checkin_at', 'desc')
+                ->limit(10)
                 ->get(),
+            'checkinCount' => Checkin::whereBelongsTo($request->user())
+                ->whereBelongsTo($location)
+                ->count(),
             'location' => $location,
         ]);
     }

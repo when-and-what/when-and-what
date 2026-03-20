@@ -5,7 +5,7 @@
     <div class="checkin-location-bar">
         <input type="text" class="field-input" v-model="location_name" placeholder="Click a pin to select a location" readonly />
         <div v-if="new_checkin" class="checkin-location-save">
-            <a href="#" @click.capture="savePendingLocation" title="Save as pending check-in">
+            <a href="#" @click.capture="savePendingLocation" title="Save location for later">
                 <i class="fa-solid fa-bookmark"></i>
             </a>
         </div>

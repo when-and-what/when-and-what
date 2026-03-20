@@ -94,7 +94,12 @@ class NoteController extends Controller
         $note->dashboard_visible = $request->boolean('dashboard_visible');
         $note->save();
 
-        return redirect(route('notes.index'));
+        $userTime = $note->published_at->copy()->tz($request->user()->timezone);
+        return redirect(route('day', [
+            'year' => $userTime->year,
+            'month' => $userTime->month,
+            'day' => $userTime->day,
+        ]));
     }
 
     /**
