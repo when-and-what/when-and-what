@@ -95,6 +95,7 @@ class NoteController extends Controller
         $note->save();
 
         $userTime = $note->published_at->copy()->tz($request->user()->timezone);
+
         return redirect(route('day', [
             'year' => $userTime->year,
             'month' => $userTime->month,
