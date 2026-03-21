@@ -1,17 +1,19 @@
 <template>
-    <div v-if="location_warning" class="alert alert-warning" role="alert">
+    <div v-if="location_warning" class="alert alert-warning mb-0" role="alert">
         Zoom in to view all locations
     </div>
-    <div id="mapid" style="height: 500px; width: 100%">Map</div>
-    <input type="hidden" name="location" v-model="location_id" />
-    <div class="input-group">
-        <input type="text" class="form-control" v-model="location_name" placeholder="Select a location" />
-        <div v-if="new_checkin" class="input-group-text">
-            <a href="#" @click.capture="savePendingLocation" title="Save as pending checkin">🔖</a>
+    <div class="checkin-location-bar">
+        <input type="text" class="field-input" v-model="location_name" placeholder="Click a pin to select a location" readonly />
+        <div v-if="new_checkin" class="checkin-location-save">
+            <a href="#" @click.capture="savePendingLocation" title="Save location for later">
+                <i class="fa-solid fa-bookmark"></i>
+            </a>
         </div>
+        <input type="hidden" name="location" v-model="location_id" />
         <input type="hidden" name="latitude" v-model="lat" />
         <input type="hidden" name="longitude" v-model="lng" />
     </div>
+    <div id="mapid" class="checkin-map-fill"></div>
 </template>
 <script>
 export default {

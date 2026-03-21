@@ -1,69 +1,106 @@
 @extends('layouts.bootstrap')
-@section('content')
-<div id="dashboard-container">
-    <div class="d-flex justify-content-between">
-        <h1><a href="{{ route('day', [$yesterday->year, $yesterday->month, $yesterday->day]) }}">⏪️</a></h1>
-        <h1 class="text-center" @click="changeDate">
-            <span v-if="changeDay">
-                <input type="date" class="form-control" v-model="date" v-on:change="redirectDate" />
-            </span>
-            <span v-else>{{ $today->toFormattedDateString() }}</span>
-        </h1>
-        <h1><a href="{{ route('day', [$tomorrow->year, $tomorrow->month, $tomorrow->day]) }}">⏭️</a></h1>
+
+@section('full-content')
+<div id="dashboard-container" class="dashboard-page">
+
+    {{-- Stats bar --}}
+    <div class="day-stats-bar">
+        <item v-for="item in items" :item="item" :key="item.name" />
     </div>
 
-    <div class="row pb-3">
-        <item v-for="item in items" :item="item" />
-    </div>
-    <div class="row">
-        <div class="col-md-5">
-            <ul class="list-group">
-                <event v-for="event in sortedEvents" :event="event" />
-            </ul>
-            <div class="accordion accordion-flush" id="add-note-accordion">
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="add-note-heading">
-                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#add-note-content" aria-expanded="false" aria-controls="add-note-content">
-                        Add Note
-                      </button>
-                    </h2>
-                    <div id="add-note-content" class="accordion-collapse collapse" aria-labelledby="add-note-heading" data-bs-parent="#add-note-accordion">
-                        <div class="form-group">
-                            <label for="title">Title</label>
-                            <input type="text" class="form-control" id="title" name="title" aria-describedby="title" v-model="note.title" />
-                        </div>
-                        <div class="form-group">
-                            <label for="sub_title">Sub Title</label>
-                            <input type="text" class="form-control" id="sub_title" name="sub_title" aria-describedby="sub_title" v-model="note.sub_title" />
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-3 col-md-4">
-                                <div class="form-group">
-                                    <label for="icon">Icon</label>
-                                    <input type="text" class="form-control" id="icon" name="icon" aria-describedby="icon" v-model="note.icon" />
-                                </div>
-                            </div>
-                            <div class="col-lg-9 col-md-8">
-                                <div class="form-group">
-                                    <label for="published_at">Date</label>
-                                    <input type="datetime-local" class="form-control" id="published_at" name="published_at" aria-describedby="published_at" v-model="note.published_at" />
-                                </div>
-                            </div>
-                        </div>
-                        <p class="my-3"><button class="btn btn-primary p-2" @click="saveNote">Add Note</button></p>
+    {{-- Two-column layout --}}
+    <div class="day-layout">
+
+        {{-- Left: activity feed --}}
+        <div class="day-feed">
+
+            {{-- Day navigation header --}}
+            <div class="day-feed-header">
+                <a class="day-nav-btn" href="{{ route('day', [$yesterday->year, $yesterday->month, $yesterday->day]) }}" title="Previous day">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </a>
+                <div class="day-feed-header-text">
+                    <h5 @click="changeDate">
+                        <span v-if="changeDay">
+                            <input type="date" class="day-date-input" v-model="date" v-on:change="redirectDate" />
+                        </span>
+                        <span v-else>{{ $today->toFormattedDateString() }}</span>
+                    </h5>
+                </div>
+                <a class="day-nav-btn" href="{{ route('day', [$tomorrow->year, $tomorrow->month, $tomorrow->day]) }}" title="Next day">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+            </div>
+
+            {{-- Empty state --}}
+            <div class="day-empty-state" v-show="sortedEvents.length === 0">
+                <i class="fa-solid fa-calendar"></i>
+                <p>No activities recorded<br>for this day.</p>
+            </div>
+
+            {{-- Feed --}}
+            <div class="day-feed-scroll" v-show="sortedEvents.length > 0">
+                <event v-for="event in sortedEvents" :event="event" :key="event.id" />
+            </div>
+
+            {{-- Add Note form --}}
+            <div class="note-form-panel" v-show="showNoteForm">
+                <div class="note-form-header">
+                    <span class="note-form-title">
+                        <i class="fa-solid fa-note-sticky me-1" style="color: var(--ww-accent)"></i> Add a Note
+                    </span>
+                    <button class="note-form-close" @click="showNoteForm = false" type="button">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="note-form-body">
+                    <div class="checkin-field">
+                        <label>Title</label>
+                        <input type="text" v-model="note.title" placeholder="What happened?" />
                     </div>
+                    <div class="checkin-field">
+                        <label>Details <span class="optional">— optional</span></label>
+                        <input type="text" v-model="note.sub_title" placeholder="More detail…" />
+                    </div>
+                    <div class="note-form-row">
+                        <div class="checkin-field">
+                            <label>Icon <span class="optional">— optional</span></label>
+                            <input type="text" v-model="note.icon" placeholder="⭐" />
+                        </div>
+                        <div class="checkin-field">
+                            <label>Time <span class="optional">— optional</span></label>
+                            <input type="datetime-local" v-model="note.published_at" />
+                        </div>
+                    </div>
+                    <button class="btn-checkin btn-checkin-primary" @click="saveNote" type="button">
+                        <i class="fa-solid fa-floppy-disk"></i> Save Note
+                    </button>
                 </div>
             </div>
-        </div>
-        <div class="col-md-7">
-            <div id="dashboard-map" style="height:500px;width100%;"></div>
-            <div class="mt-3 mb-5 d-flex justify-content-between">
-                <a href="{{ route('pending.create') }}" class="btn btn-primary">📍Save Location</a>
 
-                <a href="{{ route('checkins.create') }}" class="btn btn-primary">➕ New Checkin</a>
+            {{-- Check-in action bar --}}
+            <div class="checkin-bar">
+                <a href="{{ route('checkins.create') }}" class="btn-checkin btn-checkin-primary">
+                    <i class="fa-solid fa-location-dot"></i> Check In
+                </a>
+                <a href="{{ route('pending.create') }}" class="btn-checkin btn-checkin-secondary">
+                    <i class="fa-solid fa-crosshairs"></i> Drop a Pin
+                </a>
+                <button class="btn-checkin btn-checkin-secondary" :class="{ 'btn-checkin-active': showNoteForm }" @click="showNoteForm = !showNoteForm" type="button">
+                    <i class="fa-solid fa-note-sticky"></i> Add Note
+                </button>
             </div>
+
+        </div>{{-- /day-feed --}}
+
+        {{-- Right: map --}}
+        <div class="day-map-col">
+            <div id="dashboard-map"></div>
         </div>
-    </div>
-</div>
-<script> var day = "{{ $today->toDateString()}}";</script>
+
+    </div>{{-- /day-layout --}}
+
+</div>{{-- /dashboard-container --}}
+
+<script>var day = "{{ $today->toDateString() }}";</script>
 @endsection

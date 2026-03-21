@@ -1,48 +1,108 @@
 @extends('layouts.bootstrap')
+
 @section('content')
-    @if(count($pending) > 0)
-        <div class="d-flex w-100 justify-content-between pb-3">
-            <h1>Pending</h1>
-            {{-- <a href="{{ route('checkins.create') }}" class="btn btn-primary">Check-in</a> --}}
+
+    {{-- Page header --}}
+    <div class="col-12">
+        <div class="page-header d-flex align-items-center justify-content-between">
+            <div>
+                <h1 class="page-title">Check-ins</h1>
+                <p class="page-subtitle">Your location history</p>
+            </div>
+            <a href="{{ route('checkins.create') }}" class="btn-sm-action">
+                <i class="fa-solid fa-plus"></i> New Check-in
+            </a>
         </div>
-        <ul class="list-group list-group-horizontal d-flex w-100">
-            @foreach($pending as $checkin)
-                <li class="list-group-item w-50">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h3>
-                            <a href="{{ route('pending.edit', $checkin) }}">{{ $checkin->checkin_at->diffForHumans() }}</a>
-                        </h3>
-                    </div>
-                    <p>{{ $checkin->note }}</p>
-                </li>
-            @endforeach
-        </ul>
-        <div class="clearfix"></div>
-    @endif
-    <div class="d-flex w-100 justify-content-between pb-3">
-        <h1>Checkins</h1>
-        <a href="{{ route('checkins.create') }}" class="btn btn-primary">Check-in</a>
     </div>
-    @foreach($checkins as $day => $checkinList)
-        <h3>{{ $day }}</h3>
-        <ul class="list-group list-group-horizontal d-flex w-100">
-        @foreach($checkinList as $checkin)
-            <li class="list-group-item w-50">
-                <div class="d-flex w-100 justify-content-between">
-                    <h3>
-                        @foreach($checkin->location->category as $category)
-                            @if($category->emoji)
-                                <span title="{{ $category->name }}">{{ $category->emoji }}</span>
-                            @endif
+
+    {{-- Pending section --}}
+    @if(count($pending) > 0)
+    <div class="col-12">
+        <div class="pending-section">
+            <div class="pending-section-header">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                {{ count($pending) }} pending {{ Str::plural('check-in', count($pending)) }} need to be completed
+            </div>
+            <div class="pending-cards-row">
+                @foreach($pending as $checkin)
+                    <div class="pending-card">
+                        <div class="pending-card-time">
+                            <i class="fa-solid fa-clock me-1"></i>{{ $checkin->checkin_at->diffForHumans() }}
+                        </div>
+                        @if($checkin->note)
+                            <div class="pending-card-note">{{ Str::limit($checkin->note, 60) }}</div>
+                        @else
+                            <div class="pending-card-note pending-card-note-empty">No note</div>
+                        @endif
+                        <a href="{{ route('pending.edit', $checkin) }}" class="pending-card-action">
+                            Update <i class="fa-solid fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+    @endif
+
+    {{-- Timeline --}}
+    <div class="col-12">
+        <div class="checkin-timeline">
+
+            @forelse($checkins as $day => $checkinList)
+                <div class="checkin-timeline-day">
+
+                    <div class="checkin-timeline-date">
+                        <span>{{ $day }}</span>
+                    </div>
+
+                    <div class="checkin-timeline-rows">
+                        @foreach($checkinList as $checkin)
+                            <div class="checkin-row">
+
+                                <div class="checkin-row-icon">
+                                    @php
+                                        $firstEmoji = $checkin->location->category->first(fn($c) => $c->emoji)?->emoji;
+                                    @endphp
+                                    @if($firstEmoji)
+                                        {{ $firstEmoji }}
+                                    @else
+                                        <i class="fa-solid fa-location-dot" style="font-size: 0.75rem;"></i>
+                                    @endif
+                                </div>
+
+                                <div class="checkin-row-body">
+                                    <a href="{{ route('locations.show', $checkin->location) }}" class="checkin-row-location">
+                                        {{ $checkin->location->name }}
+                                    </a>
+                                    @if($checkin->note)
+                                        <span class="checkin-row-note">{{ Str::limit($checkin->note, 80) }}</span>
+                                    @endif
+                                </div>
+
+                                <a href="{{ route('checkins.edit', $checkin) }}" class="checkin-row-time">
+                                    {{ $checkin->checkin_at->tz(Auth::user()->timezone)->format('g:i a') }}
+                                </a>
+
+                            </div>
                         @endforeach
-                        <a href="{{ route('locations.show', $checkin->location) }}">{{ $checkin->location->name }}</a>
-                    </h3>
-                    <a href="{{ route('checkins.edit', $checkin) }}">{{ $checkin->checkin_at->tz(Auth::user()->timezone)->format('g:i a') }}</a>
+                    </div>
+
                 </div>
-                <p>{{ $checkin->note }}</p>
-            </li>
-        @endforeach
-        </ul>
-    @endforeach
-    {!! $checkinLinks !!}
+            @empty
+                <div class="checkin-empty">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <p>No check-ins yet. Start by checking in to a location.</p>
+                    <a href="{{ route('checkins.create') }}" class="btn-checkin btn-checkin-primary" style="width:auto; padding: 0.5rem 1.25rem; text-decoration:none;">
+                        New Check-in
+                    </a>
+                </div>
+            @endforelse
+
+        </div>
+
+        <div class="checkin-pagination">
+            {!! $checkinLinks !!}
+        </div>
+    </div>
+
 @endsection

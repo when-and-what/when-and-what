@@ -21,14 +21,14 @@ class Trakt extends UserAccount
      */
     public function dashboard(Carbon $startDate, Carbon $endDate): DashboardResponse
     {
-        $dashboard = new DashboardResponse('trakt');
+        $dashboard = new DashboardResponse('trakt', '#9f42c6');
         $movies = $this->getHistory($startDate, $endDate, 'movies');
         foreach ($movies as $movie) {
             $dashboard->addEvent(
                 id: $movie['id'],
                 date: new Carbon($movie['watched_at']),
                 title: $movie['movie']['title'],
-                details: ['icon' => '🎥']
+                details: ['icon' => '<i class="fa-solid fa-clapperboard"></i>']
             );
         }
         $episodes = $this->getHistory($startDate, $endDate, 'episodes');
@@ -37,7 +37,7 @@ class Trakt extends UserAccount
                 id: $episode['id'],
                 date: new Carbon($episode['watched_at']),
                 title: $episode['show']['title'],
-                details: ['icon' => '📺', 'subTitle' => $episode['episode']['title']]
+                details: ['icon' => '<i class="fa-solid fa-tv"></i>', 'subTitle' => $episode['episode']['title']]
             );
         }
 

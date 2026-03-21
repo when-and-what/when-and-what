@@ -1,27 +1,7 @@
 <template>
-    <div id="mapid" style="height: 500px; width: 500px">Map</div>
-    <div class="row">
-        <div class="col">
-            <input
-                type="number"
-                name="latitude"
-                v-model="lat"
-                class="form-control"
-                @input="$emit('update:latitude', $event.target.value)"
-                step="any"
-            />
-        </div>
-        <div class="col">
-            <input
-                type="number"
-                name="longitude"
-                v-model="lng"
-                class="form-control"
-                @input="$emit('update:longitude', $event.target.value)"
-                step="any"
-            />
-        </div>
-    </div>
+    <div id="mapid" class="checkin-map-fill"></div>
+    <input type="hidden" name="latitude" v-model="lat" />
+    <input type="hidden" name="longitude" v-model="lng" />
 </template>
 <script>
 export default {
