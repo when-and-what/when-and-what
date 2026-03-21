@@ -3,9 +3,15 @@
 use App\Models\Locations\Location;
 use App\Models\User;
 
-test('example', function () {
+test('search filters locations and only matches current user', function () {
     $user = User::factory()->create();
     $locations = Location::factory(5)->create(['user_id' => $user->id]);
+    // other user
+    Location::factory()->create([
+        'name' => $locations[0]['name'],
+    ]);
+    Location::factory(10)->create();
+
     $this->actingAs($user)->post(route('locations.search'), [
         'search' => $locations[0]['name'],
     ])

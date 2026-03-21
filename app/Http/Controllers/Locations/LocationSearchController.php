@@ -5,13 +5,11 @@ namespace App\Http\Controllers\Locations;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Locations\LocationSearchRequest;
 use App\Models\Locations\Location;
+use Illuminate\View\View;
 
 class LocationSearchController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
-    public function __invoke(LocationSearchRequest $request)
+    public function __invoke(LocationSearchRequest $request): View
     {
         return view('locations.list', [
             'locations' => Location::whereBelongsTo($request->user())
