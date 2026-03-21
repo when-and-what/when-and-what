@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Locations\CreateCategoryRequest;
 use App\Http\Requests\Locations\UpdateCategoryRequest;
 use App\Models\Locations\Category;
+use App\Models\Locations\Location;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -62,7 +63,12 @@ class CategoriesController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        return view('categories.category', [
+            'category' => $category,
+            'locations' => Location::whereAttachedTo($category)
+                ->orderBy('name')
+                ->paginate(30),
+        ]);
     }
 
     /**

@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Locations\CategoriesController;
 use App\Models\Locations\Category;
+use App\Models\Locations\Checkin;
+use App\Models\Locations\Location;
 use App\Models\User;
 
 covers(CategoriesController::class);
@@ -64,6 +66,23 @@ test('check for duplicate category name only for the same user', function() {
         ->assertRedirect(route('categories.edit', 2));
 });
 
+test('view category', function() {
+    $user = User::factory()->create();
+    $category = Category::factory()->create(['user_id' => $user->id]);
+    $locations = Location::factory(50)->create(['user_id' => $user->id]);
+    foreach($locations as $location) {
+        $location->categories()->save($category);
+    }
+
+    $this->actingAs($user)
+        ->get(route('categories.show', $category))
+        ->assertOk()
+        ->assertViewHas('locations', function($locations) {
+            return count($locations) === 30;
+        })
+        ->assertSeeText(Location::orderBy('name')->first()->name);
+});
+
 test('edit category', function() {
     $user = User::factory()->create();
     $category = Category::factory()->create(['user_id' => $user->id]);
@@ -102,6 +121,9 @@ test("can not modify other user's categories", function() {
     $user = User::factory()->create();
     $category = Category::factory()->create(['user_id' => $user->id]);
 
+    $this->actingAs(User::factory()->create())
+        ->get(route('categories.show', $category))
+        ->assertStatus(403);
     $this->actingAs(User::factory()->create())
         ->get(route('categories.edit', $category))
         ->assertStatus(403);

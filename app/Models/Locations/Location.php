@@ -6,8 +6,10 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Log;
 
 class Location extends Model
 {
@@ -15,7 +17,14 @@ class Location extends Model
 
     protected $fillable = ['latitude', 'longitude', 'name'];
 
+    // ! Deprecated
     public function category(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        Log::warning('Deprecated category method');
+        return $this->belongsToMany(Category::class);
+    }
+
+    public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class);
     }
