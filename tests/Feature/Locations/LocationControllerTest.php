@@ -21,3 +21,9 @@ test('search filters locations and only matches current user', function () {
             return count($locations) === 1;
         });
 });
+
+it('renders the map page', function() {
+    $this->actingAs(User::factory()->create())
+        ->get(route('locations.map'))
+        ->assertOk();
+});
