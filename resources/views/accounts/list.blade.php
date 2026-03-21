@@ -41,9 +41,15 @@
                                         Connect
                                     </a>
                                 @else
-                                    <a href="{{ route('socialite.redirect', $account) }}" class="btn-integration btn-integration-connect">
-                                        Connect
-                                    </a>
+                                    @if($account->slug == 'strava')
+                                        <a href="{{ route('socialite.redirect', $account) }}">
+                                            <img src="/img/strava-connect.svg" />
+                                        </a>
+                                    @else
+                                        <a href="{{ route('socialite.redirect', $account) }}" class="btn-integration btn-integration-connect">
+                                            Connect
+                                        </a>
+                                    @endif
                                 @endif
                             @endif
                         </div>

@@ -317,7 +317,7 @@ a:hover { color: var(--ww-accent-dark); }
     font-size: 0.775rem;
     color: var(--ww-muted);
     margin-bottom: 0;
-    white-space: nowrap;
+    /* white-space: nowrap; */
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -1279,6 +1279,90 @@ a:hover { color: var(--ww-accent-dark); }
     font-size: 0.9rem;
 }
 
+/* ─── Locations map page ────────────────────────────────────── */
+.locations-map-page {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 57px);
+    overflow: hidden;
+}
+
+.locations-map-toolbar {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.65rem 1.25rem;
+    background: #fff;
+    border-bottom: 1px solid var(--ww-border);
+}
+
+.locations-map-toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+.locations-map-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--ww-dark);
+    letter-spacing: -0.01em;
+}
+
+.locations-map-toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+}
+
+.locations-map-search {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.locations-search-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.locations-search-icon {
+    position: absolute;
+    left: 0.65rem;
+    color: #94a3b8;
+    font-size: 0.78rem;
+    pointer-events: none;
+}
+
+.locations-search-input {
+    border: 1px solid var(--ww-border);
+    border-radius: 8px;
+    padding: 0.45rem 0.75rem 0.45rem 2rem;
+    font-size: 0.85rem;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--ww-dark);
+    background: var(--ww-light);
+    outline: none;
+    width: 220px;
+    transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+
+.locations-search-input:focus {
+    border-color: var(--ww-accent);
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12);
+    background: #fff;
+}
+
+.locations-map-fill {
+    flex: 1;
+    min-height: 0;
+}
+
 /* ─── Check-in create page ──────────────────────────────────── */
 .checkin-page {
     display: flex;
@@ -1423,7 +1507,7 @@ a:hover { color: var(--ww-accent-dark); }
     gap: 0.4rem;
 }
 
-.btn-submit-checkin:hover { background: var(--ww-accent-dark); }
+.btn-submit-checkin:hover { background: var(--ww-accent-dark); color: #fff; }
 
 .checkin-map-col {
     flex: 1;
@@ -1532,6 +1616,19 @@ a:hover { color: var(--ww-accent-dark); }
     #dashboard-map {
         position: absolute;
         inset: 0;
+    }
+
+    .locations-map-toolbar {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .locations-map-toolbar-right {
+        width: 100%;
+    }
+
+    .locations-search-input {
+        width: 100%;
     }
 
     .checkin-page {

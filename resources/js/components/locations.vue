@@ -2,7 +2,7 @@
     <div v-if="location_warning" class="alert alert-warning" role="alert">
         Zoom in to view all locations
     </div>
-    <div id="mapid" style="height: 500px; width: 100%">Map</div>
+    <div id="mapid" class="locations-map-fill"></div>
     <div>
 
     </div>
