@@ -10,7 +10,7 @@ class DayController extends Controller
 {
     public function index(Request $request)
     {
-        return $this->_displayDay($request->user(), now($request->user()->timezone));
+        return $this->_displayDay($request->user(), now($request->user()->timezone)->startofDay());
     }
 
     public function day(Request $request, int $year, int $month, int $day)
