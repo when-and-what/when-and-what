@@ -9,7 +9,6 @@ use App\Models\Locations\Category;
 use App\Models\Locations\Location;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class CategoriesController extends Controller

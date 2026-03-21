@@ -21,6 +21,7 @@ class Location extends Model
     public function category(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         Log::warning('Deprecated category method');
+
         return $this->belongsToMany(Category::class);
     }
 

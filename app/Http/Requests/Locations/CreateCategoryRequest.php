@@ -25,10 +25,11 @@ class CreateCategoryRequest extends FormRequest
     public function rules(): array
     {
         $user = $this->user();
+
         return [
             'name' => [
                 'required',
-                Rule::unique('location_categories', 'name')->where(function(Builder $query) use($user) {
+                Rule::unique('location_categories', 'name')->where(function (Builder $query) use ($user) {
                     $query->where('user_id', $user->id);
                 }),
             ],

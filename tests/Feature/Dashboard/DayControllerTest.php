@@ -3,7 +3,7 @@
 use App\Models\User;
 use Carbon\Carbon;
 
-test('dashboard', function() {
+test('dashboard', function () {
     $user = User::factory()->create(['timezone' => 'America/New_York']);
     $tomorrow = now($user->timezone)->addDay()->startOfDay();
     $this->actingAs($user)
@@ -12,7 +12,7 @@ test('dashboard', function() {
         ->assertViewHas('tomorrow', $tomorrow);
 });
 
-test('specific day', function() {
+test('specific day', function () {
     $user = User::factory()->create(['timezone' => 'America/New_York']);
 
     $this->actingAs($user)

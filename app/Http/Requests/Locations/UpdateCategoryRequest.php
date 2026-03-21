@@ -25,10 +25,11 @@ class UpdateCategoryRequest extends FormRequest
     public function rules(): array
     {
         $user = $this->user();
+
         return [
             'name' => [
                 'required',
-                Rule::unique('location_categories')->where(function(Builder $query) use($user) {
+                Rule::unique('location_categories')->where(function (Builder $query) use ($user) {
                     $query->where('user_id', $user->id);
                 })->ignore($this->route('category')),
             ],

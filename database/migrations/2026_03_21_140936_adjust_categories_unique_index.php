@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('location_categories', function(Blueprint $table) {
+        Schema::table('location_categories', function (Blueprint $table) {
             $table->dropIndex('location_categories_name_unique');
         });
     }

@@ -2,13 +2,12 @@
 
 use App\Http\Controllers\Locations\CategoriesController;
 use App\Models\Locations\Category;
-use App\Models\Locations\Checkin;
 use App\Models\Locations\Location;
 use App\Models\User;
 
 covers(CategoriesController::class);
 
-it('lists all categories for a user', function(){
+it('lists all categories for a user', function () {
     $user = User::factory()->create();
     Category::factory(10)->create(['user_id' => $user->id]);
     Category::factory(20)->create();
@@ -17,12 +16,12 @@ it('lists all categories for a user', function(){
         ->get(route('categories.index'))
         ->assertStatus(200)
         ->assertViewIs('locations.categories.list')
-        ->assertViewHas('categories', function($categories) {
+        ->assertViewHas('categories', function ($categories) {
             return count($categories) === 10;
         });
 });
 
-it('displays the create category form', function() {
+it('displays the create category form', function () {
     $user = User::factory()->create();
     $this->actingAs($user)
         ->get(route('categories.create'))
@@ -30,7 +29,7 @@ it('displays the create category form', function() {
         ->assertViewHas('category', null);
 });
 
-it('saves a new category to the db', function() {
+it('saves a new category to the db', function () {
     $user = User::factory()->create();
     $name = fake()->words(random_int(1, 3), true);
     $emoji = fake()->emoji;
@@ -49,41 +48,41 @@ it('saves a new category to the db', function() {
     ]);
 });
 
-test('check for duplicate category name only for the same user', function() {
+test('check for duplicate category name only for the same user', function () {
     $user = User::factory()->create();
     Category::factory()->create(['user_id' => $user->id, 'name' => 'Library']);
     $this->actingAs($user)
         ->post(route('categories.store'), [
-            'name' => 'Library'
+            'name' => 'Library',
         ])
         ->assertSessionHasErrorsIn('name');
 
     $this->actingAs(User::factory()->create())
         ->post(route('categories.store'), [
-            'name' => 'Library'
+            'name' => 'Library',
         ])
         ->assertSessionHasNoErrors()
         ->assertRedirect(route('categories.edit', 2));
 });
 
-test('view category', function() {
+test('view category', function () {
     $user = User::factory()->create();
     $category = Category::factory()->create(['user_id' => $user->id]);
     $locations = Location::factory(50)->create(['user_id' => $user->id]);
-    foreach($locations as $location) {
+    foreach ($locations as $location) {
         $location->categories()->save($category);
     }
 
     $this->actingAs($user)
         ->get(route('categories.show', $category))
         ->assertOk()
-        ->assertViewHas('locations', function($locations) {
+        ->assertViewHas('locations', function ($locations) {
             return count($locations) === 30;
         })
         ->assertSeeText(Location::orderBy('name')->first()->name);
 });
 
-test('edit category', function() {
+test('edit category', function () {
     $user = User::factory()->create();
     $category = Category::factory()->create(['user_id' => $user->id]);
 
@@ -105,19 +104,19 @@ test('edit category', function() {
     ]);
 });
 
-test('delete category', function() {
+test('delete category', function () {
     $user = User::factory()->create();
     $category = Category::factory()->create(['user_id' => $user->id]);
 
     $this->actingAs($user)
-        ->delete(route('categories.destroy',$category))
+        ->delete(route('categories.destroy', $category))
         ->assertSessionHasNoErrors()
         ->assertRedirect(route('categories.index'));
 
     $this->assertModelMissing($category);
 });
 
-test("can not modify other user's categories", function() {
+test("can not modify other user's categories", function () {
     $user = User::factory()->create();
     $category = Category::factory()->create(['user_id' => $user->id]);
 
