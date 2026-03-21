@@ -27,8 +27,8 @@
         "fakerphp/faker": "^1.9.1",
         "larastan/larastan": "^3.0",
         "mockery/mockery": "^1.4.4",
-        "pestphp/pest": "^3.0",
-        "pestphp/pest-plugin-type-coverage": "^3.0",
+        "pestphp/pest": "^4.0",
+        "pestphp/pest-plugin-type-coverage": "^4.0",
         "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {

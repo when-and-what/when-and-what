@@ -19,7 +19,7 @@ class CategoryFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'name' => $this->faker->word(),
+            'name' => $this->faker->unique()->word(),
             'emoji' => $this->faker->emoji(),
         ];
     }

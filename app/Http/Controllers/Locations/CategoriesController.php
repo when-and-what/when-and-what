@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Locations;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Locations\CreateCategoryRequest;
+use App\Http\Requests\Locations\UpdateCategoryRequest;
 use App\Models\Locations\Category;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\View\View;
 
 class CategoriesController extends Controller
 {
@@ -17,10 +21,8 @@ class CategoriesController extends Controller
     /**
      * Display all of a user's categories
      *!this is not restricted by the Category::class policy.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         return view('locations.categories.list', [
             'categories' => Category::where('user_id', $request->user()->id)
@@ -32,10 +34,8 @@ class CategoriesController extends Controller
 
     /**
      * Show the form for creating a new category.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         return view('locations.categories.edit', [
             'category' => null,
@@ -44,19 +44,12 @@ class CategoriesController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateCategoryRequest $request): RedirectResponse
     {
-        $valid = $request->validate([
-            'name' => 'required|unique:location_categories',
-            'emoji' => 'nullable',
-        ]);
-
         $category = new Category;
         $category->user_id = $request->user()->id;
-        $category->fill($valid);
+        $category->fill($request->validated());
         $category->save();
 
         return redirect(route('categories.edit', $category));
@@ -74,10 +67,8 @@ class CategoriesController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit(Category $category): View
     {
         return view('locations.categories.edit', [
             'category' => $category,
@@ -86,29 +77,19 @@ class CategoriesController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category): RedirectResponse
     {
-        $valid = $request->validate([
-            'name' => ['required', Rule::unique('location_categories')->ignore($category)],
-            'emoji' => 'nullable',
-        ]);
-
-        $category->fill($valid);
+        $category->fill($request->validated());
         $category->save();
 
         return redirect(route('categories.edit', $category));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Category $category)
+    public function destroy(Category $category): RedirectResponse
     {
-        //
+        $category->delete();
+
+        return redirect(route('categories.index'));
     }
 }
