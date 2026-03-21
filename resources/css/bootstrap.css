@@ -707,6 +707,75 @@ a:hover { color: var(--ww-accent-dark); }
 
 .btn-delete-link:hover { color: #dc2626; }
 
+/* ─── Location list cards ───────────────────────────────────── */
+.location-list-card {
+    border: 1px solid var(--ww-border);
+    border-radius: 12px;
+    background: #fff;
+    overflow: hidden;
+    transition: box-shadow 0.15s;
+    display: flex;
+    flex-direction: column;
+}
+
+.location-list-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+}
+
+.location-list-card-body {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.1rem;
+    text-decoration: none;
+    flex: 1;
+}
+
+.location-list-card-icon {
+    font-size: 1.4rem;
+    line-height: 1;
+    flex-shrink: 0;
+    width: 2rem;
+    text-align: center;
+}
+
+.location-list-card-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ww-dark);
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.location-list-card-body:hover .location-list-card-name {
+    color: var(--ww-accent);
+}
+
+.location-list-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1.1rem;
+    border-top: 1px solid var(--ww-border);
+    background: var(--ww-light);
+}
+
+.location-list-visits {
+    font-size: 0.75rem;
+    color: var(--ww-muted);
+}
+
+.location-list-edit {
+    font-size: 0.78rem;
+    color: var(--ww-border);
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+.location-list-edit:hover { color: var(--ww-accent); }
+
 /* ─── Note cards (index) ────────────────────────────────────── */
 .note-card {
     padding: 1rem 1.25rem;

@@ -28,8 +28,9 @@ class LocationController extends Controller
         return view('locations.list', [
             'locations' => Location::whereBelongsTo($request->user())
                 ->with('category')
+                ->withCount('checkins')
                 ->orderBy('updated_at', 'DESC')
-                ->paginate(20),
+                ->paginate(30),
         ]);
     }
 
