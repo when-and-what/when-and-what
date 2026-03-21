@@ -22,7 +22,7 @@ test('search filters locations and only matches current user', function () {
         });
 });
 
-it('renders the map page', function() {
+it('renders the map page', function () {
     $this->actingAs(User::factory()->create())
         ->get(route('locations.map'))
         ->assertOk();
