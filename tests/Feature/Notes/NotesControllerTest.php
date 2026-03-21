@@ -19,7 +19,7 @@ test('view user notes', function () {
 });
 
 test('link hidden for non-admin users', function () {
-    $this->actingAs(User::factory()->create())
+    $this->actingAs(User::factory()->create(['name' => 'Person']))
         ->get('/dashboard')
-        ->assertSeeTextInOrder(['Home', 'Locations', 'Profile']);
+        ->assertSeeTextInOrder(['Dashboard', 'Locations', 'Person']);
 });

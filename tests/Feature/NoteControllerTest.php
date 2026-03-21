@@ -102,7 +102,11 @@ test('edit note', function () {
         'icon' => $note->icon,
         'published_at' => '2023-01-01T12:00',
     ]);
-    $response->assertRedirect(route('notes.index'));
+    $response->assertRedirect(route('day', [
+        'year' => '2023',
+        'month' => '1',
+        'day' => '1',
+    ]));
     $this->assertDatabaseHas('notes', [
         'id' => $note->id,
         'user_id' => $this->user->id,
