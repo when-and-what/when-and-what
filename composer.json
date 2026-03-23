@@ -17,7 +17,6 @@
         "laravel/socialite": "^5.5",
         "laravel/tinker": "^2.7",
         "livewire/livewire": "^3.0",
-        "simplestats-io/laravel-client": "^3.5",
         "socialiteproviders/fitbit": "^4.1",
         "socialiteproviders/google": "^4.1",
         "socialiteproviders/strava": "^4.1",
