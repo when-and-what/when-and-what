@@ -25,12 +25,7 @@ class Listenbrainz extends UserAccount
         foreach ($listens['listens'] as $listen) {
             $at = Carbon::createFromTimestamp($listen['listened_at']);
             if ($at->greaterThan($startDate)) {
-                $day->push([
-                    'listened_at' => $listen['listened_at'],
-                    'artist_names' => isset($listen['track_metadata']['additional_info']['artist_names']) ? $listen['track_metadata']['additional_info']['artist_names'] : [],
-                    'track_name' => $listen['track_metadata']['track_name'],
-                    'recording_mbid' => isset($listen['track_metadata']['mbid_mapping']['recording_mbid']) ? $listen['track_metadata']['mbid_mapping']['recording_mbid'] : null,
-                ]);
+                $day->push($listen);
             }
         }
 
@@ -41,7 +36,19 @@ class Listenbrainz extends UserAccount
     {
         $songs = $this->getRange($startDate, $endDate);
         $dashboard = new DashboardResponse('listenbrainz');
+        $dashboard->collapsible(groupLabel: 'songs', groupIcon: '🎵');
         $dashboard->addItem('Music', count($songs), '🎵');
+        foreach($songs as $song) {
+            $artist = '';
+            if(isset($song['track_metadata']['additional_info']['artist_names'][0])) {
+                $artist = $song['track_metadata']['additional_info']['artist_names'][0];
+            }elseif(isset($song['track_metadata']['artist_name'])) {
+                $artist = $song['track_metadata']['artist_name'];
+            }
+            $dashboard->addEvent($song['inserted_at'], Carbon::createFromTimestamp($song['listened_at']), $song['track_metadata']['track_name'], [
+                'subTitle' => $artist,
+            ]);
+        }
 
         return $dashboard;
     }

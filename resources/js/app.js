@@ -8,6 +8,7 @@ import locationsmap from './components/locations.vue';
 import newlocation from './components/location.vue';
 import checkinmap from './components/checkin.vue';
 import event from './components/dashboard/event.vue';
+import eventGroup from './components/dashboard/event-group.vue';
 import item from './components/dashboard/item.vue';
 import { map } from 'lodash';
 
@@ -38,11 +39,34 @@ function sortEvents(a, b) {
 const dashboard = createApp({
     components: {
         event,
+        'event-group': eventGroup,
         item,
     },
     computed: {
-        sortedEvents: function () {
-            return this.events.sort(sortEvents);
+        groupedFeed: function () {
+            const sortedEvents = this.events.sort(sortEvents)
+            const result = [];
+            let currentGroup = null;
+            for (const e of sortedEvents) {
+                if (e.collapsible) {
+                    if (currentGroup && currentGroup.color === e.color) {
+                        currentGroup.events.push(e);
+                    } else {
+                        currentGroup = {
+                            isGroup: true,
+                            color: e.color,
+                            groupLabel: e.groupLabel,
+                            groupIcon: e.groupIcon,
+                            events: [e],
+                        };
+                        result.push(currentGroup);
+                    }
+                } else {
+                    currentGroup = null;
+                    result.push(e);
+                }
+            }
+            return result;
         },
     },
     data() {
@@ -63,8 +87,17 @@ const dashboard = createApp({
     },
     methods: {
         accountResponse(response) {
-            const color = response.data.color || '#0d9488';
-            const events = response.data.events.map(e => ({ ...e, color }));
+            const color = response.data.color;
+            const groupLabel = response.data.groupLabel;
+            const groupIcon = response.data.groupIcon ;
+            const collapsible = response.data.collapsible;
+            const events = response.data.events.map(e => ({
+                ...e,
+                color,
+                groupLabel,
+                groupIcon,
+                collapsible,
+            }));
             this.events = this.events.concat(events);
             this.items = this.items.concat(response.data.items);
             response.data.lines.forEach((line) => {

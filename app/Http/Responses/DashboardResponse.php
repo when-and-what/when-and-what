@@ -19,14 +19,28 @@ class DashboardResponse implements Jsonable
 
     protected string $slug;
 
+    protected bool $collapsible = false;
+
+    protected ?string $groupLabel = null;
+
+    protected ?string $groupIcon = null;
+
     public function __construct(string $slug, string $color = '#000000')
     {
         $this->color = $color;
+        $this->slug = $slug;
+
         $this->events = collect();
         $this->items = collect();
         $this->lines = collect();
         $this->pins = collect();
-        $this->slug = $slug;
+    }
+
+    public function collapsible(string $groupLabel, string $groupIcon)
+    {
+        $this->collapsible = true;
+        $this->groupLabel = $groupLabel;
+        $this->groupIcon = $groupIcon;
     }
 
     /**
@@ -39,6 +53,9 @@ class DashboardResponse implements Jsonable
     {
         return collect([
             'color' => $this->color,
+            'collapsible' => $this->collapsible,
+            'groupLabel' => $this->groupLabel,
+            'groupIcon' => $this->groupIcon,
             'events' => $this->events,
             'items' => $this->items,
             'lines' => $this->lines,
@@ -46,13 +63,13 @@ class DashboardResponse implements Jsonable
         ])->toJson();
     }
 
-    public function addEvent($id, Carbon $date, string $title, array $details = [])
+    public function addEvent(int|string $id, Carbon $date, string $title, array $details = [])
     {
         $this->events->add([
             'id' => $this->id($id),
             'date' => $date->toISOString(),
             'title' => $title,
-            'icon' => isset($details['icon']) ? $details['icon'] : '',
+            'icon' => isset($details['icon']) ? $details['icon'] : $this->groupIcon,
             'subTitle' => isset($details['subTitle']) ? $details['subTitle'] : '',
             'titleLink' => isset($details['titleLink']) ? $details['titleLink'] : '',
             'subTitleLink' => isset($details['subTitleLink']) ? $details['subTitleLink'] : '',
@@ -87,7 +104,7 @@ class DashboardResponse implements Jsonable
         ]);
     }
 
-    protected function id($id): string
+    protected function id(int|string $id): string
     {
         return $this->slug.'-'.$id;
     }

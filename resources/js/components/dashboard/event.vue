@@ -1,5 +1,5 @@
 <template>
-    <div :id="event.id" class="activity-item">
+    <div :id="event.id" class="activity-item" :class="{collapsible: collapsible}">
         <div class="activity-dot" :style="dotStyle" v-html="event.icon"></div>
         <div class="activity-body">
             <div class="activity-title">
@@ -27,6 +27,9 @@ export default {
                 color: color,
             };
         },
+        collapsible() {
+            return this.event.collapsible;
+        }
     },
     methods: {
         displayTime(datetime) {

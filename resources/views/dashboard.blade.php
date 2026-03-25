@@ -33,14 +33,20 @@
             </div>
 
             {{-- Empty state --}}
-            <div class="day-empty-state" v-show="sortedEvents.length === 0">
+            <div class="day-empty-state" v-show="events.length === 0">
                 <i class="fa-solid fa-calendar"></i>
                 <p>No activities recorded<br>for this day.</p>
             </div>
 
             {{-- Feed --}}
-            <div class="day-feed-scroll" v-show="sortedEvents.length > 0">
-                <event v-for="event in sortedEvents" :event="event" :key="event.id" />
+            <div class="day-feed-scroll" v-show="events.length > 0">
+                <component
+                    :is="item.isGroup ? 'event-group' : 'event'"
+                    v-for="item in groupedFeed"
+                    :key="item.isGroup ? item.color : item.id"
+                    :group="item"
+                    :event="item"
+                />
             </div>
 
             {{-- Add Note form --}}
