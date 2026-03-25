@@ -17,10 +17,7 @@
         "laravel/socialite": "^5.5",
         "laravel/tinker": "^2.7",
         "livewire/livewire": "^3.0",
-        "socialiteproviders/fitbit": "^4.1",
-        "socialiteproviders/google": "^4.1",
         "socialiteproviders/strava": "^4.1",
-        "socialiteproviders/todoist": "^4.3",
         "socialiteproviders/trakt": "^4.1"
     },
     "require-dev": {

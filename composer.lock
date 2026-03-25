@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bfb621a541de652d98605d5d0e61c28c",
+    "content-hash": "056852352125bad69038033607022045",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -4319,88 +4319,6 @@
             "time": "2025-12-14T04:43:48+00:00"
         },
         {
-            "name": "socialiteproviders/fitbit",
-            "version": "4.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/SocialiteProviders/Fitbit.git",
-                "reference": "62dfa7fed55040a2733f89dee69e1251ed6ffa6b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/SocialiteProviders/Fitbit/zipball/62dfa7fed55040a2733f89dee69e1251ed6ffa6b",
-                "reference": "62dfa7fed55040a2733f89dee69e1251ed6ffa6b",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "php": "^7.2 || ^8.0",
-                "socialiteproviders/manager": "~4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "SocialiteProviders\\Fitbit\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Bryce Adams",
-                    "email": "brycead@gmail.com"
-                }
-            ],
-            "description": "Fitbit OAuth2 Provider for Laravel Socialite",
-            "support": {
-                "source": "https://github.com/SocialiteProviders/Fitbit/tree/4.1.0"
-            },
-            "time": "2020-12-01T23:10:59+00:00"
-        },
-        {
-            "name": "socialiteproviders/google",
-            "version": "4.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/SocialiteProviders/Google-Plus.git",
-                "reference": "1cb8f6fb2c0dd0fc8b34e95f69865663fdf0b401"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/SocialiteProviders/Google-Plus/zipball/1cb8f6fb2c0dd0fc8b34e95f69865663fdf0b401",
-                "reference": "1cb8f6fb2c0dd0fc8b34e95f69865663fdf0b401",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "php": "^7.2 || ^8.0",
-                "socialiteproviders/manager": "~4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "SocialiteProviders\\Google\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "xstoop",
-                    "email": "myenglishnameisx@gmail.com"
-                }
-            ],
-            "description": "Google OAuth2 Provider for Laravel Socialite",
-            "support": {
-                "source": "https://github.com/SocialiteProviders/Google-Plus/tree/4.1.0"
-            },
-            "time": "2020-12-01T23:10:59+00:00"
-        },
-        {
             "name": "socialiteproviders/manager",
             "version": "4.9.2",
             "source": {
@@ -4514,57 +4432,6 @@
                 "source": "https://github.com/SocialiteProviders/Strava/tree/4.1.0"
             },
             "time": "2020-12-01T23:10:59+00:00"
-        },
-        {
-            "name": "socialiteproviders/todoist",
-            "version": "4.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/SocialiteProviders/Todoist.git",
-                "reference": "d2da08bed4da68b4afecc807e9c4bf8f4bf5d1ce"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/SocialiteProviders/Todoist/zipball/d2da08bed4da68b4afecc807e9c4bf8f4bf5d1ce",
-                "reference": "d2da08bed4da68b4afecc807e9c4bf8f4bf5d1ce",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "php": "^7.4 || ^8.0",
-                "socialiteproviders/manager": "~4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "SocialiteProviders\\Todoist\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "atymic",
-                    "email": "atymicq@gmail.com",
-                    "homepage": "https://atymic.dev"
-                }
-            ],
-            "description": "Todoist OAuth2 Provider for Laravel Socialite",
-            "keywords": [
-                "laravel",
-                "oauth",
-                "provider",
-                "socialite",
-                "todoist"
-            ],
-            "support": {
-                "docs": "https://socialiteproviders.com/todoist",
-                "issues": "https://github.com/socialiteproviders/providers/issues",
-                "source": "https://github.com/socialiteproviders/providers"
-            },
-            "time": "2022-12-27T05:04:50+00:00"
         },
         {
             "name": "socialiteproviders/trakt",
