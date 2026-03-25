@@ -345,6 +345,21 @@ a:hover { color: var(--ww-accent-dark); }
 
 .activity-time a:hover { color: var(--ww-accent); }
 
+/* ─── Time-of-day dividers ───────────────────────────────────── */
+.activity-divider {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--ww-muted);
+    padding: 0.9rem 1.25rem 0.3rem;
+}
+
+/* ─── Collapsible event groups ───────────────────────────────── */
+.activity-group-items .activity-item {
+    padding-left: 2.75rem;
+}
+
 /* ─── Add Note form panel ───────────────────────────────────── */
 .note-form-panel {
     flex-shrink: 0;

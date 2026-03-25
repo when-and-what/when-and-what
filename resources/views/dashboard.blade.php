@@ -41,9 +41,9 @@
             {{-- Feed --}}
             <div class="day-feed-scroll" v-show="events.length > 0">
                 <component
-                    :is="item.isGroup ? 'event-group' : 'event'"
+                    :is="item.isDivider ? 'feed-divider' : item.isGroup ? 'event-group' : 'event'"
                     v-for="item in groupedFeed"
-                    :key="item.isGroup ? item.color : item.id"
+                    :key="item.isDivider ? 'divider-' + item.label : item.isGroup ? item.color + item.events[0].date : item.id"
                     :group="item"
                     :event="item"
                 />
