@@ -38,11 +38,11 @@ class Listenbrainz extends UserAccount
         $dashboard = new DashboardResponse('listenbrainz');
         $dashboard->collapsible(groupLabel: 'songs', groupIcon: '🎵');
         $dashboard->addItem('Music', count($songs), '🎵');
-        foreach($songs as $song) {
+        foreach ($songs as $song) {
             $artist = '';
-            if(isset($song['track_metadata']['additional_info']['artist_names'][0])) {
+            if (isset($song['track_metadata']['additional_info']['artist_names'][0])) {
                 $artist = $song['track_metadata']['additional_info']['artist_names'][0];
-            }elseif(isset($song['track_metadata']['artist_name'])) {
+            } elseif (isset($song['track_metadata']['artist_name'])) {
                 $artist = $song['track_metadata']['artist_name'];
             }
             $dashboard->addEvent($song['inserted_at'], Carbon::createFromTimestamp($song['listened_at']), $song['track_metadata']['track_name'], [
