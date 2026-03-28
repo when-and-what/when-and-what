@@ -1,7 +1,7 @@
 <x-mail::message>
 # Welcome to {{ config('app.name') }}!
 
-Thanks for signing up for {{ config('app.nane') }}! Head on over to <a href="{{ route('accounts') }}">integrations</a> to setup Strava or Listenbrainz. Or get startted by creating your first location and checkin!
+Thanks for signing up for {{ config('app.name') }}! Head on over to <a href="{{ route('accounts') }}">integrations</a> to setup Strava or Listenbrainz. Or get started by creating your first location and checkin!
 
 <x-mail::button :url="url('/')">
 Let's Go!
