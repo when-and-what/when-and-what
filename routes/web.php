@@ -11,7 +11,10 @@ use App\Http\Controllers\Locations\PendingCheckinController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\Podcasts\PlaysController;
 use App\Http\Controllers\SocialiteController;
+use App\Http\Controllers\StripeController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\TagController;
+use App\Http\Middleware\Subscribed;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,7 +32,15 @@ Route::get('/', function () {
     return redirect('/dashboard');
 });
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('subscription', [SubscriptionController::class, 'index']);
+    Route::get('subscription/create/{plan}', [SubscriptionController::class, 'create'])->name('subscription.create');
+    Route::get('subscription/edit', [SubscriptionController::class, 'edit'])->name('subscription.edit');
+    Route::get('subscription/success', [StripeController::class, 'success'])->name('subscription.success');
+    Route::get('subscription/cancel', [StripeController::class, 'cancel'])->name('subscription.cancel');
+});
+
+Route::middleware(['auth:sanctum', Subscribed::class, 'verified'])->group(function () {
     Route::get('/dashboard', [DayController::class, 'index'])->name('dashboard');
     Route::get('/day/{year}/{month}/{day}', [DayController::class, 'day'])->name('day')->whereNumber(['year', 'month', 'day']);
 
