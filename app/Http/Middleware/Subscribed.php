@@ -15,7 +15,7 @@ class Subscribed
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (! $request->user()?->subscribed()) {
+        if (! $request->user()?->subscribed('default')) {
             // Redirect user to billing page and ask them to subscribe...
             return redirect('/subscription');
         }
