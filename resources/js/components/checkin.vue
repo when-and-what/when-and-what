@@ -60,7 +60,6 @@ export default {
                 '&west=' +
                 bounds._southWest.lng;
             axios.get(url).then(function (response) {
-                console.log(response.data.total);
                 if (response.data.from == response.data.last_page) {
                     self.location_warning = false;
                 } else if (response.data.total > 0) {
