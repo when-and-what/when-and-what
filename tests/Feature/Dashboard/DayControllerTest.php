@@ -12,7 +12,7 @@ test('dashboard', function () {
         ->assertViewHas('tomorrow', $tomorrow);
 });
 
-test('redirected if not subscribed', function(?Carbon $date) {
+test('redirected if not subscribed', function (?Carbon $date) {
     $user = User::factory()->create(['trial_ends_at' => $date]);
     $this->actingAs($user)
         ->get(route('dashboard'))
