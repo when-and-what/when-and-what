@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Notes\CreateNoteRequest;
+use App\Http\Requests\Notes\EditNoteRequest;
 use App\Http\Requests\Notes\StoreDashboardRequest;
 use App\Http\Responses\DashboardResponse;
 use App\Models\Note;
 use App\Traits\TaggableController;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class NoteController extends Controller
 {
@@ -19,9 +22,11 @@ class NoteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return Note::whereBelongsTo($request->user())
+            ->orderBy('published_at', 'DESC')
+            ->paginate(15);
     }
 
     /**
@@ -29,10 +34,23 @@ class NoteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateNoteRequest $request)
     {
         $note = new Note;
         $note->user_id = $request->user()->id;
+        if ($request->published_at) {
+            $note->published_at = Carbon::parse(
+                $request->published_at,
+                $request->user()->timezone
+            )->tz('GMT');
+        } else {
+            $note->published_at = new Carbon;
+        }
+        $note->fill($request->safe()->all());
+        $note->dashboard_visible = $request->boolean('dashboard_visible');
+        $note->save();
+
+        return response($note, 201);
     }
 
     public function storeDashboard(StoreDashboardRequest $request)
@@ -74,7 +92,9 @@ class NoteController extends Controller
      */
     public function show(Note $note)
     {
-        //
+        Gate::authorize('view', $note);
+
+        return $note;
     }
 
     /**
@@ -82,9 +102,18 @@ class NoteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Note $note)
+    public function update(EditNoteRequest $request, Note $note)
     {
-        //
+        Gate::authorize('update', $note);
+
+        $note->published_at = Carbon::parse($request->published_at, $request->user()->timezone)->tz(
+            'GMT'
+        );
+        $note->fill($request->safe()->all());
+        $note->dashboard_visible = $request->boolean('dashboard_visible');
+        $note->save();
+
+        return $note;
     }
 
     /**
@@ -94,6 +123,9 @@ class NoteController extends Controller
      */
     public function destroy(Note $note)
     {
-        //
+        Gate::authorize('delete', $note);
+
+        $note->delete();
+        return $note;
     }
 }

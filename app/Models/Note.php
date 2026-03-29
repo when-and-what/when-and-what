@@ -20,7 +20,10 @@ class Note extends Model
      */
     protected $fillable = ['icon', 'title', 'sub_title', 'note', 'dashboard_visible'];
 
-    protected $casts = ['dashboard_visible' => 'boolean', 'published_at' => 'datetime'];
+    protected $casts = [
+        'dashboard_visible' => 'boolean',
+        'published_at' => 'datetime'
+    ];
 
     public function user(): BelongsTo
     {
