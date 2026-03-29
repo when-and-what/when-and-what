@@ -88,7 +88,6 @@
     .subscription-active-icon {
         font-size: 2.5rem;
         color: var(--ww-accent);
-        margin-bottom: 1rem;
     }
     .alert-success {
         background: #f0fdfa;
@@ -107,9 +106,6 @@
     {{-- ── Back link + header ───────────────────────────────────────── --}}
     <div class="text-center mb-5">
         @if ($user->subscribed())
-            <a href="{{ url()->previous() }}" class="page-back-link mb-3 d-inline-flex">
-                <i class="fa-solid fa-arrow-left"></i> Back
-            </a>
             <h1 class="page-title mt-2">Your Subscription</h1>
             <p class="page-subtitle">Your account is active and all features are unlocked.</p>
         @else
@@ -129,9 +125,8 @@
                             <i class="fa-solid fa-circle-check"></i>
                         </div>
                         <h2 class="pricing-plan-name">Active</h2>
-                        <p class="pricing-description">You have full access to all features.</p>
                     </div>
-                    <a href="{{ route('subscription.edit') }}" class="btn btn-outline-secondary w-100 btn-lg mt-auto">
+                    <a href="{{ route('subscription.edit') }}" class="btn btn-cta w-100 btn-lg mt-auto">
                         Manage Subscription
                     </a>
                 </div>

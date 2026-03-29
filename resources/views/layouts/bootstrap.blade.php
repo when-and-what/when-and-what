@@ -79,6 +79,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navProfileDropdown">
                                 <li><a href="/accounts" class="dropdown-item">Integrations</a></li>
+                                <li><a href="{{ route('subscription') }}" class="dropdown-item">Manage Subscription</a></li>
                                 <li><a href="/user/profile" class="dropdown-item">Profile</a></li>
                                 <li>
                                     <form method="POST" action="{{ route('logout') }}">
