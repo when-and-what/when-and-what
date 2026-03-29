@@ -89,6 +89,9 @@
         font-size: 2.5rem;
         color: var(--ww-accent);
     }
+    .subscription-ended-icon {
+        font-size: 2.5rem;
+    }
     .alert-success {
         background: #f0fdfa;
         border-color: #99f6e4;
@@ -102,6 +105,27 @@
 @section('full-content')
 
 <div class="container py-5">
+
+    @if($user->subscription()->ended())
+        <div class="text-center mb-3">
+            <h1 class="page-title mt-2">Your Subscription</h1>
+        </div>
+        <div class="row justify-content-center mb-4">
+            <div class="col-sm-10 col-md-6 col-lg-4">
+                <div class="pricing-card text-center">
+                    <div class="pricing-card-header mb-0">
+                        <div class="subscription-ended-icon text-danger">
+                            <i class="fa-regular fa-circle-xmark"></i>
+                        </div>
+                        <h2 class="pricing-plan-name">Expired</h2>
+                    </div>
+                    <a href="{{ route('subscription.edit') }}" class="btn btn-outline-secondary w-100 btn-lg mt-auto">
+                        View Invoice(s)
+                    </a>
+                </div>
+            </div>
+        </div>
+    @endif
 
     {{-- ── Back link + header ───────────────────────────────────────── --}}
     <div class="text-center mb-5">
