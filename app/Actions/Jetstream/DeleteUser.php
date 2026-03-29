@@ -30,7 +30,7 @@ class DeleteUser implements DeletesUsers
         Note::whereBelongsTo($user)->forceDelete();
         EpisodePlay::whereBelongsTo($user)->delete();
 
-        if($user->subscribed()) {
+        if ($user->subscribed()) {
             $user->subscription()->cancel();
         }
 

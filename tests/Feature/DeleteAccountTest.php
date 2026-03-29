@@ -40,11 +40,11 @@ test('correct password must be provided before account can be deleted', function
     expect($user->fresh())->not->toBeNull();
 });
 
-test('models are removed when an account is deleted', function() {
+test('models are removed when an account is deleted', function () {
     $user = createUser();
 
     $locations = Location::factory(15)->create();
-    foreach($locations as $location) {
+    foreach ($locations as $location) {
         Checkin::factory()->create(['user_id' => $user->id, 'location_id' => $location->id]);
         PendingCheckin::factory()->create(['user_id' => $user->id]);
     }
@@ -64,7 +64,6 @@ test('models are removed when an account is deleted', function() {
     $this->assertDatabaseEmpty('notes');
     $this->assertDatabaseEmpty('tags');
     $this->assertDatabaseEmpty('notes');
-
 
     expect($user->fresh())->toBeNull();
 });
