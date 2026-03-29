@@ -22,7 +22,7 @@ class Note extends Model
 
     protected $casts = [
         'dashboard_visible' => 'boolean',
-        'published_at' => 'datetime'
+        'published_at' => 'datetime',
     ];
 
     public function user(): BelongsTo

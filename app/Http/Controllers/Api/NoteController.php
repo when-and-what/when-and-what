@@ -126,6 +126,7 @@ class NoteController extends Controller
         Gate::authorize('delete', $note);
 
         $note->delete();
+
         return $note;
     }
 }
