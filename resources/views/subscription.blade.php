@@ -104,25 +104,6 @@
 
 <div class="container py-5">
 
-    @if(isset($stripe) && $stripe == 'success')
-        <div class="row justify-content-center">
-            <div class="col-sm-10 col-md-6 col-lg-5 text-center">
-                <div class="alert alert-success" role="alert">
-                    <i class="fa-solid fa-circle-check"></i>
-                    <span>Thanks for signing up! <a href="https://whenandwhat.me/contact">Contact us</a> with any questions</span>
-                </div>
-            </div>
-        </div>
-    @elseif(isset($stripe) && $stripe == 'cancel')
-        <div class="row justify-content-center">
-            <div class="col-sm-10 col-md-6 col-lg-4">
-                <div class="alert alert-warning" role="alert">
-                    <span>No changes have been made to your account or subscription. <a href="https://whenandwhat.me/contact">Contact us</a> if you had any troubles or have any questions</span>
-                </div>
-            </div>
-        </div>
-    @endif
-
     {{-- ── Back link + header ───────────────────────────────────────── --}}
     <div class="text-center mb-5">
         @if ($user->subscribed())

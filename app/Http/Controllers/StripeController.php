@@ -8,16 +8,12 @@ class StripeController extends Controller
 {
     public function success(Request $request)
     {
-        return view('subscription', [
-            'stripe' => 'success',
-            'user' => $request->user(),
-        ]);
+        return view('subscription.success');
     }
 
     public function cancel(Request $request)
     {
         return view('subscription', [
-            'stripe' => 'cancel',
             'user' => $request->user(),
         ]);
     }
