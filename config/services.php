@@ -53,4 +53,12 @@ return [
         'redirect' => env('APP_URL').'/socialite/update/strava',
     ],
 
+    'stripe' => [
+        'plans' => [
+            'annual' => env('STRIPE_PLAN_ANNUAL'),
+            'biannual' => env('STRIPE_PLAN_BIANNUAL'),
+            'monthly' => env('STRIPE_PLAN_MONTHLY'),
+        ],
+    ],
+
 ];

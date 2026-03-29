@@ -12,6 +12,16 @@ test('dashboard', function () {
         ->assertViewHas('tomorrow', $tomorrow);
 });
 
+test('redirected if not subscribed', function (?Carbon $date) {
+    $user = User::factory()->create(['trial_ends_at' => $date]);
+    $this->actingAs($user)
+        ->get(route('dashboard'))
+        ->assertRedirect(route('subscription'));
+})->with([
+    'no trial' => null,
+    'expired' => now()->subDays(2),
+]);
+
 test('specific day', function () {
     $user = User::factory()->create(['timezone' => 'America/New_York']);
 
