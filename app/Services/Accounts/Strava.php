@@ -165,10 +165,10 @@ class Strava extends UserAccount
 
         return Cache::remember($this->accountUser->user_id.'-strava-athlete', $this->maxCache, function () use ($url) {
             return Http::withToken($this->getToken())
-            ->acceptJson()
-            ->throw()
-            ->get($url)
-            ->json();
+                ->acceptJson()
+                ->throw()
+                ->get($url)
+                ->json();
         });
     }
 
