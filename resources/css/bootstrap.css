@@ -696,6 +696,24 @@ a:hover { color: var(--ww-accent-dark); }
 
 .field-input.is-invalid { border-color: #dc2626; }
 
+@keyframes location-selected-flash {
+    0%   { background-color: var(--ww-light); border-color: var(--ww-border); }
+    30%  { background-color: rgba(13, 148, 136, 0.15); border-color: var(--ww-accent); box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.2); }
+    100% { background-color: var(--ww-light); border-color: var(--ww-border); box-shadow: none; }
+}
+
+.field-input.location-selected-flash {
+    animation: location-selected-flash 0.7s ease-out forwards;
+}
+
+.marker-selected {
+    filter: hue-rotate(150deg) brightness(1.1);
+    transform: scale(1.35) translateY(-3px);
+    transform-origin: bottom center;
+    transition: transform 0.15s ease, filter 0.15s ease;
+    z-index: 1000 !important;
+}
+
 /* ─── Pending check-in list ─────────────────────────────────── */
 .pending-checkin-dot {
     width: 0.55rem;

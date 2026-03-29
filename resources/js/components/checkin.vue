@@ -3,7 +3,7 @@
         Zoom in to view all locations
     </div>
     <div class="checkin-location-bar">
-        <input type="text" class="field-input" v-model="location_name" placeholder="Click a pin to select a location" readonly />
+        <input type="text" class="field-input" :class="{ 'location-selected-flash': inputFlash }" v-model="location_name" placeholder="Click a pin to select a location" readonly />
         <div v-if="new_checkin" class="checkin-location-save">
             <a href="#" @click.capture="savePendingLocation" title="Save location for later">
                 <i class="fa-solid fa-bookmark"></i>
@@ -26,6 +26,8 @@ export default {
             location_id: null,
             location_name: null,
             location_warning: false,
+            selectedMarker: null,
+            inputFlash: false,
         };
     },
     props: {
@@ -70,8 +72,18 @@ export default {
                         draggable: false,
                     }).addTo(self.layer);
                     marker.addEventListener('click', function () {
+                        if (self.selectedMarker) {
+                            self.selectedMarker.getElement().classList.remove('marker-selected');
+                        }
+                        marker.getElement().classList.add('marker-selected');
+                        self.selectedMarker = marker;
+
                         self.location_name = location.name;
                         self.location_id = location.id;
+
+                        self.inputFlash = false;
+                        self.$nextTick(() => { self.inputFlash = true; });
+                        setTimeout(() => { self.inputFlash = false; }, 700);
                     });
                 });
             });
