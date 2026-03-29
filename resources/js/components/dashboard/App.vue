@@ -195,6 +195,7 @@ export default {
             this.items = this.items.concat(items);
             lines.forEach((line) => this.addLine(color, line.cords, line.id));
             pins.forEach((pin) => this.addPin(pin));
+            this.map.fitBounds(this.bounds);
         },
         accountRequest(account) {
             axios.get('/api/dashboard/' + account.slug + '/' + this.date).then(this.accountResponse);
@@ -207,7 +208,6 @@ export default {
                 })
                 .addTo(this.map);
             this.bounds.extend(this.mapLine.getBounds());
-            this.map.fitBounds(this.bounds);
         },
         addPin(pin) {
             this.bounds.extend([pin.latitude, pin.longitude]);
@@ -217,7 +217,6 @@ export default {
                     mouseout: () => document.getElementById(pin.id).classList.remove('border', 'border-primary'),
                 })
                 .addTo(this.map);
-            this.map.fitBounds(this.bounds);
         },
         redirectDate() {
             window.location = '/day/' + this.date.replaceAll('-', '/');
