@@ -106,7 +106,7 @@
 
 <div class="container py-5">
 
-    @if($user->subscription()->ended())
+    @if($user->subscription()?->ended())
         <div class="text-center mb-3">
             <h1 class="page-title mt-2">Your Subscription</h1>
         </div>
