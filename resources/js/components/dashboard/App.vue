@@ -126,7 +126,7 @@ export default {
     },
     data() {
         return {
-            bounds: [],
+            bounds: L.latLngBounds(),
             changeDay: false,
             date: this.day,
             events: [],
@@ -206,11 +206,11 @@ export default {
                     mouseout: () => document.getElementById(id).classList.remove('border', 'border-primary'),
                 })
                 .addTo(this.map);
-            this.bounds.push(this.mapLine.getBounds());
+            this.bounds.extend(this.mapLine.getBounds());
             this.map.fitBounds(this.bounds);
         },
         addPin(pin) {
-            this.bounds.push([pin.latitude, pin.longitude]);
+            this.bounds.extend([pin.latitude, pin.longitude]);
             L.marker(L.latLng([pin.latitude, pin.longitude]), { title: pin.title })
                 .on({
                     mouseover: () => document.getElementById(pin.id).classList.add('border', 'border-primary'),
