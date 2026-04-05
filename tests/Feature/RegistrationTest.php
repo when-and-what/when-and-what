@@ -1,6 +1,6 @@
 <?php
 
-use App\Providers\RouteServiceProvider;
+use App\Providers\AppServiceProvider;
 use Laravel\Fortify\Features;
 use Laravel\Jetstream\Jetstream;
 
@@ -38,5 +38,5 @@ test('new users can register', function () {
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect(RouteServiceProvider::HOME);
+    $response->assertRedirect(AppServiceProvider::HOME);
 });
