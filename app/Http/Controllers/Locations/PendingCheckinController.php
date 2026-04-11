@@ -21,6 +21,7 @@ class PendingCheckinController extends Controller
         $this->authorizeResource(PendingCheckin::class, 'pending');
     }
 
+    // !this is not restricted  by the PendingCheckin::class policy.
     public function index(Request $request)
     {
         return view('locations.pending.list', [
