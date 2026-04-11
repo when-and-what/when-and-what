@@ -68,7 +68,7 @@
 
         {{-- Right: map --}}
         <div class="checkin-map-col">
-            <newlocation :dragable="true" />
+            <newlocation :draggable="true" />
         </div>
 
     </form>
