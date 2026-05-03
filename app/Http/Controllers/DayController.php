@@ -28,17 +28,7 @@ class DayController extends Controller
         $tomorrow = $today->copy()->addDay();
         $yesterday = $today->copy()->subDay();
 
-        $trackers = Tracker::whereBelongsTo($user)
-            ->with('events', function (HasMany $query) use ($tomorrow, $yesterday) {
-                $query->before($tomorrow)->after($yesterday);
-            })
-            ->whereHas('events', function (Builder $query) use ($tomorrow, $yesterday) {
-                $query->before($tomorrow)->after($yesterday);
-            })
-            ->get();
-
         return view('dashboard', [
-            'trackers' => $trackers,
             'today' => $today,
             'tomorrow' => $tomorrow,
             'yesterday' => $yesterday,
