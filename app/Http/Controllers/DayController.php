@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Trackers\Tracker;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 
 class DayController extends Controller
