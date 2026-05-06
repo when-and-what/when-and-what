@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Locations\CheckinController;
 use App\Http\Controllers\Api\Locations\LocationController;
 use App\Http\Controllers\Api\Locations\PendingCheckinController;
 use App\Http\Controllers\Api\NoteController;
+use App\Http\Controllers\Api\TokenController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::middleware('throttle:login')
+    ->post('token/create', [TokenController::class, 'store']);
 
 Route::middleware('auth:sanctum')->name('api.')->group(function () {
     Route::get('dashboard/checkins/{date}', [DashboardController::class, 'checkins']);
