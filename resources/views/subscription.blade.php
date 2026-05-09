@@ -89,8 +89,23 @@
         font-size: 2.5rem;
         color: var(--ww-accent);
     }
+    .subscription-upgrade-icon {
+        font-size: 2.5rem;
+        color: var(--ww-muted);
+    }
     .subscription-ended-icon {
         font-size: 2.5rem;
+    }
+    .btn-upgrade {
+        background: transparent;
+        border: 2px solid var(--ww-accent);
+        color: var(--ww-accent);
+        font-weight: 600;
+    }
+    .btn-upgrade:hover {
+        background: var(--ww-accent);
+        border-color: var(--ww-accent);
+        color: #fff;
     }
     .alert-success {
         background: #f0fdfa;
@@ -142,7 +157,7 @@
 
         {{-- ── Active subscription ──────────────────────────────────── --}}
         <div class="row justify-content-center">
-            <div class="col-sm-10 col-md-6 col-lg-4">
+            <div class="col-sm-6 col-lg-4">
                 <div class="pricing-card text-center">
                     <div class="pricing-card-header mb-0">
                         <div class="subscription-active-icon">
@@ -155,59 +170,126 @@
                     </a>
                 </div>
             </div>
+            @if($upgrade)
+                <div class="col-sm-6 col-lg-4">
+                    <div class="pricing-card text-center">
+                        <div class="pricing-card-header mb-0">
+                            <div class="subscription-upgrade-icon">
+                                <i class="fa-solid fa-mobile-screen"></i>
+                            </div>
+                            <h2 class="pricing-plan-name">Add Mobile App</h2>
+                        </div>
+                        <form action="{{ route('subscription.update') }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <input type="hidden" name="plan" value="{{ $upgrade }}" />
+                            <button type="submit" class="btn btn-upgrade w-100 btn-lg mt-auto">Upgrade to Mobile</button>
+                        </form>
+                    </div>
+                </div>
+            @endif
         </div>
 
     @else
 
         {{-- ── Pricing cards ────────────────────────────────────────── --}}
-        <div class="row justify-content-center g-4">
+        <div class="row justify-content-center g-5">
 
-            {{-- Monthly --}}
-            <div class="col-sm-10 col-md-4 col-lg-3">
-                <div class="pricing-card">
-                    <div class="pricing-card-header">
-                        <h2 class="pricing-plan-name">Monthly</h2>
-                        <div class="pricing-price">
-                            <span class="pricing-currency">$</span><span class="pricing-amount">2</span><span class="pricing-period">/mo</span>
+            {{-- Web --}}
+            <div class="col-lg-5 col-md-6">
+                <h2 class="text-center mb-1">Web</h2>
+                <p class="text-center text-muted small mb-4">Access via the website</p>
+                <div class="d-flex flex-column gap-3">
+
+                    <div class="pricing-card">
+                        <div class="pricing-card-header">
+                            <h3 class="pricing-plan-name">Monthly</h3>
+                            <div class="pricing-price">
+                                <span class="pricing-currency">$</span><span class="pricing-amount">2</span><span class="pricing-period">/mo</span>
+                            </div>
+                            <p class="pricing-description">Pay as you go, cancel anytime.</p>
                         </div>
-                        <p class="pricing-description">Pay as you go, cancel anytime.</p>
+                        <a href="{{ route('subscription.create', 'monthly') }}" class="btn btn-outline-secondary w-100 btn-lg mt-auto">
+                            Subscribe
+                        </a>
                     </div>
-                    <a href="{{ route('subscription.create', 'monthly') }}" class="btn btn-outline-secondary w-100 btn-lg mt-auto">
-                        Subscribe
-                    </a>
+
+                    <div class="pricing-card">
+                        <div class="pricing-card-header">
+                            <h3 class="pricing-plan-name">6 Months</h3>
+                            <div class="pricing-price">
+                                <span class="pricing-currency">$</span><span class="pricing-amount">10</span><span class="pricing-period">/6 mo</span>
+                            </div>
+                            <p class="pricing-description">Save $2 vs monthly — renews every six months.</p>
+                        </div>
+                        <a href="{{ route('subscription.create', 'bi-annual') }}" class="btn btn-outline-secondary w-100 btn-lg mt-auto">
+                            Subscribe
+                        </a>
+                    </div>
+
+                    <div class="pricing-card pricing-card-featured">
+                        <div class="pricing-badge">Best value</div>
+                        <div class="pricing-card-header">
+                            <h3 class="pricing-plan-name">Annual</h3>
+                            <div class="pricing-price">
+                                <span class="pricing-currency">$</span><span class="pricing-amount">15</span><span class="pricing-period">/yr</span>
+                            </div>
+                            <p class="pricing-description">Save $9 vs monthly — that's 3 months free.</p>
+                        </div>
+                        <a href="{{ route('subscription.create', 'annual') }}" class="btn btn-cta w-100 btn-lg mt-auto">
+                            Subscribe
+                        </a>
+                    </div>
+
                 </div>
             </div>
 
-            {{-- 6-Month --}}
-            <div class="col-sm-10 col-md-4 col-lg-3">
-                <div class="pricing-card">
-                    <div class="pricing-card-header">
-                        <h2 class="pricing-plan-name">6 Months</h2>
-                        <div class="pricing-price">
-                            <span class="pricing-currency">$</span><span class="pricing-amount">10</span><span class="pricing-period">/6 mo</span>
-                        </div>
-                        <p class="pricing-description">Save $2 vs monthly — renews every six months.</p>
-                    </div>
-                    <a href="{{ route('subscription.create', 'bi-annual') }}" class="btn btn-outline-secondary w-100 btn-lg mt-auto">
-                        Subscribe
-                    </a>
-                </div>
-            </div>
+            {{-- Web + Mobile --}}
+            <div class="col-lg-5 col-md-6">
+                <h2 class="text-center mb-1">Web + Mobile</h2>
+                <p class="text-center text-muted small mb-4">Website access plus iOS &amp; Android apps</p>
+                <div class="d-flex flex-column gap-3">
 
-            {{-- Annual --}}
-            <div class="col-sm-10 col-md-4 col-lg-3">
-                <div class="pricing-card pricing-card-featured">
-                    <div class="pricing-badge">Best value</div>
-                    <div class="pricing-card-header">
-                        <h2 class="pricing-plan-name">Annual</h2>
-                        <div class="pricing-price">
-                            <span class="pricing-currency">$</span><span class="pricing-amount">15</span><span class="pricing-period">/yr</span>
+                    <div class="pricing-card">
+                        <div class="pricing-card-header">
+                            <h3 class="pricing-plan-name">Monthly</h3>
+                            <div class="pricing-price">
+                                <span class="pricing-currency">$</span><span class="pricing-amount">4</span><span class="pricing-period">/mo</span>
+                            </div>
+                            <p class="pricing-description">Pay as you go, cancel anytime.</p>
                         </div>
-                        <p class="pricing-description">Save $9 compared to monthly — that's 3 months free.</p>
+                        <a href="{{ route('subscription.create', 'monthly-mobile') }}" class="btn btn-outline-secondary w-100 btn-lg mt-auto">
+                            Subscribe
+                        </a>
                     </div>
-                    <a href="{{ route('subscription.create', 'annual') }}" class="btn btn-cta w-100 btn-lg mt-auto">
-                        Subscribe
-                    </a>
+
+                    <div class="pricing-card">
+                        <div class="pricing-card-header">
+                            <h3 class="pricing-plan-name">6 Months</h3>
+                            <div class="pricing-price">
+                                <span class="pricing-currency">$</span><span class="pricing-amount">18</span><span class="pricing-period">/6 mo</span>
+                            </div>
+                            <p class="pricing-description">Save $6 vs monthly — renews every six months.</p>
+                        </div>
+                        <a href="{{ route('subscription.create', 'bi-annual-mobile') }}" class="btn btn-outline-secondary w-100 btn-lg mt-auto">
+                            Subscribe
+                        </a>
+                    </div>
+
+                    <div class="pricing-card pricing-card-featured">
+                        <div class="pricing-badge">Best value</div>
+                        <div class="pricing-card-header">
+                            <h3 class="pricing-plan-name">Annual</h3>
+                            <div class="pricing-price">
+                                <span class="pricing-currency">$</span><span class="pricing-amount">26</span><span class="pricing-period">/yr</span>
+                            </div>
+                            <p class="pricing-description">Save $22 vs monthly — over 5 months free.</p>
+                        </div>
+                        <a href="{{ route('subscription.create', 'annual-mobile') }}" class="btn btn-cta w-100 btn-lg mt-auto">
+                            Subscribe
+                        </a>
+                    </div>
+
                 </div>
             </div>
 

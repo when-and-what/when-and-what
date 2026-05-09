@@ -34,9 +34,16 @@ return [
 
     'stripe' => [
         'plans' => [
-            'annual' => env('STRIPE_PLAN_ANNUAL'),
-            'biannual' => env('STRIPE_PLAN_BIANNUAL'),
-            'monthly' => env('STRIPE_PLAN_MONTHLY'),
+            'web' => [
+                'annual' => env('STRIPE_WEB_ANNUAL'),
+                'biannual' => env('STRIPE_WEB_BIANNUAL'),
+                'monthly' => env('STRIPE_WEB_MONTHLY'),
+            ],
+            'mobile' => [
+                'annual' => env('STRIPE_MOBILE_ANNUAL'),
+                'biannual' => env('STRIPE_MOBILE_BIANNUAL'),
+                'monthly' => env('STRIPE_MOBILE_MONTHLY'),
+            ],
         ],
     ],
 

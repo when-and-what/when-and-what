@@ -36,6 +36,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('subscription', [SubscriptionController::class, 'index'])->name('subscription');
     Route::get('subscription/create/{plan}', [SubscriptionController::class, 'create'])->name('subscription.create');
     Route::get('subscription/edit', [SubscriptionController::class, 'edit'])->name('subscription.edit');
+    Route::put('subscription/update', [SubscriptionController::class, 'update'])->name('subscription.update');
     Route::get('subscription/success', [StripeController::class, 'success'])->name('subscription.success');
     Route::get('subscription/cancel', [StripeController::class, 'cancel'])->name('subscription.cancel');
 });
