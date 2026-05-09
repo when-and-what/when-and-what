@@ -29,9 +29,9 @@ class StoreTrackerRequest extends FormRequest
         return [
             'type' => ['required', Rule::enum(TrackerType::class)],
             'name' => 'required',
-            'code' => ['required', Rule::unique('trackers')->where(function(Builder $query) {
-                    $query->where('user_id', Auth::id());
-                })],
+            'code' => ['required', Rule::unique('trackers')->where(function (Builder $query) {
+                $query->where('user_id', Auth::id());
+            })],
             'unit' => ['required'],
             'color' => ['nullable'],
             'icon' => ['nullable'],

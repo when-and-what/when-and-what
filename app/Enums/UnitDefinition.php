@@ -10,5 +10,6 @@ readonly class UnitDefinition
         public string $symbol,
         public UnitType $type,
         public ?TrackerUnit $cousin = null,
-    ) {}
+    ) {
+    }
 }
