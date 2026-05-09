@@ -11,17 +11,16 @@ class SubscriptionController extends Controller
     public function index(Request $request)
     {
         $upgrade = false;
-        if($request->user()->subscribed()) {
-            if($request->user()->subscribedToPrice(config('services.stripe.plans.web.annual'), 'default')) {
+        if ($request->user()->subscribed()) {
+            if ($request->user()->subscribedToPrice(config('services.stripe.plans.web.annual'), 'default')) {
                 $upgrade = 'annual-mobile';
-            }
-            elseif($request->user()->subscribedToPrice(config('services.stripe.plans.web.biannual'), 'default')) {
+            } elseif ($request->user()->subscribedToPrice(config('services.stripe.plans.web.biannual'), 'default')) {
                 $upgrade = 'bi-annual-mobile';
-            }
-            elseif($request->user()->subscribedToPrice(config('services.stripe.plans.web.monthly'), 'default')) {
+            } elseif ($request->user()->subscribedToPrice(config('services.stripe.plans.web.monthly'), 'default')) {
                 $upgrade = 'monthly-mobile';
             }
         }
+
         return view('subscription', [
             'upgrade' => $upgrade,
             'user' => $request->user(),
@@ -40,7 +39,7 @@ class SubscriptionController extends Controller
             'monthly-mobile' => config('services.stripe.plans.mobile.monthly'),
         };
 
-        if( !$price) {
+        if (! $price) {
             abort(404);
         }
 
@@ -60,7 +59,7 @@ class SubscriptionController extends Controller
 
     public function update(SubscriptionUpdateRequest $request)
     {
-        $price = match($request->plan) {
+        $price = match ($request->plan) {
             'annual-mobile' => config('services.stripe.plans.mobile.annual'),
             'bi-annual-mobile' => config('services.stripe.plans.mobile.biannual'),
             'monthly-mobile' => config('services.stripe.plans.mobile.monthly'),

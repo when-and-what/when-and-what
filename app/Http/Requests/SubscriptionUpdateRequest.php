@@ -24,7 +24,7 @@ class SubscriptionUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'plan' => ['required', Rule::in(['annual-mobile', 'bi-annual-mobile', 'monthly-mobile'])]
+            'plan' => ['required', Rule::in(['annual-mobile', 'bi-annual-mobile', 'monthly-mobile'])],
         ];
     }
 }
