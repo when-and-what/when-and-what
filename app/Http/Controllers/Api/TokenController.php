@@ -23,7 +23,7 @@ class TokenController extends Controller
         }
 
         return response()->json([
-            'token' => $user->createToken($request['device_name'])->plainTextToken
+            'token' => $user->createToken($request['device_name'])->plainTextToken,
         ]);
     }
 }

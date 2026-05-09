@@ -20,7 +20,7 @@ test('create personal access token', function () {
 
 test('rate limited to 5', function () {
     $user = User::factory()->create();
-    for($i = 0; $i < 5; $i++) {
+    for ($i = 0; $i < 5; $i++) {
         $this->post('/api/token/create', [
             'email' => $user->email,
             'password' => 'password',
@@ -30,15 +30,15 @@ test('rate limited to 5', function () {
         ->assertJsonStructure(['token']);
     }
     $this->post('/api/token/create', [
-            'email' => $user->email,
-            'password' => 'password',
-            'device_name' => 'test '.$i,
-        ])
+        'email' => $user->email,
+        'password' => 'password',
+        'device_name' => 'test '.$i,
+    ])
         ->assertStatus(429);
     $this->postJson('/api/token/create', [
-            'email' => 'something@else',
-            'password' => 'password',
-            'device_name' => 'test '.$i,
-        ])
+        'email' => 'something@else',
+        'password' => 'password',
+        'device_name' => 'test '.$i,
+    ])
         ->assertStatus(422);
 });
