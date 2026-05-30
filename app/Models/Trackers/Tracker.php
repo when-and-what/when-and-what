@@ -2,7 +2,7 @@
 
 namespace App\Models\Trackers;
 
-use App\Enums\TrackerType;
+use App\Enums\TrackerUnit;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,13 +15,12 @@ class Tracker extends Model
     use HasFactory;
 
     protected $casts = [
-        'type' => TrackerType::class,
+        'unit' => TrackerUnit::class,
     ];
 
     protected $fillable = [
         'name',
         'code',
-        'type',
         'unit',
         'color',
         'icon',

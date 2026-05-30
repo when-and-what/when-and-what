@@ -2,8 +2,11 @@
 
 namespace App\Http\Requests\Trackers;
 
+use App\Enums\TrackerUnit;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class UpdateTrackerRequest extends FormRequest
 {
@@ -12,7 +15,7 @@ class UpdateTrackerRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Auth::user() !== null && $this->tracker?->user_id === Auth::id();
     }
 
     /**
@@ -23,7 +26,10 @@ class UpdateTrackerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required',
+            'unit' => ['required', Rule::enum(TrackerUnit::class)],
+            'color' => ['nullable'],
+            'icon' => ['nullable'],
         ];
     }
 }

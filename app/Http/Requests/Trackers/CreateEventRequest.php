@@ -2,14 +2,10 @@
 
 namespace App\Http\Requests\Trackers;
 
-use App\Enums\TrackerUnit;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
 
-class StoreTrackerRequest extends FormRequest
+class CreateEventRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,13 +23,8 @@ class StoreTrackerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
-            'code' => ['required', Rule::unique('trackers')->where(function (Builder $query) {
-                $query->where('user_id', Auth::id());
-            })],
-            'unit' => ['required', Rule::enum(TrackerUnit::class)],
-            'color' => ['nullable'],
-            'icon' => ['nullable'],
+            'event_value' => ['required', 'numeric'],
+            'event_time' => ['required', 'date_format:Y-m-d\TH:i'],
         ];
     }
 }

@@ -14,6 +14,8 @@ use App\Http\Controllers\SocialiteController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\Trackers\EventController;
+use App\Http\Controllers\Trackers\TrackerController;
 use App\Http\Middleware\Subscribed;
 use Illuminate\Support\Facades\Route;
 
@@ -67,4 +69,7 @@ Route::middleware(['auth:sanctum', Subscribed::class, 'verified'])->group(functi
     Route::resource('tags', TagController::class);
 
     Route::resource('notes', NoteController::class);
+    Route::resource('trackers', TrackerController::class);
+    Route::post('trackers/{tracker}/events', [EventController::class, 'store'])->name('trackers.events.store');
+    Route::delete('trackers/{tracker}/events/{event}', [EventController::class, 'destroy'])->name('trackers.events.destroy');
 });

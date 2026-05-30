@@ -2,6 +2,8 @@
 
 namespace App\Enums;
 
+use Illuminate\Support\Collection;
+
 enum TrackerUnit: string
 {
     // General
@@ -10,6 +12,7 @@ enum TrackerUnit: string
     case BOTTLES = 'bottles';
     case REPS = 'reps';
     case PAGES = 'pages';
+    case PINS = 'pins';
     case PERCENT = 'percent';
     case IU = 'iu';
 
@@ -87,6 +90,7 @@ enum TrackerUnit: string
             self::BOTTLES => new UnitDefinition('Bottle', 'Bottles', '', UnitType::GENERAL),
             self::REPS => new UnitDefinition('Rep', 'Reps', '', UnitType::GENERAL),
             self::PAGES => new UnitDefinition('Page', 'Pages', '', UnitType::GENERAL),
+            self::PINS => new UnitDefinition('Pin', 'Pins', '', UnitType::GENERAL),
             self::PERCENT => new UnitDefinition('Percent', 'Percent', '%', UnitType::GENERAL),
             self::IU => new UnitDefinition('International Unit', 'International Units', 'IU', UnitType::GENERAL),
 
@@ -186,5 +190,11 @@ enum TrackerUnit: string
     public static function forType(UnitType $type): array
     {
         return array_values(array_filter(self::cases(), fn ($u) => $u->type() === $type));
+    }
+
+    /** @return Collection<string, Collection<int, static>> */
+    public static function groupedByType(): Collection
+    {
+        return collect(self::cases())->groupBy(fn (self $unit) => $unit->type()->value);
     }
 }

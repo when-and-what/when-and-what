@@ -160,7 +160,7 @@ class DashboardController extends Controller
                         title: $tracker->name,
                         details: [
                             'icon' => $tracker->icon,
-                            'subTitle' => $event->event_value.' '.$tracker->unit,
+                            'subTitle' => $event->event_value.' '.$tracker->unit->plural(),
                         ],
                     );
                 }

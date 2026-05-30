@@ -17,6 +17,13 @@ class Event extends Model
 
     protected $table = 'tracker_events';
 
+    protected $fillable = [
+        'event_value',
+        'event_time',
+        'all_day',
+        'notes',
+    ];
+
     protected $casts = [
         'event_time' => 'datetime',
     ];
