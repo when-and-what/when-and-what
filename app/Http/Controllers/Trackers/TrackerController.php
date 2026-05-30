@@ -67,6 +67,7 @@ class TrackerController extends Controller
     public function edit(Tracker $tracker): View
     {
         Gate::authorize('view', $tracker);
+
         return view('trackers.edit', [
             'tracker' => $tracker,
             'units' => TrackerUnit::groupedByType(),

@@ -4,7 +4,6 @@ namespace App\Policies\Trackers;
 
 use App\Models\Trackers\Tracker;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class TrackerPolicy
 {
