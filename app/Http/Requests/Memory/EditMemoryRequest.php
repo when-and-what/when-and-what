@@ -25,9 +25,9 @@ class EditMemoryRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:200'],
             'start_date' => ['required', 'date'],
-            'start_time' => ['nullable', 'date_format:H:i'],
+            'start_time' => ['nullable', 'date_format:H:i,H:i:s'],
             'end_date' => ['required', 'date', 'after_or_equal:start_date'],
-            'end_time' => ['nullable', 'date_format:H:i'],
+            'end_time' => ['nullable', 'date_format:H:i,H:i:s'],
             'tags' => ['nullable', 'array'],
             'tags.*' => ['integer', 'exists:tags,id'],
         ];

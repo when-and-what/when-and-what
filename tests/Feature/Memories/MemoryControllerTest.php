@@ -204,6 +204,19 @@ test('update saves changes and redirects to show', function () {
         ->and($memory->end_date->toDateString())->toBe('2026-06-07');
 });
 
+test('update accepts times pre-filled from database with seconds', function () {
+    $user = createUser();
+    $memory = Memory::factory()->withTimes()->create(['user_id' => $user->id]);
+
+    $this->actingAs($user)->put(route('memories.update', $memory), [
+        'name' => $memory->name,
+        'start_date' => $memory->start_date->toDateString(),
+        'start_time' => $memory->start_time, // HH:MM:SS as stored
+        'end_date' => $memory->end_date->toDateString(),
+        'end_time' => $memory->end_time,
+    ])->assertRedirect(route('memories.show', $memory));
+});
+
 test('update syncs tags', function () {
     $user = createUser();
     $memory = Memory::factory()->create(['user_id' => $user->id]);
