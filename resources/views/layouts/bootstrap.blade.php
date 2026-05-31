@@ -70,6 +70,9 @@
                             <li class="nav-item">
                                 <a class="nav-link {{ strpos($routeName, 'podcasts') === 0 ? 'active' : '' }}" href="{{ route('podcasts.plays') }}">Podcasts</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ strpos($routeName, 'memories') === 0 ? 'active' : '' }}" href="{{ route('memories.index') }}">Memories</a>
+                            </li>
                         @endif
 
                         <li class="nav-item dropdown ms-md-2">

@@ -22,6 +22,15 @@
                 <a class="day-nav-btn" :href="tomorrowUrl" title="Next day">
                     <i class="fa-solid fa-chevron-right"></i>
                 </a>
+                <button class="day-nav-btn" @click="showRangePicker = !showRangePicker" title="View range">
+                    <i class="fa-solid fa-calendar-week"></i>
+                </button>
+            </div>
+
+            <div class="day-range-picker" v-if="showRangePicker">
+                <input type="date" class="day-date-input" v-model="rangeStart" @change="goToRange" />
+                <span class="day-range-sep">to</span>
+                <input type="date" class="day-date-input" v-model="rangeEnd" @change="goToRange" />
             </div>
 
             <div class="day-empty-state" v-show="events.length === 0">
@@ -129,6 +138,9 @@ export default {
             bounds: L.latLngBounds(),
             changeDay: false,
             date: this.day,
+            showRangePicker: false,
+            rangeStart: this.day,
+            rangeEnd: this.day,
             events: [],
             items: [],
             map: null,
@@ -220,6 +232,11 @@ export default {
         },
         redirectDate() {
             window.location = '/day/' + this.date.replaceAll('-', '/');
+        },
+        goToRange() {
+            if (this.rangeStart && this.rangeEnd && this.rangeEnd >= this.rangeStart) {
+                window.location = '/range/' + this.rangeStart + '/' + this.rangeEnd;
+            }
         },
         resetNote() {
             const hhmm = new Date().toTimeString().slice(0, 5);

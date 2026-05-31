@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\DayController;
+use App\Http\Controllers\MemoryController;
+use App\Http\Controllers\RangeController;
 use App\Http\Controllers\Locations\CategoriesController;
 use App\Http\Controllers\Locations\CheckinController;
 use App\Http\Controllers\Locations\LocationController;
@@ -44,6 +46,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 Route::middleware(['auth:sanctum', Subscribed::class, 'verified'])->group(function () {
     Route::get('/dashboard', [DayController::class, 'index'])->name('dashboard');
     Route::get('/day/{year}/{month}/{day}', [DayController::class, 'day'])->name('day')->whereNumber(['year', 'month', 'day']);
+    Route::get('/range/{start}/{end}', RangeController::class)->name('range')->where(['start' => '\d{4}-\d{2}-\d{2}', 'end' => '\d{4}-\d{2}-\d{2}']);
+    Route::resource('memories', MemoryController::class);
 
     // Locations
     Route::resource('locations/checkins/pending', PendingCheckinController::class);

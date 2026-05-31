@@ -5,6 +5,7 @@ import locationsmap from './components/locations.vue';
 import newlocation from './components/location.vue';
 import checkinmap from './components/checkin.vue';
 import DashboardApp from './components/dashboard/App.vue';
+import RangeApp from './components/range/App.vue';
 
 const locationEl = document.getElementById('location-container');
 if (locationEl) {
@@ -27,6 +28,19 @@ if (dashboardEl) {
         yesterdayUrl: dashboardEl.dataset.yesterdayUrl,
         tomorrowUrl: dashboardEl.dataset.tomorrowUrl,
     }).mount(dashboardEl);
+}
+
+const rangeEl = document.getElementById('range-container');
+if (rangeEl) {
+    createApp(RangeApp, {
+        start: rangeEl.dataset.start,
+        startTime: rangeEl.dataset.startTime,
+        end: rangeEl.dataset.end,
+        endTime: rangeEl.dataset.endTime,
+        formattedStart: rangeEl.dataset.formattedStart,
+        formattedEnd: rangeEl.dataset.formattedEnd,
+        isMemory: rangeEl.dataset.isMemory === 'true',
+    }).mount(rangeEl);
 }
 
 const button = document.getElementById('generate-token');
