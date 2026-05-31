@@ -11,11 +11,12 @@ use App\Models\Note;
 use Carbon\Carbon;
 use DateTimeZone;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function day(Request $request, Account $account, string $date)
+    public function day(Request $request, Account $account, string $date): DashboardResponse
     {
         $user = $request->user();
         try {
@@ -30,7 +31,24 @@ class DashboardController extends Controller
         return $service->dashboard($startDate, $endDate);
     }
 
-    public function checkins(Request $request, $date)
+    public function range(Request $request, Account $account, string $start, string $end): DashboardResponse
+    {
+        $user = $request->user();
+        try {
+            $startTime = $request->query('start_time', '00:00:00');
+            $endTime = $request->query('end_time', '23:59:59');
+            $startDate = new Carbon($start.' '.$startTime, new DateTimeZone($user->timezone));
+            $endDate = new Carbon($end.' '.$endTime, new DateTimeZone($user->timezone));
+        } catch (Exception) {
+            return new DashboardResponse($account->slug);
+        }
+
+        $service = new $account->service($account, $user);
+
+        return $service->dashboard($startDate, $endDate);
+    }
+
+    public function checkins(Request $request, $date): DashboardResponse
     {
         $start = new Carbon($date.' 00:00:00', $request->user()->timezone);
         $end = $start->copy()->addDay();
@@ -40,6 +58,25 @@ class DashboardController extends Controller
             ->with('location.category')
             ->get();
 
+        return $this->populateCheckins($checkins);
+    }
+
+    public function checkinsRange(Request $request, string $start, string $end): DashboardResponse
+    {
+        $startDate = new Carbon($start.' '.$request->query('start_time', '00:00:00'), $request->user()->timezone);
+        $endDate = new Carbon($end.' '.$request->query('end_time', '23:59:59'), $request->user()->timezone);
+        $checkins = Checkin::whereBelongsTo($request->user())
+            ->after($startDate)
+            ->before($endDate)
+            ->with('location.category')
+            ->get();
+
+        return $this->populateCheckins($checkins);
+    }
+
+    /** Collection<int, Checkin> */
+    private function populateCheckins(Collection $checkins): DashboardResponse
+    {
         $dashboard = new DashboardResponse('checkin');
         foreach ($checkins as $checkin) {
             $icon = '';
@@ -71,15 +108,33 @@ class DashboardController extends Controller
         return $dashboard;
     }
 
-    public function pendingCheckins(Request $request, $date)
+    public function pendingCheckins(Request $request, $date): DashboardResponse
     {
         $start = new Carbon($date.' 00:00:00', $request->user()->timezone);
-        $end = $start->copy()->addDay(1);
+        $end = $start->copy()->addDay();
         $checkins = PendingCheckin::whereBelongsTo($request->user())
             ->where('checkin_at', '>=', $start)
             ->where('checkin_at', '<', $end)
             ->get();
 
+        return $this->populatePendingCheckins($checkins);
+    }
+
+    public function pendingCheckinsRange(Request $request, string $start, string $end): DashboardResponse
+    {
+        $startDate = new Carbon($start.' '.$request->query('start_time', '00:00:00'), $request->user()->timezone);
+        $endDate = new Carbon($end.' '.$request->query('end_time', '23:59:59'), $request->user()->timezone);
+        $checkins = PendingCheckin::whereBelongsTo($request->user())
+            ->where('checkin_at', '>=', $startDate)
+            ->where('checkin_at', '<=', $endDate)
+            ->get();
+
+        return $this->populatePendingCheckins($checkins);
+    }
+
+    /** Collection<int, PendingCheckin> */
+    private function populatePendingCheckins(Collection $checkins): DashboardResponse
+    {
         $dashboard = new DashboardResponse('pending');
         foreach ($checkins as $checkin) {
             $dashboard->addEvent(
@@ -103,7 +158,7 @@ class DashboardController extends Controller
         return $dashboard;
     }
 
-    public function notes(Request $request, $date)
+    public function notes(Request $request, $date): DashboardResponse
     {
         $start = new Carbon($date.' 00:00:00', $request->user()->timezone);
         $start->setTimezone('UTC');
@@ -113,6 +168,28 @@ class DashboardController extends Controller
             ->where('published_at', '>=', $start)
             ->where('published_at', '<', $end)
             ->get();
+
+        return $this->populateNotes($notes);
+    }
+
+    public function notesRange(Request $request, string $start, string $end): DashboardResponse
+    {
+        $startDate = new Carbon($start.' '.$request->query('start_time', '00:00:00'), $request->user()->timezone);
+        $startDate->setTimezone('UTC');
+        $endDate = new Carbon($end.' '.$request->query('end_time', '23:59:59'), $request->user()->timezone);
+        $endDate->setTimezone('UTC');
+        $notes = Note::whereBelongsTo($request->user())
+            ->dashboard(true)
+            ->where('published_at', '>=', $startDate)
+            ->where('published_at', '<=', $endDate)
+            ->get();
+
+        return $this->populateNotes($notes);
+    }
+
+    /** Collection<int, Note> */
+    private function populateNotes(Collection $notes): DashboardResponse
+    {
         $response = new DashboardResponse('notes');
         foreach ($notes as $note) {
             $response->addEvent(

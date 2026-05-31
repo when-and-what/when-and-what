@@ -426,7 +426,8 @@ a:hover { color: var(--ww-accent-dark); }
     min-width: 0;
 }
 
-#dashboard-map {
+#dashboard-map,
+#range-map {
     position: absolute;
     inset: 0;
     z-index: 1;
@@ -492,6 +493,22 @@ a:hover { color: var(--ww-accent-dark); }
 }
 
 .day-date-input:focus { border-color: var(--ww-accent); }
+
+.day-range-picker {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--ww-border);
+    background: var(--ww-surface, #f8fafc);
+    flex-shrink: 0;
+}
+
+.day-range-sep {
+    font-size: 0.8rem;
+    color: var(--ww-muted);
+    flex-shrink: 0;
+}
 
 /* ─── Small action button ───────────────────────────────────── */
 .btn-sm-action {
@@ -1715,7 +1732,8 @@ a:hover { color: var(--ww-accent-dark); }
         position: relative;
     }
 
-    #dashboard-map {
+    #dashboard-map,
+    #range-map {
         position: absolute;
         inset: 0;
     }
