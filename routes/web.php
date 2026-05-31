@@ -2,16 +2,16 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\DayController;
-use App\Http\Controllers\MemoryController;
-use App\Http\Controllers\RangeController;
 use App\Http\Controllers\Locations\CategoriesController;
 use App\Http\Controllers\Locations\CheckinController;
 use App\Http\Controllers\Locations\LocationController;
 use App\Http\Controllers\Locations\LocationSearchController;
 use App\Http\Controllers\Locations\MapLocationsController;
 use App\Http\Controllers\Locations\PendingCheckinController;
+use App\Http\Controllers\MemoryController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\Podcasts\PlaysController;
+use App\Http\Controllers\RangeController;
 use App\Http\Controllers\SocialiteController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\SubscriptionController;

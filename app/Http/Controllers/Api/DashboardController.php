@@ -70,6 +70,7 @@ class DashboardController extends Controller
             ->before($endDate)
             ->with('location.category')
             ->get();
+
         return $this->populateCheckins($checkins);
     }
 
@@ -167,6 +168,7 @@ class DashboardController extends Controller
             ->where('published_at', '>=', $start)
             ->where('published_at', '<', $end)
             ->get();
+
         return $this->populateNotes($notes);
     }
 
@@ -181,6 +183,7 @@ class DashboardController extends Controller
             ->where('published_at', '>=', $startDate)
             ->where('published_at', '<=', $endDate)
             ->get();
+
         return $this->populateNotes($notes);
     }
 
