@@ -104,7 +104,7 @@ class DashboardController extends Controller
                 title: $checkin->location->name
             );
         }
-        if($checkins->isNotEmpty()) {
+        if ($checkins->isNotEmpty()) {
             $dashboard->addItem('Checkins', $checkins->count(), '📍');
         }
 
