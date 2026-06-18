@@ -5,9 +5,13 @@ namespace App\Providers;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use SocialiteProviders\Manager\SocialiteWasCalled;
+use SocialiteProviders\Strava\StravaExtendSocialite;
+use SocialiteProviders\Trakt\TraktExtendSocialite;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -40,6 +44,13 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrapFive();
 
         $this->bootRoute();
+        $this->bootSocialite();
+    }
+
+    public function bootSocialite()
+    {
+        Event::listen(SocialiteWasCalled::class, TraktExtendSocialite::class.'@handle');
+        Event::listen(SocialiteWasCalled::class, StravaExtendSocialite::class.'@handle');
     }
 
     public function bootRoute()
