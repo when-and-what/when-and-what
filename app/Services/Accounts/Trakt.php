@@ -32,7 +32,7 @@ class Trakt extends UserAccount
             );
         }
         if (count($movies) > 0) {
-            $dashboard->addItem('Movies', $movies->count(), '🎬');
+            $dashboard->addItem('Movies', count($movies), '🎬');
         }
         $episodes = $this->getHistory($startDate, $endDate, 'episodes');
         foreach ($episodes as $episode) {
@@ -44,7 +44,7 @@ class Trakt extends UserAccount
             );
         }
         if (count($episodes) > 0) {
-            $dashboard->addItem('TV', $episodes->count(), '📺');
+            $dashboard->addItem('TV', count($episodes), '📺');
         }
 
         return $dashboard;
