@@ -31,7 +31,7 @@ class Trakt extends UserAccount
                 details: ['icon' => '<i class="fa-solid fa-clapperboard"></i>']
             );
         }
-        if ($movies->isNotEmpty()) {
+        if (count($movies) > 0) {
             $dashboard->addItem('Movies', $movies->count(), '🎬');
         }
         $episodes = $this->getHistory($startDate, $endDate, 'episodes');
@@ -43,7 +43,7 @@ class Trakt extends UserAccount
                 details: ['icon' => '<i class="fa-solid fa-tv"></i>', 'subTitle' => $episode['episode']['title']]
             );
         }
-        if ($episodes->isNotEmpty()) {
+        if (count($episodes) > 0) {
             $dashboard->addItem('TV', $episodes->count(), '📺');
         }
 
