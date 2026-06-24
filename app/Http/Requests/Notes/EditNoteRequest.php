@@ -2,34 +2,54 @@
 
 namespace App\Http\Requests\Notes;
 
+use App\Models\Note;
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
 
 class EditNoteRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize()
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, mixed>
-     */
     public function rules()
     {
         return [
             'icon' => 'nullable|string',
             'title' => 'required|string',
             'sub_title' => 'nullable|string',
-            'published_at' => 'required|date_format:Y-m-d\TH:i',
+            'published_date' => 'required|date_format:Y-m-d',
+            'published_time' => 'nullable|date_format:H:i',
+            'is_all_day' => ['boolean', 'prohibits:dashboard_visible'],
             'note' => 'nullable|string',
             'dashboard_visible' => 'boolean',
+        ];
+    }
+
+    public function after(): array
+    {
+        return [
+            function (Validator $validator) {
+                if (! $this->boolean('is_all_day')) {
+                    return;
+                }
+
+                $date = Carbon::createFromFormat('Y-m-d', $this->input('published_date'), $this->user()->timezone)
+                    ->startOfDay()
+                    ->tz('UTC');
+
+                $exists = Note::whereBelongsTo($this->user())
+                    ->where('is_all_day', true)
+                    ->whereDate('published_at', $date->toDateString())
+                    ->where('id', '!=', $this->route('note')->id)
+                    ->exists();
+
+                if ($exists) {
+                    $validator->errors()->add('published_date', 'A day summary already exists for this date.');
+                }
+            },
         ];
     }
 }

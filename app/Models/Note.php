@@ -18,9 +18,9 @@ class Note extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['icon', 'title', 'sub_title', 'note', 'dashboard_visible'];
+    protected $fillable = ['icon', 'title', 'sub_title', 'note', 'dashboard_visible', 'is_all_day'];
 
-    protected $casts = ['dashboard_visible' => 'boolean', 'published_at' => 'datetime'];
+    protected $casts = ['dashboard_visible' => 'boolean', 'is_all_day' => 'boolean', 'published_at' => 'datetime'];
 
     public function user(): BelongsTo
     {
