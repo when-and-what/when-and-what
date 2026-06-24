@@ -55,7 +55,7 @@
             </div>
 
             <div class="row g-3 mb-3">
-                <div class="col-md-8">
+                <div class="col-md-8" id="sub_title_field">
                     <div class="field-group mb-0">
                         <label class="field-label" for="sub_title">Sub Title <span class="field-optional">— optional</span></label>
                         <input type="text"
@@ -79,7 +79,7 @@
                 </div>
             </div>
 
-            <div class="field-group mb-3">
+            <div class="field-group mb-3" id="note_field">
                 <label class="field-label" for="note">Note <span class="field-optional">— optional</span></label>
                 <textarea class="field-input{{ $errors->has('note') ? ' is-invalid' : '' }}"
                           id="note" name="note"
@@ -94,6 +94,47 @@
                        @checked($note ? $note->dashboard_visible : false)>
                 <label class="form-check-label" for="dashboard_visible">Show on dashboard</label>
             </div>
+
+            <style>
+                .toggle-field {
+                    overflow: hidden;
+                    max-height: 200px;
+                    transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
+                    opacity: 1;
+                }
+                .toggle-field.hidden {
+                    max-height: 0;
+                    opacity: 0;
+                    margin: 0 !important;
+                }
+            </style>
+
+            <script>
+                (function () {
+                    const toggle = document.getElementById('dashboard_visible');
+                    const noteField = document.getElementById('note_field');
+                    const subTitleField = document.getElementById('sub_title_field');
+
+                    noteField.classList.add('toggle-field');
+                    subTitleField.classList.add('toggle-field');
+
+                    function update(animate) {
+                        const checked = toggle.checked;
+                        noteField.classList.toggle('hidden', checked);
+                        subTitleField.classList.toggle('hidden', !checked);
+                    }
+
+                    toggle.addEventListener('change', update);
+                    // Apply initial state without transition
+                    noteField.style.transition = 'none';
+                    subTitleField.style.transition = 'none';
+                    update();
+                    requestAnimationFrame(() => {
+                        noteField.style.transition = '';
+                        subTitleField.style.transition = '';
+                    });
+                })();
+            </script>
 
             @if($note)
             <div class="mt-4 pt-3" style="border-top: 1px solid var(--ww-border);">
