@@ -170,6 +170,7 @@ class DashboardController extends Controller
             ->dashboard(true)
             ->where('published_at', '>=', $start)
             ->where('published_at', '<', $end)
+            ->allDay(false)
             ->get();
 
         return $this->populateNotes($notes);
@@ -188,6 +189,27 @@ class DashboardController extends Controller
             ->get();
 
         return $this->populateNotes($notes);
+    }
+
+    public function allDayNotesRange(Request $request, string $start, string $end): \Illuminate\Http\JsonResponse
+    {
+        $user = $request->user();
+        $startDate = new Carbon($start.' 00:00:00', $user->timezone);
+        $endDate = new Carbon($end.' 23:59:59', $user->timezone);
+
+        $notes = Note::whereBelongsTo($user)
+            ->allDay()
+            ->where('published_at', '>=', $startDate->copy()->tz('UTC'))
+            ->where('published_at', '<=', $endDate->copy()->tz('UTC'))
+            ->get();
+
+        $map = $notes->keyBy(fn ($note) => $note->published_at->tz($user->timezone)->toDateString())
+            ->map(fn ($note) => [
+                'id' => $note->id,
+                'url' => route('notes.edit', $note),
+            ]);
+
+        return response()->json($map);
     }
 
     /** Collection<int, Note> */

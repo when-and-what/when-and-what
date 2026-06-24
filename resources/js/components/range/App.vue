@@ -77,6 +77,7 @@ export default {
             items: [],
             rangeStart: this.start,
             rangeEnd: this.end,
+            allDayNotes: {},
         };
     },
     computed: {
@@ -108,12 +109,15 @@ export default {
             const getDate = (i) => i.isGroup ? i.events[0].date : i.date;
             const toDateKey = (d) => new Date(d).toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
 
+            const toDateIso = (d) => new Date(d).toLocaleDateString('en-CA'); // YYYY-MM-DD
+
             const withDividers = [];
             let lastDay = null;
             for (const i of result) {
                 const day = toDateKey(getDate(i));
                 if (day !== lastDay) {
-                    withDividers.push({ isDivider: true, label: day });
+                    const iso = toDateIso(getDate(i));
+                    withDividers.push({ isDivider: true, label: day, date: iso, allDayNote: this.allDayNotes[iso] ?? null });
                     lastDay = day;
                 }
                 withDividers.push(i);
@@ -149,6 +153,7 @@ export default {
             response.data.forEach((account) => this.accountRequest(account));
         });
         axios.get(`/api/range/notes/${this.start}/${this.end}`, times).then(this.accountResponse);
+        axios.get(`/api/range/all-day-notes/${this.start}/${this.end}`).then((r) => { this.allDayNotes = r.data; });
         axios.get(`/api/range/checkins/${this.start}/${this.end}`, times).then(this.accountResponse);
         axios.get(`/api/range/pending_checkins/${this.start}/${this.end}`, times).then(this.accountResponse);
     },
