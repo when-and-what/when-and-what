@@ -94,7 +94,7 @@ class NoteController extends Controller
                 ->tz('UTC');
         }
 
-        $datetime = $request->input('published_date') . 'T' . ($request->input('published_time') ?? '00:00');
+        $datetime = $request->input('published_date').'T'.($request->input('published_time') ?? '00:00');
 
         return Carbon::createFromFormat('Y-m-d\TH:i', $datetime, $tz)->tz('UTC');
     }
