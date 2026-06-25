@@ -206,7 +206,7 @@ class DashboardController extends Controller
         $map = $notes->keyBy(fn ($note) => $note->published_at->tz($user->timezone)->toDateString())
             ->map(fn ($note) => [
                 'id' => $note->id,
-                'url' => route('notes.edit', $note),
+                'url' => route('notes.show', $note),
             ]);
 
         return response()->json($map);
