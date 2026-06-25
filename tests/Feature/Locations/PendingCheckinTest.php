@@ -65,7 +65,7 @@ test('pending checkin with name and notes', function () {
     ]);
 });
 
-test('view pending checking', function() {
+test('view pending checking', function () {
     $pending = PendingCheckin::factory()->create();
 
     $this->actingAs($pending->user)
