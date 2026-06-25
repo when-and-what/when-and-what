@@ -871,6 +871,18 @@ a:hover { color: var(--ww-accent-dark); }
 
 .note-card-title:hover { color: var(--ww-accent); }
 
+.note-card-badge {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ww-accent);
+    background: var(--ww-accent-light);
+    border-radius: 4px;
+    padding: 0.1rem 0.4rem;
+    white-space: nowrap;
+}
+
 .note-card-time {
     font-size: 0.75rem;
     color: #94a3b8;
