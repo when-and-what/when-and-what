@@ -47,8 +47,7 @@ test('view notes', function () {
     }
 });
 
-test('create all date note', function ()
-{
+test('create all date note', function () {
     $date = now($this->user->timezone);
 
     $response = $this->actingAs($this->user)->post(route('notes.store'), [
