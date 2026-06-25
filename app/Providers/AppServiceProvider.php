@@ -2,10 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\Locations\PendingCheckin;
+use App\Policies\Locations\PendingCheckinPolicy;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -42,6 +45,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Paginator::useBootstrapFive();
+
+        Gate::policy(PendingCheckin::class, PendingCheckinPolicy::class);
 
         $this->bootRoute();
         $this->bootSocialite();

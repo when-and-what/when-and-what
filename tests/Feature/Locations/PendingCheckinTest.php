@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Locations\PendingCheckin;
 use App\Models\User;
 use Laravel\Sanctum\Sanctum;
 
@@ -62,6 +63,21 @@ test('pending checkin with name and notes', function () {
         'name' => $data['name'],
         'note' => $data['note'],
     ]);
+});
+
+test('view pending checking', function() {
+    $pending = PendingCheckin::factory()->create();
+
+    $this->actingAs($pending->user)
+        ->get(route('pending.edit', $pending))
+        ->assertOK();
+
+    $user = User::factory()->create();
+    $this->actingAs($user)
+        ->get(route('pending.edit', $pending))
+        ->assertStatus(403);
+
+    $this->get(route('pending.edit', $pending))->assertStatus(403);
 });
 
 // public function test_pending_checkin()
