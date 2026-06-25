@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Policies;
+namespace App\Policies\Locations;
 
 use App\Models\Locations\PendingCheckin;
 use App\Models\User;
