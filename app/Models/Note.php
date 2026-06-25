@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,9 +19,9 @@ class Note extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['icon', 'title', 'sub_title', 'note', 'dashboard_visible'];
+    protected $fillable = ['icon', 'title', 'sub_title', 'note', 'dashboard_visible', 'is_all_day'];
 
-    protected $casts = ['dashboard_visible' => 'boolean', 'published_at' => 'datetime'];
+    protected $casts = ['dashboard_visible' => 'boolean', 'is_all_day' => 'boolean', 'published_at' => 'datetime'];
 
     public function user(): BelongsTo
     {
@@ -35,5 +36,11 @@ class Note extends Model
     public function scopeDashboard(Builder $query, bool $dashboard): void
     {
         $query->where('dashboard_visible', $dashboard);
+    }
+
+    #[Scope]
+    protected function allDay(Builder $query, bool $allDay = true): void
+    {
+        $query->where('is_all_day', $allDay);
     }
 }

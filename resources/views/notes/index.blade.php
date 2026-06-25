@@ -29,8 +29,13 @@
                     @endif
                     <div class="flex-fill min-width-0">
                         <div class="d-flex align-items-baseline justify-content-between gap-2 mb-1">
-                            <a href="{{ route('notes.show', $note) }}" class="note-card-title">{{ $note->title }}</a>
-                            <span class="note-card-time">{{ $note->published_at->diffForHumans() }}</span>
+                            <div class="d-flex align-items-baseline gap-2">
+                                <a href="{{ route('notes.show', $note) }}" class="note-card-title">{{ $note->title }}</a>
+                                @if($note->is_all_day)
+                                <span class="note-card-badge">Day summary</span>
+                                @endif
+                            </div>
+                            <span class="note-card-time">{{ $note->published_at->tz(Auth::user()->timezone)->toFormattedDateString() }}</span>
                         </div>
                         @if($note->sub_title)
                         <div class="note-card-sub">{{ $note->sub_title }}</div>

@@ -47,6 +47,25 @@ test('view notes', function () {
     }
 });
 
+test('create all date note', function () {
+    $date = now($this->user->timezone);
+
+    $response = $this->actingAs($this->user)->post(route('notes.store'), [
+        'title' => 'new note',
+        'published_date' => $date->toDateString(),
+        'published_time' => $date->format('H:i'),
+    ]);
+    $response->assertSessionDoesntHaveErrors();
+    $response->assertRedirect(route('notes.index'));
+
+    $this->assertDatabaseHas('notes', [
+        'user_id' => $this->user->id,
+        'title' => 'new note',
+        'published_at' => $date->timezone('utc')->format('Y-m-d H:i:00'),
+        'is_all_day' => 0,
+    ]);
+});
+
 test('create note', function () {
     $response = $this->get(route('notes.create'));
     $response->assertRedirect('login');
@@ -55,26 +74,20 @@ test('create note', function () {
     $response->assertStatus(200);
     $response->assertSeeText('New Note');
 
-    $response = $this->actingAs($this->user)->post(route('notes.store'), [
-        'title' => 'my title',
-    ]);
-    $response->assertSessionDoesntHaveErrors();
-    $response->assertRedirect(route('notes.index'));
-    $this->assertDatabaseHas('notes', [
-        'user_id' => $this->user->id,
-        'title' => 'my title',
-    ]);
+    $date = now($this->user->timezone);
 
     $response = $this->actingAs($this->user)->post(route('notes.store'), [
-        'title' => 'new note',
-        'published_at' => '2023-02-01T08:20',
+        'title' => 'my title',
+        'published_date' => $date->toDateString(),
+        'is_all_day' => '1',
     ]);
     $response->assertSessionDoesntHaveErrors();
     $response->assertRedirect(route('notes.index'));
     $this->assertDatabaseHas('notes', [
         'user_id' => $this->user->id,
-        'title' => 'new note',
-        'published_at' => '2023-02-01 13:20:00',
+        'title' => 'my title',
+        'published_at' => $date->startOfDay()->timezone('utc')->format('Y-m-d H:i:00'),
+        'is_all_day' => 1,
     ]);
 });
 
@@ -94,13 +107,14 @@ test('edit note', function () {
     $response = $this->actingAs($this->user)->put(route('notes.update', $note), [
         'title' => 'new title',
     ]);
-    $response->assertSessionHasErrors('published_at');
+    $response->assertSessionHasErrors('published_date');
 
     $response = $this->actingAs($this->user)->put(route('notes.update', $note), [
         'title' => 'new title',
         'sub_title' => $note->sub_title,
         'icon' => $note->icon,
-        'published_at' => '2023-01-01T12:00',
+        'published_date' => '2023-01-01',
+        'published_time' => '12:00',
     ]);
     $response->assertRedirect(route('day', [
         'year' => '2023',

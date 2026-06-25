@@ -16,13 +16,9 @@ class NoteController extends Controller
         $this->authorizeResource(Note::class, 'note');
     }
 
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
         return view('notes.index', [
-            // must filter by user id, access not managed by policy class
             'notes' => Note::whereBelongsTo($request->user())
                 ->dashboard(false)
                 ->orderBy('published_at', 'desc')
@@ -30,9 +26,6 @@ class NoteController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('notes.edit', [
@@ -40,31 +33,19 @@ class NoteController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(CreateNoteRequest $request): RedirectResponse
     {
         $note = new Note;
         $note->user_id = $request->user()->id;
-        if ($request->published_at) {
-            $note->published_at = Carbon::parse(
-                $request->published_at,
-                $request->user()->timezone
-            )->tz('GMT');
-        } else {
-            $note->published_at = new Carbon;
-        }
-        $note->fill($request->safe()->all());
+        $note->is_all_day = $request->boolean('is_all_day');
+        $note->published_at = $this->parsePublishedAt($request);
+        $note->fill($request->safe()->except(['published_date', 'published_time']));
         $note->dashboard_visible = $request->boolean('dashboard_visible');
         $note->save();
 
         return redirect(route('notes.index'));
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Note $note)
     {
         return view('notes.note', [
@@ -72,9 +53,6 @@ class NoteController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Note $note)
     {
         return view('notes.edit', [
@@ -82,15 +60,11 @@ class NoteController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(EditNoteRequest $request, Note $note): RedirectResponse
     {
-        $note->published_at = Carbon::parse($request->published_at, $request->user()->timezone)->tz(
-            'GMT'
-        );
-        $note->fill($request->safe()->all());
+        $note->is_all_day = $request->boolean('is_all_day');
+        $note->published_at = $this->parsePublishedAt($request);
+        $note->fill($request->safe()->except(['published_date', 'published_time']));
         $note->dashboard_visible = $request->boolean('dashboard_visible');
         $note->save();
 
@@ -103,13 +77,25 @@ class NoteController extends Controller
         ]));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Note $note): RedirectResponse
     {
         $note->delete();
 
         return redirect(route('notes.index'));
+    }
+
+    private function parsePublishedAt(Request $request): Carbon
+    {
+        $tz = $request->user()->timezone;
+
+        if ($request->boolean('is_all_day')) {
+            return Carbon::createFromFormat('Y-m-d', $request->input('published_date'), $tz)
+                ->startOfDay()
+                ->tz('UTC');
+        }
+
+        $datetime = $request->input('published_date').'T'.($request->input('published_time') ?? '00:00');
+
+        return Carbon::createFromFormat('Y-m-d\TH:i', $datetime, $tz)->tz('UTC');
     }
 }
