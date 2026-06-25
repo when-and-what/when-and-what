@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use DateTimeZone;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -170,7 +171,6 @@ class DashboardController extends Controller
             ->dashboard(true)
             ->where('published_at', '>=', $start)
             ->where('published_at', '<', $end)
-            ->allDay(false)
             ->get();
 
         return $this->populateNotes($notes);
@@ -191,7 +191,7 @@ class DashboardController extends Controller
         return $this->populateNotes($notes);
     }
 
-    public function allDayNotesRange(Request $request, string $start, string $end): \Illuminate\Http\JsonResponse
+    public function allDayNotesRange(Request $request, string $start, string $end): JsonResponse
     {
         $user = $request->user();
         $startDate = new Carbon($start.' 00:00:00', $user->timezone);
