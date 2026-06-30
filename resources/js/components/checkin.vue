@@ -51,6 +51,7 @@ export default {
         getLocations: function () {
             var self = this;
             self.layer.clearLayers();
+            self.selectedMarker = null;
             var bounds = self.map.getBounds();
             var url =
                 '/api/locations?north=' +
@@ -71,9 +72,14 @@ export default {
                     var marker = L.marker([location.latitude, location.longitude], {
                         draggable: false,
                     }).addTo(self.layer);
+                    if (location.id === self.location_id) {
+                        marker.getElement().classList.add('marker-selected');
+                        self.selectedMarker = marker;
+                    }
                     marker.addEventListener('click', function () {
                         if (self.selectedMarker) {
-                            self.selectedMarker.getElement().classList.remove('marker-selected');
+                            const el = self.selectedMarker.getElement();
+                            if (el) el.classList.remove('marker-selected');
                         }
                         marker.getElement().classList.add('marker-selected');
                         self.selectedMarker = marker;
