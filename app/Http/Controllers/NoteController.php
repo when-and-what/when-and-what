@@ -8,6 +8,7 @@ use App\Models\Note;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class NoteController extends Controller
 {
@@ -16,7 +17,7 @@ class NoteController extends Controller
         $this->authorizeResource(Note::class, 'note');
     }
 
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         return view('notes.index', [
             'notes' => Note::whereBelongsTo($request->user())
@@ -26,7 +27,7 @@ class NoteController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(): View
     {
         return view('notes.edit', [
             'note' => null,
@@ -46,14 +47,14 @@ class NoteController extends Controller
         return redirect(route('notes.index'));
     }
 
-    public function show(Note $note)
+    public function show(Note $note): View
     {
         return view('notes.note', [
             'note' => $note,
         ]);
     }
 
-    public function edit(Note $note)
+    public function edit(Note $note): View
     {
         return view('notes.edit', [
             'note' => $note,

@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Checkin extends Model
@@ -15,12 +16,14 @@ class Checkin extends Model
 
     protected $casts = ['checkin_at' => 'datetime'];
 
-    public function location(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    /** @return BelongsTo<Location, $this> */
+    public function location(): BelongsTo
     {
         return $this->belongsTo(Location::class);
     }
 
-    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    /** @return BelongsTo <User, $this> */
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

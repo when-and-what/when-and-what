@@ -25,6 +25,7 @@ class Location extends Model
         return $this->belongsToMany(Category::class);
     }
 
+    /** @return BelongsToMany<Category, $this> */
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class);

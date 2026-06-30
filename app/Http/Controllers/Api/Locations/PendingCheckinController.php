@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Checkins\CreatePendingCheckinRequest;
 use App\Models\Locations\PendingCheckin;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class PendingCheckinController extends Controller
 {
@@ -30,11 +32,8 @@ class PendingCheckinController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(CreatePendingCheckinRequest $request)
+    public function store(CreatePendingCheckinRequest $request): Response
     {
         $checkin = new PendingCheckin;
         $checkin->latitude = $request->latitude;
@@ -54,13 +53,10 @@ class PendingCheckinController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Models\Locations\PendingCheckin  $pendingCheckin
-     * @return \Illuminate\Http\Response
      */
-    public function show(PendingCheckin $pending)
+    public function show(PendingCheckin $pending): JsonResponse
     {
-        return $pending;
+        return response()->json($pending);
     }
 
     /**

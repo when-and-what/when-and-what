@@ -75,13 +75,13 @@ class DashboardController extends Controller
         return $this->populateCheckins($checkins);
     }
 
-    /** Collection<int, Checkin> */
+    /** @param Collection<int, Checkin> $checkins */
     private function populateCheckins(Collection $checkins): DashboardResponse
     {
         $dashboard = new DashboardResponse('checkin');
         foreach ($checkins as $checkin) {
             $icon = '';
-            foreach ($checkin->location->category as $category) {
+            foreach ($checkin->location->categories as $category) {
                 $icon .= $category->emoji;
             }
             if ($icon == '') {
@@ -136,7 +136,7 @@ class DashboardController extends Controller
         return $this->populatePendingCheckins($checkins);
     }
 
-    /** Collection<int, PendingCheckin> */
+    /** @param Collection<int, PendingCheckin> $checkins */
     private function populatePendingCheckins(Collection $checkins): DashboardResponse
     {
         $dashboard = new DashboardResponse('pending');
@@ -166,7 +166,7 @@ class DashboardController extends Controller
     {
         $start = new Carbon($date.' 00:00:00', $request->user()->timezone);
         $start->setTimezone('UTC');
-        $end = $start->copy()->addDay(1);
+        $end = $start->copy()->addDay();
         $notes = Note::whereBelongsTo($request->user())
             ->dashboard(true)
             ->where('published_at', '>=', $start)
@@ -212,7 +212,7 @@ class DashboardController extends Controller
         return response()->json($map);
     }
 
-    /** Collection<int, Note> */
+    /** @param Collection<int, Note> $notes */
     private function populateNotes(Collection $notes): DashboardResponse
     {
         $response = new DashboardResponse('notes');

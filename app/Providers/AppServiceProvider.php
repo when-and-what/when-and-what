@@ -29,20 +29,16 @@ class AppServiceProvider extends ServiceProvider
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         //
     }
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Paginator::useBootstrapFive();
 
@@ -52,13 +48,13 @@ class AppServiceProvider extends ServiceProvider
         $this->bootSocialite();
     }
 
-    public function bootSocialite()
+    public function bootSocialite(): void
     {
         Event::listen(SocialiteWasCalled::class, TraktExtendSocialite::class.'@handle');
         Event::listen(SocialiteWasCalled::class, StravaExtendSocialite::class.'@handle');
     }
 
-    public function bootRoute()
+    public function bootRoute(): void
     {
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());

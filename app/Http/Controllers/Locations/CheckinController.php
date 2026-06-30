@@ -9,7 +9,9 @@ use App\Models\Locations\Checkin;
 use App\Models\Locations\Location;
 use App\Models\Locations\PendingCheckin;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class CheckinController extends Controller
 {
@@ -21,10 +23,8 @@ class CheckinController extends Controller
     /**
      * Display a listing of the resource.
      *!this is not restricted  by the Checkin::class policy.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $checkins = Checkin::whereBelongsTo($request->user())
             ->with(['location', 'location.category'])
@@ -46,10 +46,8 @@ class CheckinController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create(?Location $location = null)
+    public function create(?Location $location = null): View
     {
         return view('locations.checkins.create', [
             'location' => $location,
@@ -58,11 +56,8 @@ class CheckinController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(CreateCheckin $request)
+    public function store(CreateCheckin $request): RedirectResponse
     {
         $validated = $request->safe();
 
@@ -94,10 +89,8 @@ class CheckinController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function edit(Checkin $checkin)
+    public function edit(Checkin $checkin): View
     {
         // dd($checkin->created_at->toDateTimeLocalString());
         return view('locations.checkins.edit', [
@@ -107,11 +100,8 @@ class CheckinController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function update(EditCheckin $request, Checkin $checkin)
+    public function update(EditCheckin $request, Checkin $checkin): RedirectResponse
     {
         $validated = $request->safe();
 
@@ -126,10 +116,8 @@ class CheckinController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(Checkin $checkin)
+    public function destroy(Checkin $checkin): RedirectResponse
     {
         $checkin->delete();
 

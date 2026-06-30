@@ -27,7 +27,7 @@ class PodcastHistory extends Command
      * TODO: This is not an efficient way to grab each user at midnight
      ** but should scale for a while... so this sounds like a problem for the future 🙃.
      */
-    public function handle()
+    public function handle(): int
     {
         $account = Account::where('slug', 'pocketcasts')->first();
 
