@@ -1,5 +1,6 @@
 <template>
     <div class="day-stats-bar">
+        <span v-if="isMemory" class="fw-bold day-stat">{{ memoryTitle }}</span>
         <item v-for="stat in items" :item="stat" :key="stat.name" />
     </div>
 
@@ -67,6 +68,7 @@ export default {
         formattedStart: String,
         formattedEnd: String,
         isMemory: { type: Boolean, default: false },
+        memoryTitle: {type: String, default: ''}
     },
     setup() {
         return useMap('range-map');

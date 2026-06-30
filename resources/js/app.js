@@ -40,6 +40,7 @@ if (rangeEl) {
         formattedStart: rangeEl.dataset.formattedStart,
         formattedEnd: rangeEl.dataset.formattedEnd,
         isMemory: rangeEl.dataset.isMemory === 'true',
+        memoryTitle: rangeEl.dataset.title ?? '',
     }).mount(rangeEl);
 }
 
