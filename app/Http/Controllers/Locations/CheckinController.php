@@ -78,16 +78,6 @@ class CheckinController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Checkin $checkin)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Checkin $checkin): View

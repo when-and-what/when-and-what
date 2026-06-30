@@ -2,19 +2,22 @@
 
 namespace App\Traits;
 
+use App\Models\Memory;
+use App\Models\Note;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 trait TaggableController
 {
     /**
      * Parse the given text(s) for any tags and associate them with the given model.
      *
-     * @param  string|string[]  $texts
-     * @return Tag[]
+     * @param string|string[]  $texts
+     * @param Note|Memory $model
      */
-    public function saveTags($texts, Model $model, User $user)
+    public function saveTags($texts, Model $model, User $user): Collection
     {
         $tags = collect([]);
         if (! is_array($texts)) {
