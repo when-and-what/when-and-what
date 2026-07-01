@@ -54,8 +54,9 @@ Route::middleware(['auth:sanctum', Subscribed::class, 'verified'])->group(functi
     Route::resource('locations/checkins', CheckinController::class)->except('create');
     Route::resource('locations/categories', CategoriesController::class);
     Route::post('locations/search', LocationSearchController::class)->name('locations.search');
-    Route::redirect('locations/search', '/locations');
-
+    Route::get('locations/search', function () {
+        return redirect('/locations');
+    });
     Route::view('locations/map', 'locations.map')->name('locations.map');
     Route::resource('locations', LocationController::class);
 
