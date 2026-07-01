@@ -5,14 +5,14 @@ use App\Models\User;
 
 mutates(RangeController::class);
 
-test('must be logged in', function() {
+test('must be logged in', function () {
     $this->get(route('range', [
         'start' => now()->toDateString(),
         'end' => now()->toDateString(),
     ]))->assertRedirect('login');
 });
 
-test('invalid URLs', function($param) {
+test('invalid URLs', function ($param) {
     $user = User::factory()->create();
     $this->actingAs($user)
         ->get(url('/range', $param))
@@ -24,7 +24,7 @@ test('invalid URLs', function($param) {
     'invalid end' => [['end' => '2026-01', 'start' => now()->toDateString()]],
 ]);
 
-test('loads OK', function() {
+test('loads OK', function () {
     $user = User::factory()->create();
     $this->actingAs($user)
         ->get(route('range', [

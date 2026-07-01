@@ -14,8 +14,8 @@ trait TaggableController
     /**
      * Parse the given text(s) for any tags and associate them with the given model.
      *
-     * @param string|string[]  $texts
-     * @param Note|Memory $model
+     * @param  string|string[]  $texts
+     * @param  Note|Memory  $model
      */
     public function saveTags($texts, Model $model, User $user): Collection
     {
