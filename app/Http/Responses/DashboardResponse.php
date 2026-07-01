@@ -4,18 +4,19 @@ namespace App\Http\Responses;
 
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Support\Collection;
 
 class DashboardResponse implements Jsonable
 {
     public string $color;
 
-    protected $events;
+    protected Collection $events;
 
-    protected $items;
+    protected Collection $items;
 
-    protected $lines;
+    protected Collection $lines;
 
-    protected $pins;
+    protected Collection $pins;
 
     protected string $slug;
 
@@ -36,7 +37,7 @@ class DashboardResponse implements Jsonable
         $this->pins = collect();
     }
 
-    public function collapsible(string $groupLabel, string $groupIcon)
+    public function collapsible(string $groupLabel, string $groupIcon): void
     {
         $this->collapsible = true;
         $this->groupLabel = $groupLabel;
@@ -47,9 +48,8 @@ class DashboardResponse implements Jsonable
      * Convert the object to its JSON representation.
      *
      * @param  int  $options
-     * @return string
      */
-    public function toJson($options = 0)
+    public function toJson($options = 0): string
     {
         return collect([
             'color' => $this->color,
@@ -63,7 +63,7 @@ class DashboardResponse implements Jsonable
         ])->toJson();
     }
 
-    public function addEvent(int|string $id, Carbon $date, string $title, array $details = [])
+    public function addEvent(int|string $id, Carbon $date, string $title, array $details = []): void
     {
         $this->events->add([
             'id' => $this->id($id),
@@ -77,7 +77,7 @@ class DashboardResponse implements Jsonable
         ]);
     }
 
-    public function addItem(string $name, $value, string $icon = '')
+    public function addItem(string $name, $value, string $icon = ''): void
     {
         $this->items->add([
             'name' => $name,
@@ -86,7 +86,7 @@ class DashboardResponse implements Jsonable
         ]);
     }
 
-    public function addLine($id, array $cords)
+    public function addLine($id, array $cords): void
     {
         $this->lines->add([
             'id' => $this->id($id),
@@ -94,7 +94,7 @@ class DashboardResponse implements Jsonable
         ]);
     }
 
-    public function addPin($id, $latitude, $longitude, string $title = '')
+    public function addPin($id, $latitude, $longitude, string $title = ''): void
     {
         $this->pins->add([
             'id' => $this->id($id),
