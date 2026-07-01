@@ -5,7 +5,7 @@ use App\Models\Locations\Category;
 use App\Models\Locations\Location;
 use App\Models\User;
 
-covers(CategoriesController::class);
+mutates(CategoriesController::class);
 
 it('lists all categories for a user', function () {
     $user = User::factory()->create();
