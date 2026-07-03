@@ -53,6 +53,7 @@ class NoteController extends Controller
     public function show(Note $note): JsonResponse
     {
         Gate::authorize('view', $note);
+
         return response()->json($note);
     }
 

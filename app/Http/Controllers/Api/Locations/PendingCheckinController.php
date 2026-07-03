@@ -65,6 +65,7 @@ class PendingCheckinController extends Controller
     public function destroy(PendingCheckin $pending): Response
     {
         $pending->delete();
+
         return response('', 200);
     }
 }
