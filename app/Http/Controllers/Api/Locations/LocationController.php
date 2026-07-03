@@ -70,21 +70,25 @@ class LocationController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Location $location)
+    public function update(LocationRequest $request, Location $location): JsonResponse
     {
-        //
+        Gate::authorize('update', $location);
+
+        $validated = $request->validated();
+        $location->fill($validated);
+        $location->save();
+
+        return response()->json($location);
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function destroy(Location $location)
     {
-        //
+        Gate::authorize('delete', $location);
+
+        $location->delete();
     }
 }

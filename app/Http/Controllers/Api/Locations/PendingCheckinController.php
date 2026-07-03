@@ -60,24 +60,11 @@ class PendingCheckinController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Models\Locations\PendingCheckin  $pendingCheckin
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, PendingCheckin $pending)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Locations\PendingCheckin  $pendingCheckin
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(PendingCheckin $pending)
+    public function destroy(PendingCheckin $pending): Response
     {
-        //
+        $pending->delete();
+        return response('', 200);
     }
 }

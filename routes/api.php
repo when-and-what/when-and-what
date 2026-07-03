@@ -40,7 +40,7 @@ Route::middleware('auth:sanctum')->name('api.')->group(function () {
     Route::get('range/all-day-notes/{start}/{end}', [DashboardController::class, 'allDayNotesRange']);
     Route::get('range/{account}/{start}/{end}', [DashboardController::class, 'range']);
 
-    Route::apiResource('locations/checkins/pending', PendingCheckinController::class);
+    Route::apiResource('locations/checkins/pending', PendingCheckinController::class)->except(['update']);
     Route::apiResource('locations/checkins', CheckinController::class);
     Route::apiResource('locations', LocationController::class);
 

@@ -8,32 +8,12 @@ use App\Http\Responses\DashboardResponse;
 use App\Models\Note;
 use App\Traits\TaggableController;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 
 class NoteController extends Controller
 {
     use TaggableController;
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $note = new Note;
-        $note->user_id = $request->user()->id;
-    }
 
     public function storeDashboard(StoreDashboardRequest $request)
     {
@@ -69,31 +49,19 @@ class NoteController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function show(Note $note)
+    public function show(Note $note): JsonResponse
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Note $note)
-    {
-        //
+        Gate::authorize('view', $note);
+        return response()->json($note);
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function destroy(Note $note)
     {
-        //
+        Gate::authorize('delete', $note);
+        $note->delete();
     }
 }
