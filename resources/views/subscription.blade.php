@@ -125,6 +125,20 @@
                 </div>
             </div>
         </div>
+    @elseif($user->trial_ends_at && $user->trial_ends_at > now())
+        <div class="row justify-content-center mb-5">
+            <div class="col-sm-10 col-md-6 col-lg-4">
+                <div class="pricing-card text-center">
+                    <div class="pricing-card-header mb-0">
+                        <div class="subscription-active-icon">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+                        <h2 class="pricing-plan-name">Free Trial</h2>
+                    </div>
+                    Your free trial ends on {{ $user->trial_ends_at->format('F d') }}
+                </div>
+            </div>
+        </div>
     @endif
 
     {{-- ── Back link + header ───────────────────────────────────────── --}}

@@ -29,6 +29,7 @@ test('new users can register', function () {
         return $this->markTestSkipped('Registration support is not enabled.');
     }
 
+    $this->freezeTime();
     $response = $this->post('/register', [
         'name' => 'Test User',
         'email' => 'test@laravel.com',
@@ -37,6 +38,10 @@ test('new users can register', function () {
         'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature(),
     ]);
 
-    $this->assertAuthenticated();
     $response->assertRedirect(AppServiceProvider::HOME);
+    $this->assertDatabaseHas('users', [
+        'name' => 'Test User',
+        'email' => 'test@laravel.com',
+        'trial_ends_at' => now()->plus(weeks: 2),
+    ]);
 });
