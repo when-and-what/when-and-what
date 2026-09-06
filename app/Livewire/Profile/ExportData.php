@@ -10,7 +10,7 @@ class ExportData extends Component
 {
     public function mount()
     {
-        if( !Auth::check()) {
+        if (! Auth::check()) {
             abort(401);
         }
     }
