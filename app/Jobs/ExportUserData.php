@@ -9,10 +9,11 @@ use App\Models\Locations\PendingCheckin;
 use App\Models\Memory;
 use App\Models\Note;
 use App\Models\User;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 
-class ExportUserData implements ShouldQueue
+class ExportUserData implements ShouldQueue, ShouldBeUnique
 {
     use Queueable;
 
@@ -36,5 +37,10 @@ class ExportUserData implements ShouldQueue
 
         $memories = Memory::whereBelongsTo($this->user);
         $notes = Note::whereBelongsTo($this->user);
+    }
+
+    public function uniqueId(): string
+    {
+        return $this->user->id;
     }
 }
