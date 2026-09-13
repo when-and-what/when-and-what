@@ -37,7 +37,7 @@ class ExportUserData implements ShouldQueue, ShouldBeUnique
     public function handle(): void
     {
         $dir = storage_path('app/exports/'.$this->user->id);
-        if(is_dir($dir)) {
+        if (is_dir($dir)) {
             File::deleteDirectory($dir);
         }
         mkdir($dir, recursive: true);
@@ -52,8 +52,7 @@ class ExportUserData implements ShouldQueue, ShouldBeUnique
 
         $zip = new ZipArchive;
         $zip->open($dir.'.zip', ZipArchive::CREATE);
-        foreach(glob($dir.'/*.csv') as $file)
-        {
+        foreach (glob($dir.'/*.csv') as $file) {
             $zip->addFile($file, basename($file));
         }
         $zip->close();
@@ -64,8 +63,8 @@ class ExportUserData implements ShouldQueue, ShouldBeUnique
     private function writeCsv(Builder $query, string $path): void
     {
         $handle = fopen($path, 'w');
-        $query->chunk(500, function(Collection $rows) use ($handle) {
-            foreach($rows as $row) {
+        $query->chunk(500, function (Collection $rows) use ($handle) {
+            foreach ($rows as $row) {
                 fputcsv($handle, $row->toArray());
             }
         });

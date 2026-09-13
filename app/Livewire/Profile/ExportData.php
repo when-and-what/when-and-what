@@ -25,7 +25,7 @@ class ExportData extends Component
 
     public function exportData()
     {
-        $this->exportStatus = RateLimiter::attempt('user-export-'.Auth::id(), 1, function() {
+        $this->exportStatus = RateLimiter::attempt('user-export-'.Auth::id(), 1, function () {
             ExportUserData::dispatch(Auth::user());
         }, 60 * 60 * 24); // 24 hours
     }
