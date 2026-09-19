@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Mail\UserExportComplete;
 use App\Models\Locations\Category;
 use App\Models\Locations\Checkin;
 use App\Models\Locations\Location;
@@ -15,7 +16,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\Attributes\Timeout;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 use ZipArchive;
 
 #[Timeout(300)]
@@ -50,14 +53,18 @@ class ExportUserData implements ShouldQueue, ShouldBeUnique
         $this->writeCsv(Memory::whereBelongsTo($this->user)->withTrashed(), $dir.'/memories.csv');
         $this->writeCsv(Note::whereBelongsTo($this->user)->withTrashed(), $dir.'/notes.csv');
 
+        $zipPath = $dir.'.zip';
         $zip = new ZipArchive;
-        $zip->open($dir.'.zip', ZipArchive::CREATE);
-        foreach (glob($dir.'/*.csv') as $file) {
+        $zip->open($zipPath, ZipArchive::CREATE);
+        foreach(glob($dir.'/*.csv') as $file)
+        {
             $zip->addFile($file, basename($file));
         }
         $zip->close();
 
         File::deleteDirectory($dir);
+
+        Mail::to(Auth::user()->email)->send(new UserExportComplete($zipPath));
     }
 
     private function writeCsv(Builder $query, string $path): void

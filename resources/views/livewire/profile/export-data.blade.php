@@ -1,6 +1,6 @@
 <x-action-section>
     <x-slot name="title">
-        Export Data
+        <span id="export-data">Export Data</span>
     </x-slot>
 
     <x-slot name="description">
