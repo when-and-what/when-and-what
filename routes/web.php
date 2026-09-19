@@ -15,6 +15,7 @@ use App\Http\Controllers\SocialiteController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\UserExportDownload;
 use App\Http\Middleware\Subscribed;
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +40,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('subscription/edit', [SubscriptionController::class, 'edit'])->name('subscription.edit');
     Route::get('subscription/success', [StripeController::class, 'success'])->name('subscription.success');
     Route::get('subscription/cancel', [StripeController::class, 'cancel'])->name('subscription.cancel');
+
+    Route::get('user/export', UserExportDownload::class)->name('profile.export');
 });
 
 Route::middleware(['auth:sanctum', Subscribed::class, 'verified'])->group(function () {
