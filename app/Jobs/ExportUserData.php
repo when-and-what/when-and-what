@@ -56,8 +56,7 @@ class ExportUserData implements ShouldQueue, ShouldBeUnique
         $zipPath = $dir.'.zip';
         $zip = new ZipArchive;
         $zip->open($zipPath, ZipArchive::CREATE);
-        foreach(glob($dir.'/*.csv') as $file)
-        {
+        foreach (glob($dir.'/*.csv') as $file) {
             $zip->addFile($file, basename($file));
         }
         $zip->close();
