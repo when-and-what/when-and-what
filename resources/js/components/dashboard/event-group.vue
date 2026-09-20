@@ -15,7 +15,7 @@
             </div>
         </div>
         <div v-if="!collapsed" class="activity-group-items">
-            <event v-for="e in group.events" :event="e" :key="e.id" />
+            <event v-for="e in group.events" :event="e" :key="e.id" :timezone="timezone" />
         </div>
     </div>
 </template>
@@ -23,13 +23,13 @@
 import event from './event.vue';
 export default {
     components: { event },
-    props: ['group'],
+    props: ['group', 'timezone'],
     data() {
         return { collapsed: true };
     },
     methods: {
         displayTime(datetime) {
-            return new Date(datetime).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+            return new Date(datetime).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', timeZone: this.timezone });
         },
     },
     computed: {

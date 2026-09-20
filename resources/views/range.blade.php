@@ -10,6 +10,7 @@
      data-formatted-start="{{ $start->toFormattedDateString() }}"
      data-formatted-end="{{ $end->toFormattedDateString() }}"
      data-is-memory="{{ isset($memory) ? 'true' : 'false' }}"
-     data-title="{{ isset($memory) ? $memory->tags->implode('icon', ' ').' '.$memory->name : '' }}">
+     data-title="{{ isset($memory) ? $memory->tags->implode('icon', ' ').' '.$memory->name : '' }}"
+     data-timezone="{{ auth()->user()->timezone }}">
 </div>
 @endsection

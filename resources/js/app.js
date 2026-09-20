@@ -27,6 +27,7 @@ if (dashboardEl) {
         formattedDate: dashboardEl.dataset.formattedDate,
         yesterdayUrl: dashboardEl.dataset.yesterdayUrl,
         tomorrowUrl: dashboardEl.dataset.tomorrowUrl,
+        timezone: dashboardEl.dataset.timezone,
     }).mount(dashboardEl);
 }
 
@@ -41,6 +42,7 @@ if (rangeEl) {
         formattedEnd: rangeEl.dataset.formattedEnd,
         isMemory: rangeEl.dataset.isMemory === 'true',
         memoryTitle: rangeEl.dataset.title ?? '',
+        timezone: rangeEl.dataset.timezone,
     }).mount(rangeEl);
 }
 

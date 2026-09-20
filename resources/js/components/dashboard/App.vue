@@ -45,6 +45,7 @@
                     :key="item.isDivider ? 'divider-' + item.label : item.isGroup ? item.color + item.events[0].date : item.id"
                     :group="item"
                     :event="item"
+                    :timezone="timezone"
                 />
             </div>
 
@@ -132,6 +133,7 @@ export default {
         tomorrowUrl: String,
         checkinUrl: String,
         pendingUrl: String,
+        timezone: String,
     },
     data() {
         return {

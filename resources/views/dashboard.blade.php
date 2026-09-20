@@ -6,6 +6,7 @@
      data-day="{{ $today->toDateString() }}"
      data-formatted-date="{{ $today->toFormattedDateString() }}"
      data-yesterday-url="{{ route('day', [$yesterday->year, $yesterday->month, $yesterday->day]) }}"
-     data-tomorrow-url="{{ route('day', [$tomorrow->year, $tomorrow->month, $tomorrow->day]) }}">
+     data-tomorrow-url="{{ route('day', [$tomorrow->year, $tomorrow->month, $tomorrow->day]) }}"
+     data-timezone="{{ auth()->user()->timezone }}">
 </div>
 @endsection

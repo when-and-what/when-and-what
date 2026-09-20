@@ -34,13 +34,13 @@ export default {
     methods: {
         displayTime(datetime) {
             var d = new Date(datetime);
-            return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+            return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', timeZone: this.timezone });
         },
         tagLinks(text) {
             if (!text) return '';
             return text.replace(/#(\w+)/g, '<a href="/tags/$1">#$1</a>');
         },
     },
-    props: ['event'],
+    props: ['event', 'timezone'],
 };
 </script>
