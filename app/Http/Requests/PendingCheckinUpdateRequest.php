@@ -23,13 +23,14 @@ class PendingCheckinUpdateRequest extends FormRequest
     {
         return [
             'location' => 'nullable|required_without:newlocation|exists:locations,id',
-            'date' => 'required',
+            'date' => 'required|date_format:Y-m-d\TH:i',
             'note' => 'nullable',
             'newlocation' => 'boolean',
             'name' => 'required_with:newlocation',
             'category' => 'nullable',
             'latitude' => 'required_with:newlocation|numeric',
             'longitude' => 'required_with:newlocation|numeric',
+            'browser_timezone' => 'required|timezone',
         ];
     }
 }

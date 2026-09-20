@@ -22,7 +22,8 @@ class CreateCheckin extends FormRequest
         return [
             'location' => 'required|integer|exists:locations,id',
             'note' => 'nullable',
-            'date' => 'nullable|date_format:Y-m-d\TH:i',
+            'date' => 'required|date_format:Y-m-d\TH:i',
+            'browser_timezone' => 'required|timezone',
         ];
     }
 }

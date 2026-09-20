@@ -21,7 +21,8 @@ class EditCheckin extends FormRequest
     {
         return [
             'note' => 'nullable',
-            'date' => 'date_format:Y-m-d\TH:i',
+            'date' => 'required|date_format:Y-m-d\TH:i',
+            'browser_timezone' => 'required|timezone',
         ];
     }
 }

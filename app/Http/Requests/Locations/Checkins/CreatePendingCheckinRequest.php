@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Api\Checkins;
+namespace App\Http\Requests\Locations\Checkins;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -28,7 +28,8 @@ class CreatePendingCheckinRequest extends FormRequest
             'longitude' => 'numeric|required',
             'name' => 'nullable',
             'note' => 'nullable',
-            'date' => 'nullable|date_format:Y-m-d H:i:s',
+            'date' => 'required|date_format:Y-m-d\TH:i',
+            'browser_timezone' => 'required|timezone',
         ];
     }
 }
