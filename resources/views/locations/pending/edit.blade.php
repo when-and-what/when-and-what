@@ -12,6 +12,7 @@
     <form action="{{ route('pending.update', $pending) }}" method="POST" class="checkin-page">
         @method('PUT')
         @csrf
+        <input type="hidden" name="browser_timezone" v-model="browserTimezone" />
 
         @if ($errors->any())
             <div style="position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 9999; min-width: 300px;">

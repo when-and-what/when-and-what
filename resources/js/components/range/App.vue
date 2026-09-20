@@ -32,6 +32,7 @@
                     :key="item.isDivider ? 'divider-' + item.label : item.isGroup ? item.color + item.events[0].date : item.id"
                     :group="item"
                     :event="item"
+                    :timezone="timezone"
                 />
             </div>
 
@@ -68,7 +69,8 @@ export default {
         formattedStart: String,
         formattedEnd: String,
         isMemory: { type: Boolean, default: false },
-        memoryTitle: {type: String, default: ''}
+        memoryTitle: {type: String, default: ''},
+        timezone: String,
     },
     setup() {
         return useMap('range-map');

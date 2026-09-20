@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Locations;
 
 use App\Actions\CreateNewLocation;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\Checkins\CreatePendingCheckinRequest;
+use App\Http\Requests\Locations\Checkins\CreatePendingCheckinRequest;
 use App\Http\Requests\PendingCheckinUpdateRequest;
 use App\Models\Locations\Category;
 use App\Models\Locations\Checkin;
@@ -44,13 +44,7 @@ class PendingCheckinController extends Controller
         $checkin->name = $request->name;
         $checkin->user_id = $request->user()->id;
         $checkin->note = $request->note;
-        if ($request->date) {
-            $checkin->checkin_at = Carbon::parse($request->date, $request->user()->timezone)->tz(
-                'gmt'
-            );
-        } else {
-            $checkin->checkin_at = new Carbon;
-        }
+        $checkin->checkin_at = Carbon::parse($request->date, $request->browser_timezone)->tz('GMT');
         $checkin->save();
 
         return redirect(route('pending.edit', $checkin));
@@ -90,7 +84,7 @@ class PendingCheckinController extends Controller
         }
 
         $checkin->user_id = $request->user()->id;
-        $checkin->checkin_at = Carbon::parse($valid['date'], $request->user()->timezone)->tz('GMT');
+        $checkin->checkin_at = Carbon::parse($valid['date'], $request->browser_timezone)->tz('GMT');
         $checkin->note = $valid['note'];
         $checkin->save();
 
