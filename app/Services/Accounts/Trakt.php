@@ -6,6 +6,8 @@ use App\Http\Responses\DashboardResponse;
 use App\Models\User;
 use App\Services\UserAccount;
 use Carbon\Carbon;
+use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -88,19 +90,28 @@ class Trakt extends UserAccount
     /**
      * Perform get request to track API.
      *
+     * @throws RequestException
      * @return mixed json
      */
     private function _get(string $url): mixed
     {
+        $response = $this->request($this->getToken())->get($url);
+        if ($response->status() == 401) {
+            $response = $this->request($this->refreshToken())->get($url);
+        }
+
+        return $response->throw()->json();
+    }
+
+    private function request(string $token): PendingRequest
+    {
         return Http::acceptJson()
             ->asJson()
-            ->withToken($this->getToken())
+            ->withToken($token)
             ->withHeaders([
                 'trakt-api-key' => config('services.trakt.client_id'),
                 'trakt-api-version' => '2',
-            ])
-            ->get($url)
-            ->json();
+            ]);
     }
 
     private function getToken(): string
