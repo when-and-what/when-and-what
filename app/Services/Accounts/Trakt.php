@@ -90,8 +90,9 @@ class Trakt extends UserAccount
     /**
      * Perform get request to track API.
      *
-     * @throws RequestException
      * @return mixed json
+     *
+     * @throws RequestException
      */
     private function _get(string $url): mixed
     {
