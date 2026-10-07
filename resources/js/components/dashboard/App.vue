@@ -18,6 +18,11 @@
                         </span>
                         <span v-else>{{ formattedDate }}</span>
                     </h5>
+                    <a v-if="allDayNote" :href="allDayNote.url" class="day-feed-summary" title="Day summary">
+                        <span v-if="allDayNote.icon">{{ allDayNote.icon }}</span>
+                        <i v-else class="fa-solid fa-note-sticky"></i>
+                        {{ allDayNote.title }}
+                    </a>
                 </div>
                 <a class="day-nav-btn" :href="tomorrowUrl" title="Next day">
                     <i class="fa-solid fa-chevron-right"></i>
@@ -137,6 +142,7 @@ export default {
     },
     data() {
         return {
+            allDayNote: null,
             bounds: L.latLngBounds(),
             changeDay: false,
             date: this.day,
@@ -278,6 +284,7 @@ export default {
             response.data.forEach((account) => this.accountRequest(account));
         });
         axios.get('/api/dashboard/notes/' + this.date).then(this.accountResponse);
+        axios.get('/api/range/all-day-notes/' + this.date).then((r) => { this.allDayNote = r.data[this.date] ?? null; });
         axios.get('/api/dashboard/checkins/' + this.date).then(this.accountResponse);
         axios.get('/api/dashboard/pending_checkins/' + this.date).then(this.accountResponse);
     },

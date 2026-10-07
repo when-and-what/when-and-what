@@ -191,8 +191,9 @@ class DashboardController extends Controller
         return $this->populateNotes($notes);
     }
 
-    public function allDayNotesRange(Request $request, string $start, string $end): JsonResponse
+    public function allDayNotesRange(Request $request, string $start, ?string $end = null): JsonResponse
     {
+        $end ??= $start;
         $user = $request->user();
         $startDate = new Carbon($start.' 00:00:00', $user->timezone);
         $endDate = new Carbon($end.' 23:59:59', $user->timezone);
@@ -206,6 +207,8 @@ class DashboardController extends Controller
         $map = $notes->keyBy(fn ($note) => $note->published_at->tz($user->timezone)->toDateString())
             ->map(fn ($note) => [
                 'id' => $note->id,
+                'title' => $note->title,
+                'icon' => $note->icon,
                 'url' => route('notes.show', $note),
             ]);
 

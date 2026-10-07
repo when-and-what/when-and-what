@@ -370,6 +370,20 @@ a:hover { color: var(--ww-accent-dark); }
     color: var(--ww-accent);
 }
 
+.day-feed-summary {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--ww-muted);
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.day-feed-summary:hover {
+    color: var(--ww-accent);
+}
+
 /* ─── Collapsible event groups ───────────────────────────────── */
 .activity-group-items .activity-item {
     padding-left: 2.75rem;
