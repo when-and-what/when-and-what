@@ -14,4 +14,5 @@ use Illuminate\Support\Facades\Schedule;
 */
 
 Schedule::command('podcasts:history')
-    ->hourly();
+    ->everyThirtyMinutes()
+    ->withoutOverlapping();

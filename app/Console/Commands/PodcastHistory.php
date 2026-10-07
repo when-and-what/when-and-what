@@ -21,11 +21,10 @@ class PodcastHistory extends Command
      *
      * @var string
      */
-    protected $description = "Find all users who have authenticated with pocketcasts and update their history if it's midnight";
+    protected $description = 'Find all users who have authenticated with pocketcasts and update their history';
 
     /**
-     * TODO: This is not an efficient way to grab each user at midnight
-     ** but should scale for a while... so this sounds like a problem for the future 🙃.
+     * Execute the console command.
      */
     public function handle(): int
     {
@@ -35,10 +34,7 @@ class PodcastHistory extends Command
             ->where('account_id', $account->id)
             ->get();
         foreach ($userAccounts as $userAccount) {
-            $now = now($userAccount->user->timezone);
-            if ($now->format('G') == 0) {
-                PodcastUserHistory::dispatch($userAccount);
-            }
+            PodcastUserHistory::dispatch($userAccount);
         }
 
         return Command::SUCCESS;

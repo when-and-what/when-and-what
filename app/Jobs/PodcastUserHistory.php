@@ -4,15 +4,21 @@ namespace App\Jobs;
 
 use App\Actions\LogPodcast;
 use App\Models\AccountUser;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use League\Flysystem\Visibility;
 
-class PodcastUserHistory implements ShouldQueue
+class PodcastUserHistory implements ShouldBeUnique, ShouldQueue
 {
     use Queueable;
+
+    /**
+     * Pocket Casts playingStatus for a finished episode.
+     */
+    const COMPLETED = 3;
 
     protected string $filename;
 
@@ -24,29 +30,54 @@ class PodcastUserHistory implements ShouldQueue
         $this->filename = 'podcast_history/'.$this->userAccount->user_id.'.json';
     }
 
+    public function uniqueId(): string
+    {
+        return (string) $this->userAccount->user_id;
+    }
+
     /**
      * Execute the job.
      */
     public function handle(LogPodcast $log): void
     {
-        $yesterday = null;
+        $previous = null;
+        $pending = [];
         if (Storage::disk('local')->fileExists($this->filename)) {
             $json = json_decode(Storage::get($this->filename), true);
-            $yesterday = collect($json['episodes'])->groupBy('uuid');
+            $previous = collect($json['episodes'])->keyBy('uuid');
+            $pending = $json['pending'] ?? [];
         }
         $history = Http::withToken($this->userAccount->token)
             ->post('https://api.pocketcasts.com/user/history')
             ->throw()
             ->json();
 
-        Storage::disk('local')->put($this->filename, json_encode($history), Visibility::PRIVATE);
+        // Position each deferred episode was at when it was last logged.
+        $history['pending'] = [];
 
-        if ($yesterday) {
-            foreach ($history['episodes'] as $episode) {
-                if (! isset($yesterday[$episode['uuid']]) || $yesterday[$episode['uuid']][0]['playedUpTo'] != $episode['playedUpTo']) {
-                    $log->fromHistory($episode, $this->userAccount->user_id, now()->yesterday());
+        if ($previous) {
+            $playDay = now($this->userAccount->user->timezone)->startOfDay();
+            foreach ($history['episodes'] as $index => $episode) {
+                $seen = $previous[$episode['uuid']]['playedUpTo'] ?? 0;
+                $logged = $pending[$episode['uuid']] ?? $seen;
+
+                // Still being listened to, wait until it stops moving to log the whole session.
+                if ($index == 0 && $episode['playingStatus'] != self::COMPLETED && $episode['playedUpTo'] != $seen) {
+                    $history['pending'][$episode['uuid']] = $logged;
+
+                    continue;
                 }
+
+                if ($episode['playedUpTo'] == $logged) {
+                    continue;
+                }
+
+                // A lower position means the episode was restarted.
+                $seconds = $episode['playedUpTo'] > $logged ? $episode['playedUpTo'] - $logged : $episode['playedUpTo'];
+                $log->fromHistory($episode, $this->userAccount->user_id, $playDay, $seconds);
             }
         }
+
+        Storage::disk('local')->put($this->filename, json_encode($history), Visibility::PRIVATE);
     }
 }
