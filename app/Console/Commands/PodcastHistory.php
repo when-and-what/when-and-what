@@ -32,6 +32,7 @@ class PodcastHistory extends Command
 
         $userAccounts = AccountUser::with('user')
             ->where('account_id', $account->id)
+            ->whereNull('auth_failed_at')
             ->get();
         foreach ($userAccounts as $userAccount) {
             PodcastUserHistory::dispatch($userAccount);

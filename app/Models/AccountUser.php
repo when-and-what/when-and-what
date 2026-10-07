@@ -14,6 +14,7 @@ class AccountUser extends Pivot
     protected $casts = [
         'token' => 'encrypted',
         'refresh_token' => 'encrypted',
+        'auth_failed_at' => 'datetime',
     ];
 
     /** @return BelongsTo <Account, $this> */

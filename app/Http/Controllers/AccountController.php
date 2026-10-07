@@ -36,14 +36,16 @@ class AccountController extends Controller
             'token' => $account->edit_token ? 'required' : 'nullable',
         ]);
 
-        $au = new AccountUser;
-        $au->user_id = $request->user()->id;
-        $au->account_id = $account->id;
-        $au->account_user_id = null;
-        $au->refresh_token = '';
-        $au->username = $validated['username'] ?? '';
-        $au->token = $validated['token'] ?? '';
-        $au->save();
+        AccountUser::updateOrCreate(
+            ['user_id' => $request->user()->id, 'account_id' => $account->id],
+            [
+                'account_user_id' => null,
+                'refresh_token' => '',
+                'username' => $validated['username'] ?? '',
+                'token' => $validated['token'] ?? '',
+                'auth_failed_at' => null,
+            ],
+        );
 
         return redirect(route('accounts.index'));
     }

@@ -6,11 +6,15 @@ use App\Models\Account;
 use App\Models\AccountUser;
 use App\Models\Podcasts\Podcast;
 use App\Models\User;
+use App\Notifications\PocketCastsAuthenticationFailed;
 use Illuminate\Http\Client\Factory;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Sleep;
 
 beforeEach(function () {
     $podcast = new Podcast;
@@ -162,4 +166,53 @@ test('command dispatches history for every pocketcasts user', function () {
     $this->artisan('podcasts:history')->assertSuccessful()->run();
 
     Queue::assertPushed(PodcastUserHistory::class, 1);
+});
+
+test('fetch is retried after a failure', function () {
+    Sleep::fake();
+    Http::fake([
+        'https://api.pocketcasts.com/user/history' => Http::sequence()
+            ->push('', 500)
+            ->push(['total' => 0, 'episodes' => []]),
+    ]);
+
+    (new PodcastUserHistory(AccountUser::find(1)))->handle(new LogPodcast);
+
+    Http::assertSentCount(2);
+    Storage::assertExists('podcast_history/1.json');
+});
+
+test('authentication failure emails the user once retries are exhausted', function () {
+    Sleep::fake();
+    Notification::fake();
+    Http::fake(['https://api.pocketcasts.com/user/history' => Http::response('', 401)]);
+
+    (new PodcastUserHistory(AccountUser::find(1)))->handle(new LogPodcast);
+
+    Http::assertSentCount(3);
+    expect(AccountUser::find(1)->auth_failed_at)->not->toBeNull();
+    Notification::assertSentTo(User::find(1), PocketCastsAuthenticationFailed::class);
+    Storage::assertMissing('podcast_history/1.json');
+});
+
+test('other failures are thrown without emailing the user', function () {
+    Sleep::fake();
+    Notification::fake();
+    Http::fake(['https://api.pocketcasts.com/user/history' => Http::response('', 500)]);
+
+    expect(fn () => (new PodcastUserHistory(AccountUser::find(1)))->handle(new LogPodcast))
+        ->toThrow(RequestException::class);
+
+    Http::assertSentCount(3);
+    expect(AccountUser::find(1)->auth_failed_at)->toBeNull();
+    Notification::assertNothingSent();
+});
+
+test('command skips users whose authentication failed', function () {
+    Queue::fake();
+    AccountUser::find(1)->update(['auth_failed_at' => now()]);
+
+    $this->artisan('podcasts:history')->assertSuccessful()->run();
+
+    Queue::assertNothingPushed();
 });
