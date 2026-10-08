@@ -31,7 +31,7 @@
     </head>
     <body>
 
-        <nav class="navbar navbar-expand-md sticky-top">
+        <nav class="navbar navbar-light navbar-expand-md sticky-top">
             <div class="container-fluid px-4">
                 <a class="navbar-brand" href="/dashboard">
                     <img src="{{ url('logo.png') }}" alt="" height="32">
