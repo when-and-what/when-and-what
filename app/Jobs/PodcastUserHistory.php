@@ -70,25 +70,29 @@ class PodcastUserHistory implements ShouldBeUnique, ShouldQueue
         $history['pending'] = [];
 
         if ($previous) {
-            $playDay = now($this->userAccount->user->timezone)->startOfDay();
+            // Pocket Casts doesn't say when an episode was played, so use the sync time.
+            $playedAt = now();
+            $loggedCount = 0;
             foreach ($history['episodes'] as $index => $episode) {
                 $seen = $previous[$episode['uuid']]['playedUpTo'] ?? 0;
-                $logged = $pending[$episode['uuid']] ?? $seen;
+                $loggedPosition = $pending[$episode['uuid']] ?? $seen;
 
                 // Still being listened to, wait until it stops moving to log the whole session.
                 if ($index == 0 && $episode['playingStatus'] != self::COMPLETED && $episode['playedUpTo'] != $seen) {
-                    $history['pending'][$episode['uuid']] = $logged;
+                    $history['pending'][$episode['uuid']] = $loggedPosition;
 
                     continue;
                 }
 
-                if ($episode['playedUpTo'] == $logged) {
+                if ($episode['playedUpTo'] == $loggedPosition) {
                     continue;
                 }
 
                 // A lower position means the episode was restarted.
-                $seconds = $episode['playedUpTo'] > $logged ? $episode['playedUpTo'] - $logged : $episode['playedUpTo'];
-                $log->fromHistory($episode, $this->userAccount->user_id, $playDay, $seconds);
+                $seconds = $episode['playedUpTo'] > $loggedPosition ? $episode['playedUpTo'] - $loggedPosition : $episode['playedUpTo'];
+
+                // History is newest first, so step each older episode back a minute to keep listening order.
+                $log->fromHistory($episode, $this->userAccount->user_id, $playedAt->copy()->subMinutes($loggedCount++), $seconds);
             }
         }
 

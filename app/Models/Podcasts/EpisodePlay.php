@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property string $episode_id
  * @property int $user_id
- * @property Carbon $play_date
+ * @property Carbon $played_at
  * @property int $seconds
  * @property ?Carbon $deleted_at
  * @property Carbon $created_at
@@ -49,7 +49,7 @@ class EpisodePlay extends Model
         if ($date->timezone->getName() != config('app.timezone')) {
             $date->setTimezone(config('app.timezone'));
         }
-        $query->where('play_date', '>=', $date);
+        $query->where('played_at', '>=', $date);
     }
 
     /**
@@ -60,6 +60,6 @@ class EpisodePlay extends Model
         if ($date->timezone->getName() != config('app.timezone')) {
             $date->setTimezone(config('app.timezone'));
         }
-        $query->where('play_date', '<=', $date);
+        $query->where('played_at', '<=', $date);
     }
 }

@@ -3,11 +3,12 @@
 namespace Database\Factories\Podcasts;
 
 use App\Models\Podcasts\Episode;
+use App\Models\Podcasts\EpisodePlay;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Podcasts\EpisodePlay>
+ * @extends Factory<EpisodePlay>
  */
 class EpisodePlayFactory extends Factory
 {
@@ -21,7 +22,7 @@ class EpisodePlayFactory extends Factory
         return [
             'episode_id' => Episode::factory(),
             'user_id' => User::factory(),
-            'play_date' => $this->faker->date,
+            'played_at' => $this->faker->dateTime,
             'seconds' => $this->faker->numberBetween(4, 1999),
         ];
     }

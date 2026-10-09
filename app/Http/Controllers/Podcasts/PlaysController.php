@@ -17,7 +17,7 @@ class PlaysController extends Controller
                 ->select(
                     'episode_id',
                     DB::raw('sum(seconds) as seconds'),
-                    DB::raw('max(play_date) as last_played_at')
+                    DB::raw('max(played_at) as last_played_at')
                 )
                 ->orderBy('last_played_at', 'desc')
                 ->withCasts(['last_played_at' => 'datetime'])

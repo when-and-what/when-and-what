@@ -99,6 +99,7 @@ test('new episode being listened to is not logged yet', function () {
 });
 
 test('episode is logged once it stops moving', function () {
+    $this->freezeTime();
     snapshotHistory([historyEpisode('a', 1000)]);
 
     runHistory([historyEpisode('a', 1500)]);
@@ -111,7 +112,7 @@ test('episode is logged once it stops moving', function () {
     $this->assertDatabaseHas('podcast_episode_plays', [
         'episode_id' => 'a',
         'user_id' => 1,
-        'play_date' => now()->startOfDay()->toDateTimeString(),
+        'played_at' => now()->toDateTimeString(),
         'seconds' => 1000,
     ]);
     $this->assertDatabaseHas('podcast_episodes', [
@@ -158,6 +159,39 @@ test('restarted episode logs position from the beginning', function () {
     runHistory([historyEpisode('a', 200), historyEpisode('b', 600)]);
 
     $this->assertDatabaseHas('podcast_episode_plays', ['episode_id' => 'b', 'seconds' => 600]);
+});
+
+test('episodes logged together are a minute apart in listening order', function () {
+    $this->freezeTime();
+    snapshotHistory([historyEpisode('a', 0), historyEpisode('b', 0), historyEpisode('c', 0)]);
+
+    runHistory([
+        historyEpisode('a', 100, PodcastUserHistory::COMPLETED),
+        historyEpisode('b', 200),
+        historyEpisode('c', 300),
+    ]);
+
+    expect(DB::table('podcast_episode_plays')->pluck('played_at', 'episode_id')->all())->toBe([
+        'a' => now()->toDateTimeString(),
+        'b' => now()->subMinute()->toDateTimeString(),
+        'c' => now()->subMinutes(2)->toDateTimeString(),
+    ]);
+});
+
+test('unchanged episodes do not push older episodes back', function () {
+    $this->freezeTime();
+    snapshotHistory([historyEpisode('a', 0), historyEpisode('b', 500), historyEpisode('c', 0)]);
+
+    runHistory([
+        historyEpisode('a', 100, PodcastUserHistory::COMPLETED),
+        historyEpisode('b', 500),
+        historyEpisode('c', 300),
+    ]);
+
+    expect(DB::table('podcast_episode_plays')->pluck('played_at', 'episode_id')->all())->toBe([
+        'a' => now()->toDateTimeString(),
+        'c' => now()->subMinute()->toDateTimeString(),
+    ]);
 });
 
 test('command dispatches history for every pocketcasts user', function () {

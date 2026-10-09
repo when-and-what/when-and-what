@@ -17,7 +17,7 @@
                     </div>
                     <div class="card-footer">
                         <div class="d-flex justify-content-between">
-                            <span>{{ $play->last_played_at->tz('America/Chicago')->toDayDateTimeString() }}</span>
+                            <span>{{ $play->last_played_at->tz(Auth::user()->timezone)->toDayDateTimeString() }}</span>
                             <x-seconds seconds="{{ $play->seconds }}" />
                         </div>
                     </div>
