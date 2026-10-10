@@ -33,7 +33,7 @@ class DeleteUser implements DeletesUsers
         Tag::whereBelongsTo($user)->forceDelete();
         Note::whereBelongsTo($user)->forceDelete();
         Memory::whereBelongsTo($user)->forceDelete();
-        EpisodePlay::whereBelongsTo($user)->delete();
+        EpisodePlay::whereBelongsTo($user)->forceDelete();
         AccountUser::whereBelongsTo($user)->delete();
 
         if ($user->subscribed()) {
