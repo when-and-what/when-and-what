@@ -70,8 +70,8 @@ class PodcastUserHistory implements ShouldBeUnique, ShouldQueue
         $history['pending'] = [];
 
         if ($previous) {
-            // Pocket Casts doesn't say when an episode was played, so use the sync time.
-            $playedAt = now();
+            // Pocket Casts doesn't say when an episode was played, so use the previous run time.
+            $playedAt = now()->subMinutes(30);
             $loggedCount = 0;
             foreach ($history['episodes'] as $index => $episode) {
                 $seen = $previous[$episode['uuid']]['playedUpTo'] ?? 0;

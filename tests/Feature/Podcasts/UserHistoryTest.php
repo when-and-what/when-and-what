@@ -112,7 +112,7 @@ test('episode is logged once it stops moving', function () {
     $this->assertDatabaseHas('podcast_episode_plays', [
         'episode_id' => 'a',
         'user_id' => 1,
-        'played_at' => now()->toDateTimeString(),
+        'played_at' => now()->subMinutes(30)->toDateTimeString(),
         'seconds' => 1000,
     ]);
     $this->assertDatabaseHas('podcast_episodes', [
@@ -172,9 +172,9 @@ test('episodes logged together are a minute apart in listening order', function 
     ]);
 
     expect(DB::table('podcast_episode_plays')->pluck('played_at', 'episode_id')->all())->toBe([
-        'a' => now()->toDateTimeString(),
-        'b' => now()->subMinute()->toDateTimeString(),
-        'c' => now()->subMinutes(2)->toDateTimeString(),
+        'a' => now()->subMinutes(30)->toDateTimeString(),
+        'b' => now()->subMinutes(31)->toDateTimeString(),
+        'c' => now()->subMinutes(32)->toDateTimeString(),
     ]);
 });
 
@@ -189,8 +189,8 @@ test('unchanged episodes do not push older episodes back', function () {
     ]);
 
     expect(DB::table('podcast_episode_plays')->pluck('played_at', 'episode_id')->all())->toBe([
-        'a' => now()->toDateTimeString(),
-        'c' => now()->subMinute()->toDateTimeString(),
+        'a' => now()->subMinutes(30)->toDateTimeString(),
+        'c' => now()->subMinutes(31)->toDateTimeString(),
     ]);
 });
 
