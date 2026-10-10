@@ -2,11 +2,12 @@
 
 namespace Database\Factories\Podcasts;
 
+use App\Models\Podcasts\Episode;
 use App\Models\Podcasts\Podcast;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Podcasts\Episode>
+ * @extends Factory<Episode>
  */
 class EpisodeFactory extends Factory
 {

@@ -4,6 +4,7 @@ use App\Providers\AppServiceProvider;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Laravel\Jetstream\Http\Middleware\AuthenticateSession;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withProviders()
@@ -22,7 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
             '/stripe/*',
         ]);
 
-        $middleware->web(\Laravel\Jetstream\Http\Middleware\AuthenticateSession::class);
+        $middleware->web(AuthenticateSession::class);
 
         $middleware->statefulApi();
         $middleware->throttleApi();

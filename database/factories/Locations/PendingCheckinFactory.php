@@ -2,11 +2,12 @@
 
 namespace Database\Factories\Locations;
 
+use App\Models\Locations\PendingCheckin;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Locations\PendingCheckin>
+ * @extends Factory<PendingCheckin>
  */
 class PendingCheckinFactory extends Factory
 {

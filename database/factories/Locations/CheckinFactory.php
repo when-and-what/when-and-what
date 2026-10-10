@@ -2,12 +2,13 @@
 
 namespace Database\Factories\Locations;
 
+use App\Models\Locations\Checkin;
 use App\Models\Locations\Location;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Locations\Checkin>
+ * @extends Factory<Checkin>
  */
 class CheckinFactory extends Factory
 {

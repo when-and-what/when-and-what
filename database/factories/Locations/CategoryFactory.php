@@ -2,11 +2,12 @@
 
 namespace Database\Factories\Locations;
 
+use App\Models\Locations\Category;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Locations\Category>
+ * @extends Factory<Category>
  */
 class CategoryFactory extends Factory
 {

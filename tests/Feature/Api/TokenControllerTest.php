@@ -26,8 +26,8 @@ test('rate limited to 5', function () {
             'password' => 'password',
             'device_name' => 'test '.$i,
         ])
-        ->assertStatus(200)
-        ->assertJsonStructure(['token']);
+            ->assertStatus(200)
+            ->assertJsonStructure(['token']);
     }
     $this->post('/api/token/create', [
         'email' => $user->email,

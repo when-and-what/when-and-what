@@ -9,6 +9,7 @@ use App\Models\Locations\Category;
 use App\Models\Locations\Location;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class CategoriesController extends Controller
@@ -58,7 +59,7 @@ class CategoriesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show(Category $category)
     {

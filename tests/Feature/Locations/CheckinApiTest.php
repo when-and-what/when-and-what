@@ -3,9 +3,10 @@
 use App\Models\Locations\Checkin;
 use App\Models\Locations\Location;
 use App\Models\User;
+use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
 
-uses(\Illuminate\Foundation\Testing\WithFaker::class);
+uses(WithFaker::class);
 
 test('checkin with specific date', function () {
     Sanctum::actingAs($user = User::factory()->create());

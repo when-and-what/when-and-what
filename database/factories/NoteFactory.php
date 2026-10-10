@@ -2,11 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Models\Note;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Note>
+ * @extends Factory<Note>
  */
 class NoteFactory extends Factory
 {
@@ -31,7 +32,7 @@ class NoteFactory extends Factory
     /**
      * visible on the dashboard.
      *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     * @return Factory
      */
     public function dashboard_visible()
     {
@@ -45,7 +46,7 @@ class NoteFactory extends Factory
     /**
      * hidden from the dashboard.
      *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     * @return Factory
      */
     public function dashboard_hidden()
     {

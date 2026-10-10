@@ -6,11 +6,12 @@ use App\Http\Responses\DashboardResponse;
 use App\Services\UserAccount;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
+use Laravel\Socialite\Contracts\Provider;
 use Laravel\Socialite\Facades\Socialite;
 
 class Fitbit extends UserAccount
 {
-    public function socialite(): \Laravel\Socialite\Contracts\Provider
+    public function socialite(): Provider
     {
         return Socialite::driver('fitbit');
     }

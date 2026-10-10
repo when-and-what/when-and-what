@@ -1,9 +1,10 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
 
-uses(\Illuminate\Foundation\Testing\WithFaker::class);
+uses(WithFaker::class);
 
 test('pending checkin with specific time', function () {
     Sanctum::actingAs($user = User::factory()->create());

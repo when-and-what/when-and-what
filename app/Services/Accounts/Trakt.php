@@ -9,11 +9,12 @@ use Carbon\Carbon;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
+use Laravel\Socialite\Contracts\Provider;
 use Laravel\Socialite\Facades\Socialite;
 
 class Trakt extends UserAccount
 {
-    public function socialite(): \Laravel\Socialite\Contracts\Provider
+    public function socialite(): Provider
     {
         return Socialite::driver('trakt');
     }

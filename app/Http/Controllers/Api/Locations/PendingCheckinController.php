@@ -21,7 +21,7 @@ class PendingCheckinController extends Controller
      * Display a listing of the resource.
      *! this is not restricted by the Pending:class policy.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index(Request $request)
     {
