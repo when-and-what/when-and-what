@@ -24,6 +24,7 @@ class Pocketcasts extends UserAccount
                 date: $play->played_at,
                 title: $play->episode->title,
                 details: [
+                    'dateLink' => route('podcasts.plays.edit', $play),
                     'icon' => '🎙️',
                     'subTitle' => $play->episode->podcast->title,
                 ]

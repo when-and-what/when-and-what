@@ -61,6 +61,9 @@ Route::middleware(['auth:sanctum', Subscribed::class, 'verified'])->group(functi
 
     // Podcasts
     Route::get('episode/plays', [PlaysController::class, 'index'])->name('podcasts.plays');
+    Route::get('episode/plays/{play}/edit', [PlaysController::class, 'edit'])->name('podcasts.plays.edit');
+    Route::put('episode/plays/{play}', [PlaysController::class, 'update'])->name('podcasts.plays.update');
+    Route::delete('episode/plays/{play}', [PlaysController::class, 'destroy'])->name('podcasts.plays.destroy');
 
     // Accounts
     Route::resource('accounts', AccountController::class)->except(['create', 'store', 'show']);
