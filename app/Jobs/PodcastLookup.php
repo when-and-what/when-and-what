@@ -15,7 +15,9 @@ class PodcastLookup implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(public string $uuid) {}
+    public function __construct(public string $uuid)
+    {
+    }
 
     /**
      * Execute the job.
