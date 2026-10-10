@@ -5,7 +5,8 @@ use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\Locations\CheckinController;
 use App\Http\Controllers\Api\Locations\LocationController;
 use App\Http\Controllers\Api\Locations\PendingCheckinController;
-use App\Http\Controllers\Api\NoteController;
+use App\Http\Controllers\Api\Notes\NoteController;
+use App\Http\Controllers\Api\Notes\NotesDashboardController;
 use App\Http\Controllers\Api\TokenController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -46,6 +47,6 @@ Route::middleware('auth:sanctum')->name('api.')->group(function () {
 
     Route::get('accounts/user', [AccountController::class, 'userAccounts']);
 
-    Route::post('notes/dashboard', [NoteController::class, 'storeDashboard'])->name('notes.dashboard');
-    Route::resource('notes', NoteController::class);
+    Route::post('notes/dashboard', NotesDashboardController::class)->name('notes.dashboard');
+    Route::apiResource('notes', NoteController::class);
 });

@@ -1,21 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Notes;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Notes\StoreDashboardRequest;
 use App\Http\Responses\DashboardResponse;
 use App\Models\Note;
 use App\Traits\TaggableController;
-use Carbon\Carbon;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
 
-class NoteController extends Controller
+class NotesDashboardController extends Controller
 {
     use TaggableController;
 
-    public function storeDashboard(StoreDashboardRequest $request)
+    public function __invoke(StoreDashboardRequest $request): Response
     {
         $note = new Note;
         $note->user_id = $request->user()->id;
@@ -45,24 +44,5 @@ class NoteController extends Controller
         );
 
         return response($dashboard, 201);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Note $note): JsonResponse
-    {
-        Gate::authorize('view', $note);
-
-        return response()->json($note);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Note $note)
-    {
-        Gate::authorize('delete', $note);
-        $note->delete();
     }
 }
