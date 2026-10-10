@@ -6,25 +6,31 @@ use App\Http\Responses\DashboardResponse;
 use App\Models\Podcasts\EpisodePlay;
 use App\Services\UserAccount;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class Pocketcasts extends UserAccount
 {
     public function dashboard(Carbon $startDate, Carbon $endDate): DashboardResponse
     {
-        $plays = EpisodePlay::groupBy('episode_id')
-            ->where('user_id', $this->accountUser->user_id)
+        $plays = EpisodePlay::where('user_id', $this->accountUser->user_id)
             ->after($startDate)
             ->before($endDate)
-            ->select(
-                'episode_id',
-                DB::raw('sum(seconds) as seconds'),
-            )
+            ->with('episode.podcast')
             ->get();
 
         $dashboard = new DashboardResponse('pocketcasts');
-        $dashboard->addItem('Episodes', count($plays), '🎙️');
-        if (count($plays) > 0) {
+        foreach ($plays as $play) {
+            $dashboard->addEvent(
+                id: $play->id,
+                date: $play->played_at,
+                title: $play->episode->title,
+                details: [
+                    'icon' => '🎙️',
+                    'subTitle' => $play->episode->podcast->title,
+                ]
+            );
+        }
+        $dashboard->addItem('Episodes', $plays->unique('episode_id')->count(), '🎙️');
+        if ($plays->isNotEmpty()) {
             $dashboard->addItem('Minutes', floor($plays->sum('seconds') / 60), '🎙️');
         }
 
