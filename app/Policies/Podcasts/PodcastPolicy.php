@@ -5,7 +5,6 @@ namespace App\Policies\Podcasts;
 use App\Models\Podcasts\Podcast;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Auth\Access\Response;
 
 class PodcastPolicy
 {
@@ -13,71 +12,47 @@ class PodcastPolicy
 
     /**
      * Determine whether the user can view any models.
-     *
-     * @return Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return true;
     }
 
     /**
      * Determine whether the user can view the model.
-     *
-     * @return Response|bool
      */
-    public function view(User $user, Podcast $podcast)
+    public function view(User $user, Podcast $podcast): bool
     {
-        return $user->id == $podcast->created_by;
+        if (! $podcast->is_private) {
+            return true;
+        }
+
+        return $podcast->episodes()
+            ->whereHas('plays', fn ($query) => $query->where('user_id', $user->id))
+            ->exists();
     }
 
     /**
      * Determine whether the user can create models.
-     *
-     * @return Response|bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return true;
     }
 
     /**
      * Determine whether the user can update the model.
-     *
-     * @return Response|bool
      */
-    public function update(User $user, Podcast $podcast)
+    public function update(User $user, Podcast $podcast): bool
     {
-        return $user->id == $podcast->created_by;
+        return in_array($user->email, config('auth.admin_emails'), true);
     }
 
     /**
      * Determine whether the user can delete the model.
-     *
-     * @return Response|bool
      */
-    public function delete(User $user, Podcast $podcast)
+    public function delete(User $user, Podcast $podcast): bool
     {
-        return $user->id == $podcast->created_by;
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @return Response|bool
-     */
-    public function restore(User $user, Podcast $podcast)
-    {
-        return $user->id == $podcast->created_by;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @return Response|bool
-     */
-    public function forceDelete(User $user, Podcast $podcast)
-    {
-        return $user->id == $podcast->created_by;
+        return false;
     }
 }
