@@ -16,7 +16,6 @@ use Illuminate\Support\Carbon;
  * @property string $image
  * @property string $author
  * @property bool $is_private
- * @property int $created_by
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */

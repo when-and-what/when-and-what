@@ -11,7 +11,7 @@ use Illuminate\Support\Carbon;
 /**
  * @property string $id
  * @property string $podcast_id
- * @property string $name
+ * @property string $title
  * @property Carbon $published_at
  * @property string $description
  * @property int $duration
@@ -42,11 +42,13 @@ class Episode extends Model
 
     protected $with = ['podcast'];
 
+    /** @return BelongsTo<Podcast, $this> */
     public function podcast(): BelongsTo
     {
         return $this->belongsTo(Podcast::class);
     }
 
+    /** @return HasMany<EpisodePlay, $this> */
     public function plays(): HasMany
     {
         return $this->hasMany(EpisodePlay::class);

@@ -30,13 +30,16 @@ class EpisodePlay extends Model
 
     protected $casts = [
         'played_at' => 'datetime',
+        'user_id' => 'integer',
     ];
 
+    /** @return BelongsTo<Episode, $this> */
     public function episode(): BelongsTo
     {
         return $this->belongsTo(Episode::class);
     }
 
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
