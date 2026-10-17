@@ -39,7 +39,7 @@
 
                 {{-- Date & Time --}}
                 <div class="checkin-field">
-                    <label for="checkin_at">Date &amp; Time</label>
+                    <label for="checkin_at">Date &amp; Time <span class="field-optional">— {{ auth()->user()->timezone }}</span></label>
                     <input type="datetime-local" name="date" id="checkin_at" class="field-input"
                            value="{{ old('date', $pending->checkin_at->tz(Auth::user()->timezone)->format('Y-m-d\TH:i')) }}" />
                 </div>

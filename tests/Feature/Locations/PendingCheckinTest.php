@@ -126,7 +126,8 @@ test('view pending checking', function () {
 
     $this->actingAs($pending->user)
         ->get(route('pending.edit', $pending))
-        ->assertOK();
+        ->assertOK()
+        ->assertSee($pending->user->timezone);
 
     $user = User::factory()->create();
     $this->actingAs($user)

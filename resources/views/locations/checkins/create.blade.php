@@ -31,7 +31,7 @@
             <div class="checkin-form-scroll">
 
                 <div class="checkin-field">
-                    <label for="checkin_at">Date</label>
+                    <label for="checkin_at">Date <span class="field-optional">— {{ auth()->user()->timezone }}</span></label>
                     <input type="datetime-local" name="date" id="checkin_at" value="{{ old('date', now()->tz(auth()->user()->timezone)->format('Y-m-d\TH:i')) }}" placeholder="Now" />
                 </div>
 

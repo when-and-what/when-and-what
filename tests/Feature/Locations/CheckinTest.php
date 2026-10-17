@@ -60,7 +60,8 @@ test('checkin edit form round-trips without drift', function () {
 
     $this->actingAs($user)
         ->get(route('checkins.edit', $checkin))
-        ->assertSee('value="2023-02-01T09:20"', false);
+        ->assertSee('value="2023-02-01T09:20"', false)
+        ->assertSee('— America/Chicago');
 
     $this->actingAs($user)->put("/locations/checkins/{$checkin->id}", [
         'date' => '2023-02-01T09:20',
