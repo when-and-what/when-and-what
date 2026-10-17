@@ -53,3 +53,28 @@ if (button) {
         document.getElementById('pocketcasts-password').innerHTML = document.getElementById('password').value;
     });
 }
+
+const tzPrompt = document.getElementById('tz-prompt');
+if (tzPrompt) {
+    const profileTz = tzPrompt.dataset.profileTz;
+    const browserTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const dismissKey = `tz-prompt-dismissed:${profileTz}:${browserTz}`;
+
+    let dismissed = false;
+    try {
+        dismissed = localStorage.getItem(dismissKey) !== null;
+    } catch (e) {}
+
+    if (browserTz && browserTz !== profileTz && !dismissed) {
+        tzPrompt.querySelector('[data-tz-browser]').textContent = browserTz;
+        tzPrompt.querySelector('input[name="timezone"]').value = browserTz;
+        tzPrompt.hidden = false;
+
+        tzPrompt.querySelector('[data-tz-dismiss]').addEventListener('click', function () {
+            try {
+                localStorage.setItem(dismissKey, '1');
+            } catch (e) {}
+            tzPrompt.hidden = true;
+        });
+    }
+}

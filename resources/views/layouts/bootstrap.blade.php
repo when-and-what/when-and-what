@@ -133,5 +133,18 @@
             </div>
         </footer>
 
+        @auth
+            <div id="tz-prompt" class="tz-prompt" data-profile-tz="{{ auth()->user()->timezone }}" hidden>
+                <span>You appear to be in <strong data-tz-browser></strong>. Your profile uses <strong>{{ auth()->user()->timezone }}</strong>.</span>
+                <form method="POST" action="{{ route('user.timezone.update') }}">
+                    @csrf
+                    @method('PATCH')
+                    <input type="hidden" name="timezone" />
+                    <button type="submit" class="btn btn-sm btn-primary">Switch</button>
+                </form>
+                <button type="button" class="btn btn-sm btn-link" data-tz-dismiss>Dismiss</button>
+            </div>
+        @endauth
+
     </body>
 </html>

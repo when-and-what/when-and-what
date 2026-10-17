@@ -1808,3 +1808,27 @@ a:hover { color: var(--ww-accent-dark); }
         min-height: 300px;
     }
 }
+
+/* Timezone mismatch prompt */
+.tz-prompt {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1050;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+    max-width: calc(100vw - 32px);
+    padding: 0.625rem 0.875rem;
+    background: #fff;
+    border: 1px solid var(--ww-border);
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.12);
+    color: var(--ww-dark);
+    font-size: 0.875rem;
+}
+.tz-prompt[hidden] { display: none; }
+.tz-prompt form { margin: 0; }
+.tz-prompt .btn-link { color: var(--ww-muted); text-decoration: none; }
