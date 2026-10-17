@@ -29,7 +29,6 @@ class CreatePendingCheckinRequest extends FormRequest
             'name' => 'nullable',
             'note' => 'nullable',
             'date' => 'required|date_format:Y-m-d\TH:i',
-            'browser_timezone' => 'required|timezone',
         ];
     }
 }

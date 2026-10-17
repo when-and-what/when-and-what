@@ -31,7 +31,6 @@ class PendingCheckinUpdateRequest extends FormRequest
             'category' => 'nullable',
             'latitude' => 'required_with:newlocation|numeric',
             'longitude' => 'required_with:newlocation|numeric',
-            'browser_timezone' => 'required|timezone',
         ];
     }
 }

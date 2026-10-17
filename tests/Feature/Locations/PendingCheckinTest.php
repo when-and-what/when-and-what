@@ -14,7 +14,6 @@ test('pending checkin with specific time', function () {
         'latitude' => $this->faker->latitude(),
         'longitude' => $this->faker->longitude(),
         'date' => '2023-02-01T09:20',
-        'browser_timezone' => 'America/Chicago',
     ];
     $response = $this->actingAs($user)->post('/locations/checkins/pending', $data);
     $response->assertStatus(302);
@@ -27,7 +26,7 @@ test('pending checkin with specific time', function () {
     ]);
 });
 
-test('pending checkin uses browser timezone, not profile timezone', function () {
+test('pending checkin uses profile timezone, ignoring browser timezone', function () {
     $user = User::factory()->create(['timezone' => 'America/Chicago']);
     $data = [
         'latitude' => $this->faker->latitude(),
@@ -40,33 +39,8 @@ test('pending checkin uses browser timezone, not profile timezone', function () 
     $response->assertSessionHasNoErrors();
     $this->assertDatabaseHas('pending_checkins', [
         'user_id' => $user->id,
-        'latitude' => $data['latitude'],
-        'longitude' => $data['longitude'],
-        'checkin_at' => '2023-02-01 16:20:00',
+        'checkin_at' => '2023-02-01 15:20:00',
     ]);
-});
-
-test('pending checkin requires browser timezone', function () {
-    $user = User::factory()->create(['timezone' => 'America/Chicago']);
-    $data = [
-        'latitude' => $this->faker->latitude(),
-        'longitude' => $this->faker->longitude(),
-        'date' => '2023-02-01T09:20',
-    ];
-    $response = $this->actingAs($user)->post('/locations/checkins/pending', $data);
-    $response->assertSessionHasErrors('browser_timezone');
-});
-
-test('pending checkin rejects invalid browser timezone', function () {
-    $user = User::factory()->create(['timezone' => 'America/Chicago']);
-    $data = [
-        'latitude' => $this->faker->latitude(),
-        'longitude' => $this->faker->longitude(),
-        'date' => '2023-02-01T09:20',
-        'browser_timezone' => 'Not/AZone',
-    ];
-    $response = $this->actingAs($user)->post('/locations/checkins/pending', $data);
-    $response->assertSessionHasErrors('browser_timezone');
 });
 
 test('pending checkin requires date', function () {
@@ -74,7 +48,6 @@ test('pending checkin requires date', function () {
     $data = [
         'latitude' => $this->faker->latitude(),
         'longitude' => $this->faker->longitude(),
-        'browser_timezone' => 'America/Denver',
     ];
     $response = $this->actingAs($user)->post('/locations/checkins/pending', $data);
     $response->assertSessionHasErrors('date');
@@ -86,7 +59,6 @@ test('pending checkin with name and notes', function () {
         'latitude' => $this->faker->latitude(),
         'longitude' => $this->faker->longitude(),
         'date' => '2023-02-01T12:30',
-        'browser_timezone' => 'America/Denver',
         'name' => $this->faker()->words(3, true),
         'note' => $this->faker()->sentence(),
     ];
@@ -103,7 +75,7 @@ test('pending checkin with name and notes', function () {
     ]);
 });
 
-test('finalize pending checkin uses browser timezone, not profile timezone', function () {
+test('finalize pending checkin uses profile timezone, ignoring browser timezone', function () {
     $user = User::factory()->create(['timezone' => 'America/Chicago']);
     $location = Location::factory()->create(['user_id' => $user->id]);
     $pending = PendingCheckin::factory()->create(['user_id' => $user->id]);
@@ -120,23 +92,33 @@ test('finalize pending checkin uses browser timezone, not profile timezone', fun
     $this->assertDatabaseHas('checkins', [
         'user_id' => $user->id,
         'location_id' => $location->id,
-        'checkin_at' => '2023-02-01 16:20:00',
+        'checkin_at' => '2023-02-01 15:20:00',
     ]);
     $this->assertDatabaseMissing('pending_checkins', ['id' => $pending->id]);
 });
 
-test('finalize pending checkin requires browser timezone', function () {
+test('pending edit form round-trips without drift', function () {
     $user = User::factory()->create(['timezone' => 'America/Chicago']);
     $location = Location::factory()->create(['user_id' => $user->id]);
-    $pending = PendingCheckin::factory()->create(['user_id' => $user->id]);
+    $pending = PendingCheckin::factory()->create([
+        'user_id' => $user->id,
+        'checkin_at' => '2023-02-01 15:20:00',
+    ]);
 
-    $response = $this->actingAs($user)->put(route('pending.update', $pending), [
+    $this->actingAs($user)
+        ->get(route('pending.edit', $pending))
+        ->assertSee('value="2023-02-01T09:20"', false);
+
+    $this->actingAs($user)->put(route('pending.update', $pending), [
         'location' => $location->id,
         'date' => '2023-02-01T09:20',
         'note' => null,
-    ]);
+    ])->assertSessionHasNoErrors();
 
-    $response->assertSessionHasErrors('browser_timezone');
+    $this->assertDatabaseHas('checkins', [
+        'user_id' => $user->id,
+        'checkin_at' => '2023-02-01 15:20:00',
+    ]);
 });
 
 test('view pending checking', function () {

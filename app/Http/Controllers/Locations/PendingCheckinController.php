@@ -44,7 +44,7 @@ class PendingCheckinController extends Controller
         $checkin->name = $request->name;
         $checkin->user_id = $request->user()->id;
         $checkin->note = $request->note;
-        $checkin->checkin_at = Carbon::parse($request->date, $request->browser_timezone)->tz('GMT');
+        $checkin->checkin_at = Carbon::parse($request->date, $request->user()->timezone)->tz('GMT');
         $checkin->save();
 
         return redirect(route('pending.edit', $checkin));
@@ -84,7 +84,7 @@ class PendingCheckinController extends Controller
         }
 
         $checkin->user_id = $request->user()->id;
-        $checkin->checkin_at = Carbon::parse($valid['date'], $request->browser_timezone)->tz('GMT');
+        $checkin->checkin_at = Carbon::parse($valid['date'], $request->user()->timezone)->tz('GMT');
         $checkin->note = $valid['note'];
         $checkin->save();
 

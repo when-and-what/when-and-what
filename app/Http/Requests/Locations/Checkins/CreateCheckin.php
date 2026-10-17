@@ -23,7 +23,6 @@ class CreateCheckin extends FormRequest
             'location' => 'required|integer|exists:locations,id',
             'note' => 'nullable',
             'date' => 'required|date_format:Y-m-d\TH:i',
-            'browser_timezone' => 'required|timezone',
         ];
     }
 }

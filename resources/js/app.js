@@ -15,7 +15,6 @@ if (locationEl) {
             return {
                 mapboxToken: import.meta.env.VITE_MAPBOX_TOKEN,
                 newLocation: 0,
-                browserTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
             };
         },
     }).mount(locationEl);
