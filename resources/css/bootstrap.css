@@ -345,6 +345,20 @@ a:hover { color: var(--ww-accent-dark); }
 
 .activity-time a:hover { color: var(--ww-accent); }
 
+.activity-badge {
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+    margin-top: 0.25rem;
+    padding: 0.1rem 0.45rem;
+    font-size: 0.65rem;
+    font-weight: 600;
+    line-height: 1.2;
+    border-radius: 999px;
+    background: var(--ww-accent);
+    color: #fff;
+}
+
 /* ─── Time-of-day dividers ───────────────────────────────────── */
 .activity-divider {
     font-size: 0.7rem;

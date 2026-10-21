@@ -14,6 +14,7 @@
         <div class="activity-time">
             <a v-if="event.dateLink" :href="event.dateLink">{{ displayTime(event.date) }}</a>
             <span v-else>{{ displayTime(event.date) }}</span>
+            <div v-if="event.badge" class="activity-badge">{{ event.badge }}</div>
         </div>
     </div>
 </template>
