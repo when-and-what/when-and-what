@@ -43,7 +43,13 @@ class Trakt extends UserAccount
                 id: $episode['id'],
                 date: new Carbon($episode['watched_at']),
                 title: $episode['show']['title'],
-                details: ['icon' => '<i class="fa-solid fa-tv"></i>', 'subTitle' => $episode['episode']['title']]
+                details: [
+                    'icon' => '<i class="fa-solid fa-tv"></i>',
+                    'subTitle' => $episode['episode']['title'],
+                    'badge' => $episode['episode']['season'] == 0
+                        ? 'Special'
+                        : sprintf('S%02dE%02d', $episode['episode']['season'], $episode['episode']['number']),
+                ]
             );
         }
         if (count($episodes) > 0) {
