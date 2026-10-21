@@ -18,10 +18,11 @@ class Strava extends UserAccount
         $activities = $this->activities($startDate, $endDate);
 
         foreach ($activities as $activity) {
-            $dashboard->addEvent(id: $activity['id'], date: new Carbon($activity['start_date']), title: $activity['sport_type'], details: [
+            $dashboard->addEvent(id: $activity['id'], date: new Carbon($activity['start_date']), title: $activity['name'], details: [
                 'icon' => $this->activityIcon($activity['sport_type']),
-                'subTitle' => $this->isGarmin($activity) ? $activity['device_name'] : $this->displayDistance($activity['distance']),
+                'subTitle' => $this->isGarmin($activity) ? $activity['device_name'] : $activity['sport_type'],
                 'titleLink' => 'https://www.strava.com/activities/'.$activity['id'],
+                'badge' => $this->displayDistance($activity['distance']),
             ]);
             $details = $this->activity($activity['id']);
             if (isset($details['map']['polyline'])) {

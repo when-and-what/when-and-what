@@ -22,7 +22,7 @@ class EpisodePlayFactory extends Factory
         return [
             'episode_id' => Episode::factory(),
             'user_id' => User::factory(),
-            'played_at' => $this->faker->dateTime,
+            'played_at' => $this->faker->dateTimeThisMonth(),
             'seconds' => $this->faker->numberBetween(4, 1999),
         ];
     }

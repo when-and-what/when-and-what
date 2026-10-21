@@ -17,8 +17,9 @@ class Pocketcasts extends UserAccount
             ->with('episode.podcast')
             ->get();
 
-        $dashboard = new DashboardResponse('pocketcasts');
+        $dashboard = new DashboardResponse('pocketcasts', '#CC342E');
         foreach ($plays as $play) {
+            $minutes = (int) floor($play->seconds / 60);
             $dashboard->addEvent(
                 id: $play->id,
                 date: $play->played_at,
@@ -27,6 +28,7 @@ class Pocketcasts extends UserAccount
                     'dateLink' => route('podcasts.plays.edit', $play),
                     'icon' => '🎙️',
                     'subTitle' => $play->episode->podcast->title,
+                    'badge' => $minutes > 0 ? $minutes.' min' : '',
                 ]
             );
         }
